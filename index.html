@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Boat Lead Desk</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Boat Leads">
+<meta name="theme-color" content="#0d1220">
+<style>
+  :root{
+    --bg:#0d1220; --card:#161d2e; --inner:#0b0f1a; --border:#2a3247;
+    --text:#e8ecf4; --muted:#8b94a7; --dim:#6b7385;
+    --hot:#ff6b5e; --warm:#e8b33d; --nurture:#35c98a; --open:#8b94a7; --contacted:#8b94a7;
+    --blue:#3d7ef7; --flag:#5aa2ff; --chip:#59d3c8;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:28px 16px calc(60px + env(safe-area-inset-bottom));}
+  .wrap{max-width:820px; margin:0 auto;}
+  h1{font-size:30px; margin:0 0 6px; letter-spacing:-.02em;}
+  .sub{color:var(--muted); margin:0 0 14px;}
+  .note{display:inline-block; background:#2b2416; border:1px solid #4a3c1c; color:#e8c574;
+    border-radius:20px; padding:7px 14px; font-size:13px; font-weight:600; margin-bottom:6px;}
+  .note .dot{color:#e8a33d;}
+  hr{border:none; border-top:1px solid var(--border); margin:22px 0;}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:12px;}
+  .stat{background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; border-left:4px solid var(--open);}
+  .stat .num{font-size:26px; font-weight:800;}
+  .stat .lbl{font-size:11px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase;}
+  .stat.hot{border-left-color:var(--hot);} .stat.hot .num{color:var(--hot);}
+  .stat.warm{border-left-color:var(--warm);} .stat.warm .num{color:var(--warm);}
+  .stat.nurture{border-left-color:var(--nurture);} .stat.nurture .num{color:var(--nurture);}
+  .stat.open{border-left-color:#57617a;}
+  .stat.contacted{border-left-color:#57617a;}
+
+  .cats-title{font-size:11px; letter-spacing:.1em; color:var(--dim); text-transform:uppercase; margin:20px 0 8px;}
+  .cats{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13px; color:#aab2c4;}
+  .cats span{white-space:nowrap;}
+  .cdot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:1px;}
+
+  .voice-note{background:#211d10; border:1px solid #4a3c1c; border-left:4px solid var(--warm);
+    border-radius:10px; padding:12px 16px; color:#cbb98a; font-size:14px; margin:18px 0 4px;}
+  .voice-note b{color:#e8c574;}
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-top:18px; border-left:4px solid var(--open); position:relative;}
+  .card.hot{border-left-color:var(--hot);}
+  .card.warm{border-left-color:var(--warm);}
+  .card.nurture{border-left-color:var(--nurture);}
+  .card.done{opacity:.55;}
+  .card.done .btns .primary{display:none;}
+
+  .row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .pill{font-size:11px; font-weight:800; letter-spacing:.06em; border-radius:6px; padding:3px 10px; border:1px solid;}
+  .pill.tier-hot{color:var(--hot); border-color:#6b3230; background:#2a1614;}
+  .pill.tier-warm{color:var(--warm); border-color:#5c4a1e; background:#241d0e;}
+  .pill.tier-nurture{color:var(--nurture); border-color:#1f5c42; background:#0e2419;}
+  .pill.cat{font-weight:700; letter-spacing:0; font-size:12px;}
+  .when{margin-left:auto; color:var(--dim); font-size:12.5px;}
+  .who{margin:9px 0 2px; font-size:16px;}
+  .who b{font-weight:700;}
+  .who .grp{color:var(--muted); font-weight:400; font-size:14px;}
+  .post{background:var(--inner); border:1px solid var(--border); border-radius:8px;
+    padding:11px 14px; font-style:italic; color:#c3cad9; margin:10px 0; white-space:pre-line;}
+  .flag{font-size:13.5px; color:#aab2c4; margin:10px 0;}
+  .flag b{color:var(--flag); font-size:11.5px; letter-spacing:.08em; font-weight:800; margin-right:6px;}
+
+  .dm{background:var(--inner); border:1px solid var(--border); border-radius:10px; margin:12px 0 14px;}
+  .dm-head{display:flex; align-items:center; justify-content:space-between;
+    padding:9px 14px; border-bottom:1px solid var(--border);}
+  .dm-head .t{font-size:11px; letter-spacing:.1em; color:var(--dim); font-weight:700;}
+  .vchip{font-size:12px; font-weight:700; color:var(--chip); border:1px solid #2c5a55;
+    border-radius:20px; padding:3px 12px; background:#0e1f1d;}
+  .dm-body{padding:13px 16px; color:#d6dbe6; white-space:pre-line; font-size:14.5px;}
+
+  .btns{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{font:inherit; font-size:13.5px; font-weight:700; border-radius:8px; padding:9px 16px;
+    cursor:pointer; border:1px solid var(--border); background:#1b2336; color:var(--text);}
+  .btn:active{transform:scale(.97);}
+  .btn.primary{background:var(--blue); border-color:var(--blue); color:#fff;}
+  .btn.linkish{text-decoration:none; display:inline-block;}
+  .done-tag{display:none; font-size:12px; font-weight:800; color:var(--nurture); letter-spacing:.05em;
+    align-self:center;}
+  .card.done .done-tag{display:inline;}
+  .card.done .btn.mark{color:var(--nurture); border-color:#1f5c42;}
+
+  .foot{text-align:center; color:var(--dim); font-size:12.5px; margin-top:34px;}
+  #toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom)); transform:translateX(-50%) translateY(80px);
+    background:#1d2740; border:1px solid #35507e; color:#dfe7f7; padding:10px 20px; border-radius:24px;
+    font-size:14px; font-weight:600; transition:transform .25s ease; z-index:50; box-shadow:0 6px 24px rgba(0,0,0,.5);}
+  #toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Boat Lead Desk</h1>
+  <p class="sub">Twice-daily digest of Facebook group leads — 9:00 AM &amp; 5:00 PM</p>
+  <p class="sub" style="margin-top:-8px"><span id="dateLabel"></span> · <span id="openInline">–</span> open leads · <span id="queueLabel"></span></p>
+
+  <hr>
+
+  <div class="stats">
+    <div class="stat hot"><div class="num" id="nHot">–</div><div class="lbl">Hot</div></div>
+    <div class="stat warm"><div class="num" id="nWarm">–</div><div class="lbl">Warm</div></div>
+    <div class="stat nurture"><div class="num" id="nNurture">–</div><div class="lbl">Nurture</div></div>
+    <div class="stat open"><div class="num" id="nOpen">–</div><div class="lbl">Open</div></div>
+    <div class="stat contacted"><div class="num" id="nContacted">–</div><div class="lbl">Contacted</div></div>
+  </div>
+
+  <div class="cats-title">Categories tracked</div>
+  <div class="cats">
+    <span><i class="cdot" style="background:#ff8a5c"></i>Selling — Active</span>
+    <span><i class="cdot" style="background:#e0a33a"></i>Selling — Considering</span>
+    <span><i class="cdot" style="background:#e8c94d"></i>Valuation</span>
+    <span><i class="cdot" style="background:#4da3ff"></i>Buying — Active</span>
+    <span><i class="cdot" style="background:#38c2d6"></i>Buying — Researching</span>
+    <span><i class="cdot" style="background:#b07ef2"></i>Upgrade / Downsize</span>
+    <span><i class="cdot" style="background:#e86bd8"></i>Pro Referral</span>
+    <span><i class="cdot" style="background:#3ddba4"></i>Service &amp; Repair</span>
+    <span><i class="cdot" style="background:#6b8afd"></i>Logistics</span>
+    <span><i class="cdot" style="background:#ff7078"></i>Distress Signal</span>
+  </div>
+
+  <div class="voice-note" id="voiceNote" style="display:none"></div>
+
+  <hr>
+
+  <div id="leads"></div>
+
+  <p class="foot">Boat Lead Desk — <span id="footDate"></span> · <span id="syncStatus">syncing…</span></p>
+</div>
+<div id="toast">Draft copied</div>
+
+<script>
+// ================== CONFIG ==================
+const SYNC_URL = "https://jsonblob.com/api/jsonBlob/019fcf93-50f7-77d1-b5ac-83f389353b5a"; // shared contacted-state store
+const SYNC_ENABLED = SYNC_URL.indexOf("http") === 0;
+// ============================================
+
+let LEADS = [];
+// contacted: { leadId: {v: true/false, t: epoch_ms} } — last write wins per lead
+let contacted = {};
+try { contacted = JSON.parse(localStorage.getItem("bld-contacted") || "{}"); } catch(e) {}
+
+function saveLocal(){ try { localStorage.setItem("bld-contacted", JSON.stringify(contacted)); } catch(e){} }
+function isDone(id){ return !!(contacted[id] && contacted[id].v); }
+
+function mergeStates(remote){
+  let changed = false;
+  for (const id in remote){
+    const r = remote[id], l = contacted[id];
+    if (!l || (r.t || 0) > (l.t || 0)) { contacted[id] = r; changed = true; }
+  }
+  return changed;
+}
+
+// The shared store is one doc: { contacted: {...}, leads_ref: {...} }.
+// leads_ref points at gzip+base64 "part" blobs holding the day's leads
+// (jsonblob rejects big PUTs, so leads live outside the main doc).
+// Older versions stored the bare contacted map — normalize all shapes.
+function normalizeDoc(raw){
+  if (raw && typeof raw === "object" && (raw.contacted || raw.leads_ref || raw.leads_doc)) return raw;
+  return { contacted: (raw && typeof raw === "object") ? raw : {} };
+}
+
+let leadsRefV = "";
+async function applyLeadsRef(ref){
+  try {
+    if (!ref || !ref.parts || !ref.parts.length || ref.v === leadsRefV) return;
+    const chunks = await Promise.all(ref.parts.map(u =>
+      fetchT(u + "?t=" + Date.now(), {cache:"no-store"}).then(r => r.json())));
+    chunks.sort((a,b) => (a.part||0) - (b.part||0));
+    const bytes = Uint8Array.from(atob(chunks.map(c => c.data).join("")), c => c.charCodeAt(0));
+    let text;
+    if (ref.gz) {
+      if (typeof DecompressionStream === "undefined") return; // old browser: keep bundled leads
+      text = await new Response(new Blob([bytes]).stream()
+        .pipeThrough(new DecompressionStream("gzip"))).text();
+    } else {
+      text = new TextDecoder().decode(bytes);
+    }
+    leadsRefV = ref.v;
+    applyLeadsDoc(JSON.parse(text));
+  } catch(e){ /* any failure: keep the leads bundled with the site */ }
+}
+
+let leadsStamp = "";
+function applyLeadsDoc(doc){
+  if (!doc || !doc.leads) return;
+  const full = JSON.stringify([doc.date_label, doc.queue_label, doc.updated, doc.leads]);
+  if (full === leadsStamp) return; // unchanged — don't re-render under the user
+  leadsStamp = full;
+  LEADS = doc.leads;
+  document.getElementById("dateLabel").textContent = doc.date_label || "";
+  document.getElementById("footDate").textContent = doc.date_label || "";
+  document.getElementById("queueLabel").textContent = doc.queue_label || "";
+  if (doc.voice_note) {
+    const vn = document.getElementById("voiceNote");
+    vn.innerHTML = doc.voice_note; vn.style.display = "block";
+  }
+  render();
+}
+
+function fetchT(url, opts, ms){
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), ms || 8000);
+  return fetch(url, Object.assign({}, opts, {signal: ctl.signal})).finally(() => clearTimeout(timer));
+}
+
+let syncTimer;
+async function pullShared(){
+  if (!SYNC_ENABLED) { setSync("on this device"); return; }
+  try {
+    const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"});
+    if (res.ok) {
+      const remote = normalizeDoc(await res.json());
+      if (remote.leads_doc) applyLeadsDoc(remote.leads_doc); // legacy inline form
+      applyLeadsRef(remote.leads_ref); // fresh daily leads, if published
+      if (mergeStates(remote.contacted || {})) { saveLocal(); render(); }
+      setSync("shared · up to date");
+    } else if (res.status === 404) {
+      setSync("shared · up to date");
+    } else { setSync("sync issue — using this device"); }
+  } catch(e){ setSync("offline — using this device"); }
+}
+async function pushShared(){
+  if (!SYNC_ENABLED) return;
+  try {
+    // pull-merge-push so we never clobber a teammate's mark — and never drop leads_doc
+    let doc = {};
+    try {
+      const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"});
+      if (res.ok) { doc = normalizeDoc(await res.json()); mergeStates(doc.contacted || {}); }
+    } catch(e){}
+    doc.contacted = contacted;
+    await fetchT(SYNC_URL, {method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(doc)});
+    setSync("shared · up to date");
+  } catch(e){ setSync("offline — will sync later"); }
+}
+function setSync(msg){ const el = document.getElementById("syncStatus"); if (el) el.textContent = msg; }
+
+function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+function render(){
+  const root = document.getElementById("leads");
+  root.innerHTML = "";
+  LEADS.forEach(l => {
+    const done = isDone(l.id);
+    const card = document.createElement("div");
+    card.className = "card " + l.tier + (done ? " done" : "");
+    card.innerHTML = `
+      <div class="row">
+        <span class="pill tier-${l.tier}">${l.tierLabel}</span>
+        <span class="pill cat" style="color:${l.catColor}; border-color:${l.catColor}55; background:${l.catColor}14">${esc(l.cat)}</span>
+        <span class="when">${esc(l.when)}</span>
+      </div>
+      <div class="who"><b>${esc(l.name)}</b> <span class="grp">· ${esc(l.group)}</span></div>
+      <div class="post">${esc(l.post)}</div>
+      <div class="flag"><b>FLAGGED</b>${esc(l.flag)}</div>
+      <div class="dm">
+        <div class="dm-head"><span class="t">SUGGESTED DM</span><span class="vchip">${esc(l.voice)}</span></div>
+        <div class="dm-body">${esc(l.dm)}</div>
+      </div>
+      <div class="btns">
+        <button class="btn primary copy">Copy draft</button>
+        <a class="btn linkish" href="${l.post_url}" target="_blank" rel="noopener">Open profile ↗</a>
+        <button class="btn mark">${done ? "Undo contacted" : "Mark contacted"}</button>
+        <span class="done-tag">✓ CONTACTED</span>
+      </div>`;
+    card.querySelector(".copy").addEventListener("click", () => copyDraft(l.dm));
+    card.querySelector(".mark").addEventListener("click", () => {
+      contacted[l.id] = { v: !isDone(l.id), t: Date.now() };
+      saveLocal(); render(); pushShared();
+    });
+    root.appendChild(card);
+  });
+  updateCounts();
+}
+
+function updateCounts(){
+  const doneN = LEADS.filter(l => isDone(l.id)).length;
+  const openN = LEADS.length - doneN;
+  const openLive = t => LEADS.filter(l => l.tier===t && !isDone(l.id)).length;
+  const set = (id,v) => document.getElementById(id).textContent = v;
+  set("nHot", openLive("hot")); set("nWarm", openLive("warm")); set("nNurture", openLive("nurture"));
+  set("nOpen", openN); set("nContacted", doneN); set("openInline", openN);
+}
+
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+function copyDraft(text){
+  const ok = () => toast("Draft copied — ready to paste");
+  const fail = () => toast("Couldn't copy — long-press the text instead");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(ok, () => legacyCopy(text) ? ok() : fail());
+  } else { legacyCopy(text) ? ok() : fail(); }
+}
+function legacyCopy(text){
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch(e){ return false; }
+}
+
+async function boot(){
+  // Bundled leads render instantly (and offline); pullShared overrides with
+  // the latest daily leads from the shared store when reachable.
+  try {
+    const res = await fetch("leads.json?t=" + Date.now(), {cache:"no-store"});
+    applyLeadsDoc(await res.json());
+  } catch(e){ toast("Couldn't load leads"); }
+  render();
+  pullShared();
+  clearInterval(syncTimer);
+  syncTimer = setInterval(pullShared, 60000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) pullShared(); });
+}
+boot();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>
