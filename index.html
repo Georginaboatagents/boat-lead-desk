@@ -142,7 +142,7 @@
 
 <script>
 // ================== CONFIG ==================
-const SYNC_URL = "https://jsonblob.com/api/jsonBlob/019fcf93-50f7-77d1-b5ac-83f389353b5a"; // shared contacted-state store
+const SYNC_URL = "https://script.google.com/macros/s/AKfycbzm0-aDuq9gCxE_cYfaZFy066vU15nZSrvNG0LDlxyrMVT8Mw7tcJGVezKSwBhjfUN3/exec"; // shared store (Google Apps Script on Georgina's account)
 const SYNC_ENABLED = SYNC_URL.indexOf("http") === 0;
 // ============================================
 
@@ -163,10 +163,11 @@ function mergeStates(remote){
   return changed;
 }
 
-// The shared store is one doc: { contacted: {...}, leads_ref: {...} }.
-// leads_ref points at gzip+base64 "part" blobs holding the day's leads
-// (jsonblob rejects big PUTs, so leads live outside the main doc).
-// Older versions stored the bare contacted map — normalize all shapes.
+// The shared store is one doc: { contacted: {...}, leads_doc: {...} },
+// served by a Google Apps Script on Georgina's account. Reads are open;
+// publishing leads requires a secret the task holds; contacted marks
+// merge server-side one lead at a time.
+// Older store shapes (bare contacted map, leads_ref parts) still normalize.
 function normalizeDoc(raw){
   if (raw && typeof raw === "object" && (raw.contacted || raw.leads_ref || raw.leads_doc)) return raw;
   return { contacted: (raw && typeof raw === "object") ? raw : {} };
@@ -232,17 +233,14 @@ async function pullShared(){
     } else { setSync("sync issue — using this device"); }
   } catch(e){ setSync("offline — using this device"); }
 }
-async function pushShared(){
-  if (!SYNC_ENABLED) return;
+async function pushShared(id){
+  if (!SYNC_ENABLED || !id) return;
   try {
-    // pull-merge-push so we never clobber a teammate's mark — and never drop leads_doc
-    let doc = {};
-    try {
-      const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"});
-      if (res.ok) { doc = normalizeDoc(await res.json()); mergeStates(doc.contacted || {}); }
-    } catch(e){}
-    doc.contacted = contacted;
-    await fetchT(SYNC_URL, {method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(doc)});
+    // The store merges one lead at a time server-side, so we can never
+    // clobber a teammate's mark or touch the leads themselves.
+    const c = contacted[id] || {};
+    await fetchT(SYNC_URL, {method:"POST",
+      body: JSON.stringify({action:"contacted", id:id, v:!!c.v, t:c.t || Date.now()})});
     setSync("shared · up to date");
   } catch(e){ setSync("offline — will sync later"); }
 }
@@ -279,7 +277,7 @@ function render(){
     card.querySelector(".copy").addEventListener("click", () => copyDraft(l.dm));
     card.querySelector(".mark").addEventListener("click", () => {
       contacted[l.id] = { v: !isDone(l.id), t: Date.now() };
-      saveLocal(); render(); pushShared();
+      saveLocal(); render(); pushShared(l.id);
     });
     root.appendChild(card);
   });
