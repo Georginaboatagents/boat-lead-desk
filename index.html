@@ -9,234 +9,197 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Boat Leads">
-<meta name="theme-color" content="#EFEBFF">
+<meta name="theme-color" content="#9478F3">
 <style>
-/* ============ DESIGN SYSTEM ============
-   Spacing: 4 8 12 16 20 24 32 44 60
-   Type:    display clamp(30-40) / section 20 / body 15 / caption 11-12
-   Ink:     --ink (primary) --ink2 (secondary) --ink3 (muted)
-   Accents: violet (brand) · coral gradient (Tier 1) · teal (Tier 2)      */
+/* ============ VERSION 3 DESIGN SYSTEM ============
+   Soft mid-purple canvas (cloned from approved inspiration) ·
+   white floating cards · purple/teal tier cards w/ 3D icon chips ·
+   icon-first, minimal text, generous negative space.
+   Spacing: 4 8 12 16 20 24 32 44 60 · display type ui-rounded     */
 :root{
-  --bg0:#EFEBFF; --bg1:#F8F5FF;
-  --glass:rgba(255,255,255,.76); --glass-hi:rgba(255,255,255,.92); --solid:#FFFFFF;
-  --ink:#221A45; --ink2:#57517D; --ink3:#8D88AC;
-  --line:rgba(108,76,241,.13); --line-soft:rgba(108,76,241,.08);
-  --violet:#6C4CF1; --violet-deep:#5433DB; --violet-soft:#EFEAFE;
-  --t1a:#FF6A3D; --t1b:#FFA245; --t1-ink:#BC3A10; --t1-soft:#FFF0E9;
-  --t2a:#16B7A0; --t2b:#3ED0BB; --t2-ink:#0A7A6B; --t2-soft:#E7F8F4;
-  --danger:#C7304C; --danger-soft:#FCEDF0;
-  --shadow-s:0 2px 10px rgba(84,51,219,.07);
-  --shadow-m:0 10px 32px rgba(84,51,219,.12);
-  --shadow-l:0 18px 50px rgba(84,51,219,.16);
-  --r-s:12px; --r-m:18px; --r-l:26px;
+  --card:#FFFFFF; --ink:#221A45; --ink2:#6B6590; --ink3:#9B96B8;
+  --violet:#6C4CF1; --violet-deep:#5433DB; --violet-soft:#F1EDFE;
+  --p1:#B292FA; --p2:#8258EC;          /* tier 1 */
+  --g1:#5FE3C6; --g2:#2BBFA4;          /* tier 2 */
+  --t1a:#FF7A47; --t1b:#FFA245;        /* alert coral */
+  --danger:#D6486B; --danger-soft:#FDF0F3;
+  --r:26px;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
 body{
-  margin:0; color:var(--ink);
-  background:linear-gradient(160deg,var(--bg0) 0%,var(--bg1) 45%,#F2EEFF 100%);
+  margin:0; color:#fff;
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(80% 30% at 90% 0%, rgba(255,255,255,.2), transparent 60%),
+    radial-gradient(60% 25% at 5% 45%, rgba(255,255,255,.1), transparent 70%),
+    linear-gradient(170deg, #9478F3 0%, #815FEA 48%, #7351E2 100%);
+  background-attachment:fixed;
   min-height:100vh;
-  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  padding:calc(14px + env(safe-area-inset-top)) 16px calc(70px + env(safe-area-inset-bottom));
+  padding:calc(20px + env(safe-area-inset-top)) 22px calc(80px + env(safe-area-inset-bottom));
 }
-.wrap{max-width:760px; margin:0 auto; position:relative; z-index:1;}
+.wrap{max-width:560px; margin:0 auto; position:relative; z-index:1;}
 
-/* ---- ambient blobs ---- */
-.blobs{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
-.blob{position:absolute; border-radius:50%; filter:blur(70px); opacity:.5; will-change:transform;}
-.blob.b1{width:340px;height:340px; background:#CBBCFF; top:-90px; right:-110px;}
-.blob.b2{width:300px;height:300px; background:#FFD8C2; top:34%; left:-140px; opacity:.42;}
-.blob.b3{width:320px;height:320px; background:#BDEDE4; bottom:-120px; right:-90px; opacity:.45;}
+/* ---- decorations ---- */
+.deco{position:absolute; color:rgba(255,255,255,.4); font-weight:300; pointer-events:none; z-index:0;}
+.orb{position:absolute; border-radius:50%; filter:blur(30px); pointer-events:none; z-index:0;}
+.mini{position:absolute; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(60,30,150,.3); pointer-events:none; z-index:0;}
+.mini.m1{width:36px;height:36px; background:linear-gradient(150deg,#FFB68A,#FF8A65); transform:rotate(-8deg);}
+.mini.m2{width:32px;height:32px; background:linear-gradient(150deg,#6FE6CC,#33C4AC); transform:rotate(10deg);}
+.mini.m3{width:30px;height:30px; background:linear-gradient(150deg,#FFD98A,#FFB84D); transform:rotate(-12deg);}
 
 /* ---- scroll progress ---- */
 #progress{position:fixed; top:0; left:0; height:3px; width:0%;
-  background:linear-gradient(90deg,var(--violet),var(--t1a)); z-index:60; border-radius:0 3px 3px 0;}
+  background:linear-gradient(90deg,#5FE3C6,#FFB35C); z-index:60; border-radius:0 3px 3px 0;}
 
 /* ---- header ---- */
-header{display:flex; align-items:center; gap:12px; padding:8px 2px 2px;}
-.logo{width:46px; height:46px; border-radius:14px; flex:0 0 auto;
-  background:linear-gradient(135deg,#8B6CFF,#6C4CF1 55%,#4E2ED9); box-shadow:var(--shadow-m);
-  display:flex; align-items:center; justify-content:center;}
-.logo svg{width:30px; height:30px;}
-h1{font-family:ui-rounded,-apple-system,BlinkMacSystemFont,sans-serif;
-  font-size:clamp(24px,6vw,30px); margin:0; letter-spacing:-.03em; font-weight:800;}
-.meta{color:var(--ink2); font-size:13px; margin-top:1px;}
-.meta .sep{opacity:.4; margin:0 5px;}
-.sync{display:inline-flex; align-items:center; gap:5px;}
-.sync .dot{width:7px; height:7px; border-radius:50%; background:var(--t2a); display:inline-block;}
-.sync.off .dot{background:var(--ink3);}
+header{display:flex; align-items:center; gap:11px; position:relative; z-index:1;}
+.logo{width:40px; height:40px; border-radius:13px; background:rgba(255,255,255,.2); flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.32); display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);}
+h1{font-family:ui-rounded,-apple-system,BlinkMacSystemFont,sans-serif; font-size:20px; font-weight:800;
+  letter-spacing:-.02em; margin:0;}
+.hdr-sub{font-size:11.5px; color:rgba(255,255,255,.68); margin-top:1px; display:flex; align-items:center; gap:5px;}
+.hdr-sub .dot{width:6px;height:6px;border-radius:50%;background:#4FF0CC;display:inline-block; flex:0 0 auto;}
+.hdr-sub.off .dot{background:rgba(255,255,255,.45);}
+.bell{margin-left:auto; width:40px; height:40px; border-radius:13px; background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.32); display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:pointer; color:#fff; flex:0 0 auto;}
+.bell:active{transform:scale(.94);}
 
 /* ---- hero ---- */
-.hero{position:relative; margin-top:16px; border-radius:var(--r-l); overflow:hidden;
-  background:var(--glass); border:1px solid rgba(255,255,255,.85);
-  box-shadow:var(--shadow-m); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);}
-.hero-inner{display:flex; align-items:center; gap:8px; padding:20px 20px 14px;}
-.hero-copy{flex:1 1 auto; min-width:0;}
-.hero-num{font-family:ui-rounded,-apple-system,sans-serif; font-size:clamp(38px,11vw,54px);
-  font-weight:800; letter-spacing:-.04em; line-height:1;
-  background:linear-gradient(120deg,var(--violet-deep),var(--violet) 60%,#8B6CFF);
-  -webkit-background-clip:text; background-clip:text; color:transparent;}
-.hero-lbl{color:var(--ink2); font-weight:600; margin-top:4px;}
-.hero-date{color:var(--ink3); font-size:12.5px; margin-top:8px;}
-.hero-art{flex:0 0 148px; height:118px; position:relative;}
+.hero{display:flex; align-items:center; margin:40px 0 6px; position:relative;}
+.hero-num{font-family:ui-rounded,-apple-system,sans-serif; font-size:clamp(64px,20vw,88px); font-weight:800;
+  line-height:.9; letter-spacing:-.05em; text-shadow:0 10px 36px rgba(50,20,140,.3);}
+.hero-lbl{font-size:15px; color:rgba(255,255,255,.85); font-weight:600; margin-top:10px;}
+.hero-date{font-size:11.5px; color:rgba(255,255,255,.55); margin-top:5px;}
+.hero-art{margin-left:auto; width:min(180px,46vw); height:150px; position:relative; flex:0 0 auto;}
 .hero-art svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
-.boat-float{animation:bob 5s ease-in-out infinite;}
+.boat-float{animation:bob 5s ease-in-out infinite; transform-origin:50% 60%;}
 .wave-drift{animation:drift 7s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(-1.6deg)}}
-@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(-8px)}}
+@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(-7px)}}
 @media (prefers-reduced-motion:reduce){ .boat-float,.wave-drift{animation:none;} }
-.bell-row{padding:0 20px 16px;}
-.bell{display:inline-flex; align-items:center; gap:8px; font:inherit; font-size:13px; font-weight:700;
-  color:var(--violet-deep); background:var(--violet-soft); border:1px solid var(--line);
-  border-radius:20px; padding:8px 16px; cursor:pointer;}
-.bell:active{transform:scale(.96);}
-.bell.on{color:var(--t2-ink); background:var(--t2-soft); border-color:rgba(22,183,160,.25); cursor:default;}
 
-/* ---- tier stat tiles ---- */
-.tiles{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;}
-.tile{position:relative; border-radius:var(--r-m); padding:18px 18px 15px; overflow:hidden;
-  border:1px solid rgba(255,255,255,.85); background:var(--glass);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:var(--shadow-s); cursor:pointer; transition:transform .18s ease, box-shadow .18s ease;
-  text-align:left; font:inherit; color:var(--ink);}
+/* ---- tier cards ---- */
+.tiles{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:40px;}
+.tile{border-radius:var(--r); padding:22px 16px 20px; color:#fff; position:relative; overflow:hidden;
+  text-align:center; border:none; font:inherit; cursor:pointer; transition:transform .18s ease;}
 .tile:active{transform:scale(.97);}
-.tile .big{font-family:ui-rounded,-apple-system,sans-serif; font-size:40px; font-weight:800;
-  letter-spacing:-.03em; line-height:1;}
-.tile .lbl{font-size:11px; font-weight:800; letter-spacing:.12em; margin-top:6px; color:var(--ink2);}
-.tile .sub{font-size:12px; color:var(--ink3); margin-top:2px;}
-.tile::before{content:""; position:absolute; top:0; left:0; right:0; height:4px;}
-.tile.t1::before{background:linear-gradient(90deg,var(--t1a),var(--t1b));}
-.tile.t2::before{background:linear-gradient(90deg,var(--t2a),var(--t2b));}
-.tile.t1 .big{color:var(--t1-ink);}
-.tile.t2 .big{color:var(--t2-ink);}
-.tile .spark{position:absolute; right:-16px; bottom:-18px; width:88px; height:88px; opacity:.16;}
+.tile.t1{background:linear-gradient(160deg,var(--p1),var(--p2)); box-shadow:0 20px 44px rgba(85,45,200,.42);}
+.tile.t2{background:linear-gradient(160deg,var(--g1),var(--g2)); box-shadow:0 20px 44px rgba(18,150,125,.38);}
+.tile .ic{width:96px; height:96px; border-radius:30px; display:flex; align-items:center;
+  justify-content:center; margin:0 auto 16px; position:relative;
+  box-shadow:0 18px 34px rgba(40,15,110,.34), inset 0 3px 5px rgba(255,255,255,.75);}
+.tile.t1 .ic{background:linear-gradient(160deg,#FFD9A4 0%,#FFB466 55%,#FF9847 100%);}
+.tile.t2 .ic{background:linear-gradient(160deg,#F3EDFF 0%,#DFD2FF 55%,#C7B2FF 100%);}
+.tile .n{font-family:ui-rounded,-apple-system,sans-serif; font-size:46px; font-weight:800; line-height:1;
+  letter-spacing:-.04em;}
+.tile .l{font-size:10.5px; font-weight:800; letter-spacing:.16em; opacity:.9; margin-top:7px;}
+.tile .shine{position:absolute; top:-30px; right:-30px; width:110px; height:110px; border-radius:50%;
+  background:rgba(255,255,255,.16); filter:blur(2px);}
 
 /* ---- voice note ---- */
-.voice-note{margin-top:16px; border-radius:var(--r-m); padding:13px 16px;
-  background:linear-gradient(120deg,#FFF7EC,#FFF1E2); border:1px solid #F4DFC0;
-  color:#7A5320; font-size:13.5px; box-shadow:var(--shadow-s);}
-.voice-note b{color:#8F5E14;}
+.voice-note{margin-top:24px; border-radius:18px; padding:13px 16px;
+  background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  color:rgba(255,255,255,.92); font-size:13px; line-height:1.5;}
+.voice-note b{color:#fff;}
 
-/* ---- sections ---- */
-.section{margin-top:26px;}
-.sec-head{border-radius:var(--r-m); padding:14px 18px; display:flex; align-items:center; gap:12px;
-  box-shadow:var(--shadow-s); border:1px solid rgba(255,255,255,.8);}
-.sec-head .ic{width:34px; height:34px; border-radius:10px; display:flex; align-items:center;
-  justify-content:center; flex:0 0 auto;}
-.sec-head h2{font-family:ui-rounded,-apple-system,sans-serif; font-size:19px; margin:0;
-  letter-spacing:-.02em; font-weight:800;}
-.sec-head .desc{font-size:12px; margin-top:1px;}
-.sec-head .count{margin-left:auto; font-family:ui-rounded,-apple-system,sans-serif; font-size:22px; font-weight:800;}
-.sec-head.t1{background:linear-gradient(115deg,#FF7A47,#FF9E45 70%,#FFB65C); color:#fff;}
-.sec-head.t1 .desc{color:rgba(255,255,255,.85);}
-.sec-head.t1 .ic{background:rgba(255,255,255,.22);}
-.sec-head.t2{background:var(--glass); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); color:var(--ink);}
-.sec-head.t2 .desc{color:var(--ink3);}
-.sec-head.t2 .ic{background:var(--t2-soft);}
-.sec-head.t2 .count{color:var(--t2-ink);}
+/* ---- section heads ---- */
+.sec{display:flex; align-items:center; gap:11px; margin:48px 2px 6px;}
+.sec .ic{width:34px; height:34px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.sec.t1 .ic{background:linear-gradient(160deg,var(--p1),var(--p2)); box-shadow:0 8px 18px rgba(85,45,200,.45);}
+.sec.t2 .ic{background:linear-gradient(160deg,var(--g1),var(--g2)); box-shadow:0 8px 18px rgba(18,150,125,.4);}
+.sec h2{font-family:ui-rounded,-apple-system,sans-serif; font-size:21px; font-weight:800; margin:0; letter-spacing:-.02em;}
+.sec .n{margin-left:auto; font-family:ui-rounded,-apple-system,sans-serif; font-size:21px; font-weight:800;
+  color:rgba(255,255,255,.6);}
 
 /* ---- lead cards ---- */
-.card{background:var(--glass-hi); border:1px solid rgba(255,255,255,.9); border-radius:var(--r-l);
-  padding:18px 18px 16px; margin-top:14px; box-shadow:var(--shadow-m); position:relative;
-  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+.card{background:var(--card); color:var(--ink); border-radius:var(--r); padding:22px 20px 18px;
+  margin-top:18px; box-shadow:0 22px 50px rgba(58,28,150,.3); position:relative;
   transition:transform .3s ease, opacity .3s ease;}
 .card.leaving{opacity:0; transform:translateX(40px) scale(.96);}
 .reveal{opacity:0; transform:translateY(18px);}
 .reveal.in{opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease;}
 @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none;} .card{transition:none;} }
-.chips{display:flex; align-items:center; gap:7px; flex-wrap:wrap;}
-.chip{font-size:11.5px; font-weight:800; letter-spacing:.02em; border-radius:8px; padding:4px 10px;}
-.chip.tier1{background:linear-gradient(115deg,var(--t1a),var(--t1b)); color:#fff; letter-spacing:.06em;}
-.chip.tier2{background:linear-gradient(115deg,var(--t2a),var(--t2b)); color:#fff; letter-spacing:.06em;}
-.chip.val{background:var(--violet-soft); color:var(--violet-deep); font-weight:700;}
-.when{margin-left:auto; color:var(--ink3); font-size:12.5px; flex:0 0 auto;}
-.who{margin:11px 0 2px; font-size:16.5px;}
-.who b{font-weight:800; letter-spacing:-.01em;}
-.who .grp{color:var(--ink2); font-weight:500; font-size:13.5px;}
-.post{background:linear-gradient(160deg,#F5F2FF,#F1EDFF); border:1px solid var(--line-soft);
-  border-radius:var(--r-s); padding:12px 14px; font-style:italic; color:#4A4470;
-  margin:10px 0; white-space:pre-line; font-size:14px;}
-.flag{font-size:13.5px; color:var(--ink2); margin:10px 2px;}
-.flag b{color:var(--violet); font-size:11px; letter-spacing:.1em; font-weight:800; margin-right:6px;}
-.dm{background:var(--solid); border:1px solid var(--line); border-radius:var(--r-s); margin:12px 0 14px;
-  box-shadow:var(--shadow-s); overflow:hidden;}
-.dm-head{display:flex; align-items:center; justify-content:space-between; padding:9px 14px;
-  background:linear-gradient(120deg,#FAF8FF,#F4F0FF); border-bottom:1px solid var(--line-soft);}
-.dm-head .t{font-size:10.5px; letter-spacing:.12em; color:var(--ink3); font-weight:800;}
-.vchip{font-size:11.5px; font-weight:800; color:var(--t2-ink); background:var(--t2-soft);
-  border-radius:20px; padding:3px 11px;}
-.dm-body{padding:13px 15px; color:#332C5C; white-space:pre-line; font-size:14.5px;}
+.row1{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+.catic{width:38px; height:38px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+  flex:0 0 auto; color:#fff;}
+.val{font-size:12px; font-weight:800; color:var(--violet); background:var(--violet-soft);
+  border-radius:9px; padding:5px 11px;}
+.when{margin-left:auto; font-size:12px; color:var(--ink3); font-weight:600; flex:0 0 auto;}
+.who{margin:16px 0 2px; font-size:19px; font-weight:800; letter-spacing:-.02em;}
+.grp{font-size:12.5px; color:var(--ink3); font-weight:600;}
+.post{margin:14px 0 0; font-size:13.5px; font-style:italic; color:#5A5480; line-height:1.5; white-space:pre-line;}
+.post.clamped{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  white-space:normal;}
+.more{font:inherit; font-size:12px; font-weight:800; color:var(--violet); margin-top:5px;
+  background:none; border:none; padding:4px 0; cursor:pointer; display:block;}
+.dm{margin-top:16px; background:#F8F6FF; border-radius:16px; padding:13px 15px;}
+.dm-head{display:flex; align-items:center; margin-bottom:7px;}
+.dm-head .t{font-size:9.5px; font-weight:800; letter-spacing:.14em; color:var(--ink3);}
+.dm-head .v{margin-left:auto; font-size:10.5px; font-weight:800; color:#12A08A; background:#E2F7F2;
+  border-radius:12px; padding:2px 9px;}
+.dm-body{font-size:13.5px; color:#3A3363; white-space:pre-line; line-height:1.5;}
 
 /* ---- buttons ---- */
-.btns{display:flex; gap:9px; flex-wrap:wrap; align-items:center;}
-.btn{font:inherit; font-size:13.5px; font-weight:700; border-radius:12px; padding:10px 15px;
-  cursor:pointer; border:1px solid var(--line); background:var(--solid); color:var(--ink);
-  box-shadow:var(--shadow-s); transition:transform .15s ease; text-decoration:none; display:inline-flex;
-  align-items:center; gap:6px; position:relative; overflow:hidden;}
+.btns{display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; align-items:center;}
+.btn{display:inline-flex; align-items:center; gap:7px; border-radius:14px; padding:11px 16px;
+  font:inherit; font-size:13px; font-weight:800; border:none; cursor:pointer; transition:transform .15s ease;
+  text-decoration:none;}
 .btn:active{transform:scale(.95);}
-.btn.primary{background:linear-gradient(120deg,var(--violet),var(--violet-deep)); border-color:transparent;
-  color:#fff; box-shadow:0 6px 18px rgba(84,51,219,.32);}
-.btn.primary::after{content:""; position:absolute; top:0; left:-80%; width:50%; height:100%;
+.btn:focus-visible{outline:3px solid rgba(108,76,241,.4); outline-offset:2px;}
+.btn.copy{background:linear-gradient(120deg,#8258EC,#6C4CF1); color:#fff; position:relative; overflow:hidden;
+  box-shadow:0 10px 22px rgba(108,76,241,.35);}
+.btn.copy::after{content:""; position:absolute; top:0; left:-80%; width:50%; height:100%;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
   transform:skewX(-20deg); animation:shine 4.5s ease-in-out infinite;}
 @keyframes shine{0%,72%{left:-80%}88%,100%{left:130%}}
-@media (prefers-reduced-motion:reduce){ .btn.primary::after{animation:none; display:none;} }
-.btn.good{color:var(--t2-ink); background:var(--t2-soft); border-color:rgba(22,183,160,.25);}
-.btn.danger{color:var(--danger); background:transparent; border-color:transparent; box-shadow:none;
-  margin-left:auto; padding:10px 10px;}
-.btn.danger:active{background:var(--danger-soft); border-radius:12px;}
-.btn:focus-visible{outline:3px solid rgba(108,76,241,.4); outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){ .btn.copy::after{animation:none; display:none;} }
+.btn.open{background:#FBFAFF; color:var(--ink); border:1.5px solid #ECE8FA;}
+.btn.ok{background:#E2F7F2; color:#0E9782;}
+.btn.del{background:var(--danger-soft); color:var(--danger); margin-left:auto;}
 
 /* ---- empty & skeleton ---- */
-.empty{border-radius:var(--r-m); border:1.5px dashed var(--line); margin-top:14px; padding:26px 18px;
-  text-align:center; color:var(--ink3); font-size:14px; background:rgba(255,255,255,.4);}
-.empty svg{width:54px; height:54px; margin-bottom:8px; opacity:.75;}
-.skel{border-radius:var(--r-l); height:210px; margin-top:14px; border:1px solid rgba(255,255,255,.8);
-  background:linear-gradient(100deg,rgba(255,255,255,.65) 40%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.65) 60%);
+.empty{border-radius:20px; border:1.5px dashed rgba(255,255,255,.4); margin-top:18px; padding:28px 18px;
+  text-align:center; color:rgba(255,255,255,.8); font-size:13.5px; background:rgba(255,255,255,.08);}
+.empty svg{width:52px; height:52px; margin:0 auto 8px; display:block; opacity:.85;}
+.skel{border-radius:var(--r); height:200px; margin-top:18px;
+  background:linear-gradient(100deg,rgba(255,255,255,.16) 40%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.16) 60%);
   background-size:200% 100%; animation:shimmer 1.4s linear infinite;}
 @keyframes shimmer{to{background-position:-200% 0;}}
 @media (prefers-reduced-motion:reduce){ .skel{animation:none;} }
 
 /* ---- handled ---- */
-details.handled{margin-top:28px; border-radius:var(--r-m); background:rgba(255,255,255,.55);
-  border:1px solid rgba(255,255,255,.8); box-shadow:var(--shadow-s); overflow:hidden;}
-details.handled summary{padding:14px 18px; font-weight:800; font-size:14px; color:var(--ink2);
+details.handled{margin-top:34px; border-radius:20px; background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28); overflow:hidden;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);}
+details.handled summary{padding:14px 18px; font-weight:800; font-size:14px; color:rgba(255,255,255,.9);
   cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px;}
 details.handled summary::-webkit-details-marker{display:none;}
-details.handled summary .n{margin-left:auto; background:var(--violet-soft); color:var(--violet-deep);
+details.handled summary .hn{margin-left:auto; background:rgba(255,255,255,.22); color:#fff;
   border-radius:14px; padding:2px 10px; font-size:12px;}
-.hrow{display:flex; align-items:center; gap:10px; padding:11px 18px; border-top:1px solid var(--line-soft);
-  font-size:13.5px;}
+.hrow{display:flex; align-items:center; gap:10px; padding:11px 18px;
+  border-top:1px solid rgba(255,255,255,.16); font-size:13.5px; color:rgba(255,255,255,.92);}
 .hrow .nm{font-weight:700;}
-.hrow .st{font-size:11px; font-weight:800; letter-spacing:.06em; border-radius:6px; padding:2px 8px;}
-.hrow .st.c{color:var(--t2-ink); background:var(--t2-soft);}
+.hrow .st{font-size:10.5px; font-weight:800; letter-spacing:.06em; border-radius:6px; padding:2px 8px;}
+.hrow .st.c{color:#0E9782; background:#E2F7F2;}
 .hrow .st.d{color:var(--danger); background:var(--danger-soft);}
-.hrow .undo{margin-left:auto; font:inherit; font-size:12.5px; font-weight:700; color:var(--violet-deep);
-  background:none; border:none; cursor:pointer; padding:6px 8px;}
-
-/* ---- legend ---- */
-details.legend{margin-top:14px; border-radius:var(--r-m); background:rgba(255,255,255,.5);
-  border:1px solid rgba(255,255,255,.75); overflow:hidden;}
-details.legend summary{padding:12px 18px; font-weight:700; font-size:13px; color:var(--ink2);
-  cursor:pointer; list-style:none;}
-details.legend summary::-webkit-details-marker{display:none;}
-.legend-body{padding:2px 18px 16px; font-size:13px; color:var(--ink2);}
-.legend-body p{margin:8px 0;}
-.legend-body .tt{font-weight:800;}
-.legend-body .tt.o{color:var(--t1-ink);} .legend-body .tt.g{color:var(--t2-ink);}
-.cats{display:flex; flex-wrap:wrap; gap:7px 14px; font-size:12.5px; color:var(--ink2); margin-top:10px;}
-.cats span{white-space:nowrap;}
-.cdot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:1px;}
+.hrow .undo{margin-left:auto; font:inherit; font-size:12.5px; font-weight:800; color:#fff;
+  background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:10px;
+  cursor:pointer; padding:6px 12px;}
 
 /* ---- alert banner ---- */
 #alert{position:fixed; top:calc(10px + env(safe-area-inset-top)); left:12px; right:12px; z-index:70;
   transform:translateY(-130%); transition:transform .4s cubic-bezier(.2,.9,.3,1.1);
-  border-radius:var(--r-m); padding:14px 16px; display:flex; align-items:center; gap:12px;
-  background:linear-gradient(115deg,#FF7A47,#FF9E45); color:#fff; box-shadow:0 14px 40px rgba(255,106,61,.45);
-  border:1px solid rgba(255,255,255,.4);}
+  border-radius:18px; padding:14px 16px; display:flex; align-items:center; gap:12px;
+  background:linear-gradient(115deg,var(--t1a),var(--t1b)); color:#fff;
+  box-shadow:0 14px 40px rgba(255,106,61,.45); border:1px solid rgba(255,255,255,.4);}
 #alert.show{transform:translateY(0);}
 #alert .a-ic{width:38px; height:38px; border-radius:11px; background:rgba(255,255,255,.24);
   display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
@@ -252,16 +215,16 @@ details.legend summary::-webkit-details-marker{display:none;}
   transform:translateX(-50%) translateY(90px); display:flex; align-items:center; gap:12px;
   background:rgba(34,26,69,.94); color:#F0EDFF; padding:11px 18px; border-radius:26px;
   font-size:14px; font-weight:600; transition:transform .28s ease; z-index:80;
-  box-shadow:0 10px 30px rgba(34,26,69,.35); backdrop-filter:blur(8px);}
+  box-shadow:0 10px 30px rgba(34,26,69,.35); backdrop-filter:blur(8px); max-width:88vw;}
 #toast.show{transform:translateX(-50%) translateY(0);}
 #toast button{font:inherit; font-size:13px; font-weight:800; color:#C9B8FF; background:none;
   border:none; cursor:pointer; padding:2px 2px;}
 
-.foot{text-align:center; color:var(--ink3); font-size:12.5px; margin-top:40px;}
+.foot{text-align:center; margin-top:56px; color:rgba(255,255,255,.45); font-size:11px;}
+svg{display:block;}
 </style>
 </head>
 <body>
-<div class="blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div id="progress" aria-hidden="true"></div>
 
 <div id="alert" role="status">
@@ -274,9 +237,23 @@ details.legend summary::-webkit-details-marker{display:none;}
 </div>
 
 <div class="wrap">
+  <span class="deco" style="top:118px; left:6px; font-size:20px;">+</span>
+  <span class="deco" style="top:64px; right:120px; font-size:14px;">+</span>
+  <span class="deco" style="top:268px; right:6px; font-size:17px;">+</span>
+  <div class="orb" style="top:90px; right:-30px; width:120px; height:120px; background:rgba(255,255,255,.16);"></div>
+  <div class="mini m1" style="top:118px; right:150px;" aria-hidden="true">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="2.4"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="2"/><path d="M12 4v4m0 8v4M4 12h4m8 0h4" stroke="#fff" stroke-width="2"/></svg>
+  </div>
+  <div class="mini m2" style="top:236px; left:-4px;" aria-hidden="true">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm0 4v11m-7-6c0 4 3 6.5 7 6.5s7-2.5 7-6.5M5 13l-2 1.5M19 13l2 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="mini m3" style="top:70px; left:120px;" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.8 5.6H20l-4.7 3.4 1.8 5.6L12 14.2l-5.1 3.4 1.8-5.6L4 8.6h6.2L12 3Z" fill="#fff"/></svg>
+  </div>
+
   <header>
     <div class="logo" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none">
+      <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
         <path d="M18 20v-5c0-1.1.9-2 2-2h6c3 0 5.4 1.6 7 4l2 3H18Z" fill="#fff" opacity=".92"/>
         <path d="M9 23h30c-.8 4.5-4.2 7.5-8.5 8.5H17C13 30.5 10.5 27.5 9 23Z" fill="#fff"/>
         <path d="M6 36c3.5-2.4 7-2.4 10.5 0s7 2.4 10.5 0 7-2.4 10.5 0" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>
@@ -284,93 +261,118 @@ details.legend summary::-webkit-details-marker{display:none;}
     </div>
     <div>
       <h1>Boat Lead Desk</h1>
-      <div class="meta"><span id="queueLabel">—</span><span class="sep">·</span><span class="sync" id="syncWrap"><span class="dot"></span><span id="syncStatus">syncing…</span></span></div>
+      <div class="hdr-sub" id="syncWrap"><span class="dot"></span><span id="queueLabel">—</span>&nbsp;·&nbsp;<span id="syncStatus">syncing…</span></div>
     </div>
+    <button class="bell" id="bellBtn" style="display:none" aria-label="Turn on instant Tier 1 alerts">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6v3.6l-1.6 3.2c-.3.7.1 1.2.9 1.2h13.4c.8 0 1.2-.5.9-1.2L18 12.6V9a6 6 0 0 0-6-6Zm-2 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </header>
 
   <div class="hero reveal">
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <div class="hero-num" id="heroNum">–</div>
-        <div class="hero-lbl">open leads on deck</div>
-        <div class="hero-date" id="dateLabel"></div>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <svg viewBox="0 0 150 120" fill="none">
-          <defs>
-            <linearGradient id="hb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E6DEFF"/></linearGradient>
-            <linearGradient id="hw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3ED0BB"/><stop offset="1" stop-color="#16B7A0"/></linearGradient>
-            <radialGradient id="hs" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC978"/><stop offset="1" stop-color="#FF9E45"/></radialGradient>
-          </defs>
-          <circle cx="118" cy="24" r="14" fill="url(#hs)"/>
-          <g class="boat-float">
-            <path d="M52 52v-9c0-2 1.4-3.4 3.4-3.4H74c6.5 0 11.6 3.2 15 8.6l2.6 3.8H52Z" fill="url(#hb)" stroke="#CFC2F5" stroke-width="1"/>
-            <rect x="57" y="43" width="8" height="6" rx="2" fill="#6C4CF1" opacity=".5"/>
-            <rect x="69" y="43" width="8" height="6" rx="2" fill="#6C4CF1" opacity=".5"/>
-            <path d="M30 56h90c-2.4 12-11 19.4-22.5 21.5h-45C41 75 34 68.5 30 56Z" fill="url(#hb)" stroke="#CFC2F5" stroke-width="1"/>
-            <path d="M30 56h90l-1.8 6H33.5Z" fill="#CBBCFF" opacity=".55"/>
-          </g>
-          <g class="wave-drift">
-            <path d="M4 86c9-6 18-6 27 0s18 6 27 0 18-6 27 0 18 6 27 0 18-6 27 0" stroke="url(#hw)" stroke-width="5" stroke-linecap="round" opacity=".9"/>
-            <path d="M-6 100c9-6 18-6 27 0s18 6 27 0 18-6 27 0 18 6 27 0 18-6 27 0 18 6 27 0" stroke="#16B7A0" stroke-width="4" stroke-linecap="round" opacity=".38"/>
-          </g>
-        </svg>
-      </div>
+    <div>
+      <div class="hero-num" id="heroNum">–</div>
+      <div class="hero-lbl">open leads on deck</div>
+      <div class="hero-date" id="dateLabel"></div>
     </div>
-    <div class="bell-row" id="bellRow" style="display:none">
-      <button class="bell" id="bellBtn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6v3.6l-1.6 3.2c-.3.7.1 1.2.9 1.2h13.4c.8 0 1.2-.5.9-1.2L18 12.6V9a6 6 0 0 0-6-6Zm-2 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span id="bellTxt">Turn on instant Tier 1 alerts</span>
-      </button>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 180 150" fill="none">
+        <defs>
+          <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DDD3FF"/></linearGradient>
+          <linearGradient id="hull2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F0FF"/><stop offset="1" stop-color="#C9BAFF"/></linearGradient>
+          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="rgba(255,255,255,.45)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient>
+          <radialGradient id="sun2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD489"/><stop offset="1" stop-color="#FFAE5C"/></radialGradient>
+          <linearGradient id="wv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FF0D6"/><stop offset="1" stop-color="#2BD4B4"/></linearGradient>
+        </defs>
+        <ellipse cx="95" cy="80" rx="85" ry="60" fill="url(#glow)"/>
+        <circle cx="146" cy="26" r="15" fill="url(#sun2)"/>
+        <circle cx="146" cy="26" r="21" stroke="rgba(255,212,137,.45)" stroke-width="2"/>
+        <g class="boat-float">
+          <path d="M62 62v-8c0-2 1.5-3.5 3.5-3.5H84c5 0 9 2.2 12 6l3 5.5H62Z" fill="url(#hull2)"/>
+          <rect x="67" y="55" width="7" height="5" rx="2" fill="#7351E2" opacity=".55"/>
+          <rect x="78" y="55" width="7" height="5" rx="2" fill="#7351E2" opacity=".55"/>
+          <path d="M48 74v-7c0-2 1.6-3.8 3.8-3.8H104c7 0 13 3 17.5 8.5l2 2.3H48Z" fill="url(#hull)"/>
+          <rect x="56" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
+          <rect x="68" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
+          <rect x="80" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
+          <path d="M34 78h120c-3 13.5-12.5 21.5-25 24H55C42 99.5 38 92 34 78Z" fill="url(#hull)"/>
+          <path d="M34 78h120l-2 6.5H36.5Z" fill="#B7A5FF" opacity=".6"/>
+        </g>
+        <g class="wave-drift">
+          <path d="M12 114c10-6.5 20-6.5 30 0s20 6.5 30 0 20-6.5 30 0 20 6.5 30 0 20-6.5 30 0" stroke="url(#wv)" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M2 130c10-6.5 20-6.5 30 0s20 6.5 30 0 20-6.5 30 0 20 6.5 30 0 20-6.5 30 0" stroke="#2BD4B4" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+        </g>
+        <circle cx="30" cy="40" r="2.5" fill="rgba(255,255,255,.8)"/>
+        <circle cx="164" cy="66" r="2" fill="rgba(255,255,255,.7)"/>
+        <circle cx="52" cy="22" r="1.8" fill="rgba(255,255,255,.6)"/>
+      </svg>
     </div>
   </div>
 
   <div class="tiles reveal">
     <button class="tile t1" id="tileT1" aria-label="Jump to Tier 1">
-      <div class="big" id="nT1">–</div>
-      <div class="lbl">TIER 1 · PRIORITY</div>
-      <div class="sub">$250k+ buy / sell · new boats</div>
-      <svg class="spark" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 6 8.5 9 10 12c-2-.5-3-2-3.5-3.5C4.5 11 4 14 6 17c1.6 2.4 4 3.5 6 3.5s4.4-1.1 6-3.5c2.2-3.3 1-7.5-2-10-.2 1.8-1 3-2.2 3.7C14.5 8 14 4.5 12 2Z" fill="#BC3A10"/></svg>
+      <div class="shine"></div>
+      <div class="ic">
+        <svg width="76" height="76" viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="b3a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E4DBFF"/></linearGradient>
+            <linearGradient id="b3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8F6BF2"/><stop offset="1" stop-color="#5C33D6"/></linearGradient>
+          </defs>
+          <ellipse cx="24" cy="40.5" rx="16" ry="3.4" fill="#A64E12" opacity=".4"/>
+          <path d="M16.5 21v-5c0-1.3 1-2.3 2.3-2.3h7.6c3.3 0 6 1.6 7.9 4.2l2.2 3.1H16.5Z" fill="url(#b3a)" stroke="#B9A2F5" stroke-width="1.2"/>
+          <rect x="19.5" y="16" width="5" height="3.8" rx="1.5" fill="url(#b3b)"/>
+          <rect x="27" y="16" width="5" height="3.8" rx="1.5" fill="url(#b3b)"/>
+          <path d="M7.5 23.5h34c-1.4 7-6.1 11.3-12.7 12.7H17c-6.4-1.5-7.9-6-9.5-12.7Z" fill="url(#b3a)" stroke="#B9A2F5" stroke-width="1.2"/>
+          <path d="M7.5 23.5h34l-1.1 3.6H8.6Z" fill="url(#b3b)" opacity=".65"/>
+          <path d="M11 30.5c5.5 1 20.5 1 26-.2" stroke="#CDBBF7" stroke-width="1.4" stroke-linecap="round" opacity=".9"/>
+          <circle cx="13.5" cy="26" r="1.2" fill="#fff" opacity=".9"/>
+          <path d="M14 12.5c2-2.6 4.8-4 8-4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="n" id="nT1">–</div>
+      <div class="l">TIER 1</div>
     </button>
     <button class="tile t2" id="tileT2" aria-label="Jump to Tier 2">
-      <div class="big" id="nT2">–</div>
-      <div class="lbl">TIER 2 · WORTH A LOOK</div>
-      <div class="sub">service · toys · transport · crew</div>
-      <svg class="spark" viewBox="0 0 24 24" fill="none"><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0 3.5-1.4 3-1M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="#0A7A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="shine"></div>
+      <div class="ic">
+        <svg width="70" height="70" viewBox="0 0 48 48" fill="none">
+          <defs>
+            <linearGradient id="r3a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9A72"/><stop offset="1" stop-color="#F0663C"/></linearGradient>
+            <linearGradient id="r3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E8E0FA"/></linearGradient>
+          </defs>
+          <ellipse cx="24" cy="41" rx="15" ry="3.4" fill="#5B3BB0" opacity=".3"/>
+          <circle cx="24" cy="25.5" r="16" fill="#C4592F" opacity=".45"/>
+          <circle cx="24" cy="24" r="16" fill="url(#r3b)"/>
+          <path d="M24 8a16 16 0 0 1 11.3 4.7L28.6 19a7 7 0 0 0-9.2 0l-6.7-6.3A16 16 0 0 1 24 8Z" fill="url(#r3a)"/>
+          <path d="M24 40a16 16 0 0 1-11.3-4.7l6.7-6.3a7 7 0 0 0 9.2 0l6.7 6.3A16 16 0 0 1 24 40Z" fill="url(#r3a)"/>
+          <circle cx="24" cy="24" r="16" stroke="#D9CDF5" stroke-width="1.6"/>
+          <circle cx="24" cy="24" r="7" fill="#DFD2FF"/>
+          <circle cx="24" cy="24" r="7" stroke="#B9A4F2" stroke-width="1.4"/>
+          <path d="M11 15c3-4.4 7.8-7 13-7 5.4 0 10 2.5 13 6.6" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="n" id="nT2">–</div>
+      <div class="l">TIER 2</div>
     </button>
   </div>
 
   <div class="voice-note reveal" id="voiceNote" style="display:none"></div>
 
-  <details class="legend reveal">
-    <summary>How posts are tiered</summary>
-    <div class="legend-body">
-      <p><span class="tt o">Tier 1 — Priority.</span> Anyone buying or selling a boat worth over $250k (we estimate the boat's market value from the make and model when the post doesn't say), plus anything involving a new boat — recent purchases or new-boat inquiries.</p>
-      <p><span class="tt g">Tier 2 — Worth a look.</span> Everything else with an angle: service &amp; repair on boats worth $300k+, yacht toys (Seabobs, wave runners, inflatables, tenders), boat transport by land or water, captain &amp; crew needed, valuations, upgrades, referrals.</p>
-      <div class="cats" id="catLegend"></div>
-    </div>
-  </details>
-
-  <div class="section" id="secT1">
-    <div class="sec-head t1 reveal">
-      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 6 8.5 9 10 12c-2-.5-3-2-3.5-3.5C4.5 11 4 14 6 17c1.6 2.4 4 3.5 6 3.5s4.4-1.1 6-3.5c2.2-3.3 1-7.5-2-10-.2 1.8-1 3-2.2 3.7C14.5 8 14 4.5 12 2Z" fill="#fff"/></svg></div>
-      <div><h2>Tier 1 · Priority</h2><div class="desc">$250k+ buyers &amp; sellers · new boats</div></div>
-      <div class="count" id="cT1">–</div>
-    </div>
-    <div id="leadsT1"><div class="skel"></div></div>
+  <div class="sec t1" id="secT1">
+    <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 6 8.5 9 10 12c-2-.5-3-2-3.5-3.5C4.5 11 4 14 6 17c1.6 2.4 4 3.5 6 3.5s4.4-1.1 6-3.5c2.2-3.3 1-7.5-2-10-.2 1.8-1 3-2.2 3.7C14.5 8 14 4.5 12 2Z" fill="#fff"/></svg></div>
+    <h2>Tier 1</h2>
+    <div class="n" id="cT1">–</div>
   </div>
+  <div id="leadsT1"><div class="skel"></div></div>
 
-  <div class="section" id="secT2">
-    <div class="sec-head t2 reveal">
-      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="#0A7A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><h2>Tier 2 · Worth a look</h2><div class="desc">service · toys · transport · crew · everything else</div></div>
-      <div class="count" id="cT2">–</div>
-    </div>
-    <div id="leadsT2"><div class="skel"></div></div>
+  <div class="sec t2" id="secT2">
+    <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2>Tier 2</h2>
+    <div class="n" id="cT2">–</div>
   </div>
+  <div id="leadsT2"><div class="skel"></div></div>
 
   <details class="handled" id="handledWrap" style="display:none">
-    <summary><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="#57517D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Recently handled <span class="n" id="handledN">0</span></summary>
+    <summary><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="rgba(255,255,255,.9)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Recently handled <span class="hn" id="handledN">0</span></summary>
     <div id="handledList"></div>
   </details>
 
@@ -404,16 +406,43 @@ function isDone(id){ return !!(contacted[id] && contacted[id].v); }
 function isDeleted(id){ return !!(deleted[id] && deleted[id].v); }
 function isHandled(id){ return isDone(id) || isDeleted(id); }
 
-// Category colors tuned for the light surface (old store data carries
-// dark-theme hexes; we override by category name and fall back gracefully).
-const CAT_COLORS = {
-  "Selling — Active":"#C63A11", "Selling — Considering":"#A16207", "Valuation":"#4D7C0F",
-  "Buying — Active":"#1D4ED8", "Buying — Researching":"#0891B2", "Upgrade / Downsize":"#7C3AED",
-  "Pro Referral":"#DB2777", "Service & Repair":"#059669", "Logistics":"#4F46E5",
-  "Distress Signal":"#BE123C", "New Boat":"#BC3A10", "Yacht Toys":"#A21CAF",
-  "Transport":"#4F46E5", "Captain & Crew":"#0369A1"
+// ---- category icons: gradient squircle + white glyph (icon-first design) ----
+const IC = {
+  search:  '<circle cx="10" cy="10" r="6" stroke="#fff" stroke-width="2.2"/><path d="M14.5 14.5 20 20" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>',
+  compass: '<circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="2"/><path d="m15 9-1.8 4.2L9 15l1.8-4.2L15 9Z" fill="#fff"/>',
+  tag:     '<path d="M4 4h7l9 9-7 7-9-9V4Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.6" fill="#fff"/>',
+  scales:  '<path d="M12 4v16m-7 0h14M12 6l-5.5 2M12 6l5.5 2M4 14l2.5-6L9 14a3 3 0 0 1-5 0Zm11 0 2.5-6 2.5 6a3 3 0 0 1-5 0Z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  updown:  '<path d="M8 20V8m0 0L4.5 11.5M8 8l3.5 3.5M16 4v12m0 0 3.5-3.5M16 16l-3.5-3.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  refer:   '<circle cx="10" cy="8.5" r="3.5" stroke="#fff" stroke-width="2"/><path d="M4 20c.8-3.4 3.2-5 6-5s5.2 1.6 6 5M18 7v6m3-3h-6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
+  wrench:  '<path d="M14.5 6.5a4 4 0 0 0-5.4 5L4 16.6V20h3.4l5.1-5.1a4 4 0 0 0 5-5.4l-2.8 2.8-2.4-.6-.6-2.4 2.8-2.8Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>',
+  box:     '<path d="M4 8l8-4 8 4v8l-8 4-8-4V8Zm8 4 8-4m-8 4L4 8m8 4v8" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>',
+  truck:   '<path d="M2 6h11v10H2V6Zm11 3h4.5L21 12.8V16h-8" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><circle cx="6.5" cy="17.5" r="1.9" fill="#fff"/><circle cx="16.5" cy="17.5" r="1.9" fill="#fff"/>',
+  ring:    '<circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="2.2"/><circle cx="12" cy="12" r="3.4" stroke="#fff" stroke-width="2"/><path d="M12 3.5v5m0 7v5M3.5 12h5m7 0h5" stroke="#fff" stroke-width="2"/>',
+  sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" fill="#fff"/><path d="M18.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6Z" fill="#fff" opacity=".85"/>',
+  jetski:  '<path d="M7 8.5 10.5 6l2 2.5 3 1L18 12H9l-2-3.5Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M3 15h18c-1.2 2.4-3.4 3.6-6 4H8c-2.6-.4-4-1.8-5-4Z" fill="#fff"/>',
+  helm:    '<circle cx="12" cy="12" r="6" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="1.8" fill="#fff"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M6 6l2 2m8 8 2 2M18 6l-2 2M8 16l-2 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
+  boat:    '<path d="M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4M3 19c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
 };
-function catColor(l){ return CAT_COLORS[(l.cat||"").replace(/\s*[—-]\s*/," — ")] || CAT_COLORS[l.cat] || "#57517D"; }
+const CAT_META = {
+  "Buying — Active":       {g:["#7FA5FF","#4E71E8"], i:"search"},
+  "Buying — Researching":  {g:["#5BC9E8","#2596BE"], i:"compass"},
+  "Selling — Active":      {g:["#FFA25C","#F0662F"], i:"tag"},
+  "Selling — Considering": {g:["#F5C862","#D89A1E"], i:"tag"},
+  "Valuation":             {g:["#B8D46A","#7FA33A"], i:"scales"},
+  "Upgrade / Downsize":    {g:["#B78CF7","#8B54E8"], i:"updown"},
+  "Pro Referral":          {g:["#F78CC8","#E0479B"], i:"refer"},
+  "Service & Repair":      {g:["#5FE3C6","#2BBFA4"], i:"wrench"},
+  "Logistics":             {g:["#8C9BF7","#5468E8"], i:"box"},
+  "Transport":             {g:["#8C9BF7","#5468E8"], i:"truck"},
+  "Distress Signal":       {g:["#FF8A80","#E8483C"], i:"ring"},
+  "New Boat":              {g:["#FFB46B","#FF8A3C"], i:"sparkle"},
+  "Yacht Toys":            {g:["#E08CF7","#B44FE0"], i:"jetski"},
+  "Captain & Crew":        {g:["#6BB8F7","#2E86D4"], i:"helm"}
+};
+function catMeta(l){
+  const key = (l.cat || "").replace(/\s*[—-]\s*/, " — ");
+  return CAT_META[key] || CAT_META[l.cat] || {g:["#A99BF7","#7B5FE8"], i:"boat"};
+}
 
 // Legacy tiers map into the two-tier system so old store docs still render.
 function leadTier(l){
@@ -432,8 +461,8 @@ function mergeMap(local, remote){
 
 // The shared store is one doc: { contacted: {...}, deleted: {...}, leads_doc: {...} },
 // served by a Google Apps Script on Georgina's account. Reads are open;
-// publishing leads requires a secret the task holds; contacted/deleted marks
-// merge server-side one lead at a time. Older store shapes still normalize.
+// publishing leads requires a secret the hourly task holds; contacted/deleted
+// marks merge server-side one lead at a time. Older store shapes still normalize.
 function normalizeDoc(raw){
   if (raw && typeof raw === "object" && (raw.contacted || raw.deleted || raw.leads_ref || raw.leads_doc)) return raw;
   return { contacted: (raw && typeof raw === "object") ? raw : {} };
@@ -568,38 +597,49 @@ function watchReveals(root){
   });
 }
 
+const SVGP = 'width="19" height="19" viewBox="0 0 24 24" fill="none"';
 function leadCard(l){
-  const col = catColor(l);
+  const m = catMeta(l);
   const card = document.createElement("div");
   card.className = "card reveal";
   card.id = "lead-" + l.id;
-  const tier = leadTier(l);
+  const longPost = (l.post || "").length > 160;
   card.innerHTML = `
-    <div class="chips">
-      <span class="chip ${tier}">${tier === "tier1" ? "TIER 1" : "TIER 2"}</span>
-      <span class="chip" style="color:${col}; background:${col}14; border:1px solid ${col}33">${esc(l.cat)}</span>
-      ${l.est_value ? `<span class="chip val">${esc(l.est_value)}</span>` : ""}
+    <div class="row1">
+      <div class="catic" style="background:linear-gradient(150deg,${m.g[0]},${m.g[1]}); box-shadow:0 8px 18px ${m.g[1]}55" title="${esc(l.cat)}" aria-label="${esc(l.cat)}">
+        <svg ${SVGP}>${IC[m.i]}</svg>
+      </div>
+      ${l.est_value ? `<span class="val">${esc(l.est_value)}</span>` : ""}
       <span class="when">${esc(l.when)}</span>
     </div>
-    <div class="who"><b>${esc(l.name)}</b> <span class="grp">· ${esc(l.group)}</span></div>
-    <div class="post">${esc(l.post)}</div>
-    <div class="flag"><b>FLAGGED</b>${esc(l.flag)}</div>
+    <div class="who">${esc(l.name)}</div>
+    <div class="grp">${esc(l.group)}</div>
+    <p class="post${longPost ? " clamped" : ""}">${esc(l.post)}</p>
+    ${longPost ? `<button class="more">Read full post</button>` : ""}
     <div class="dm">
-      <div class="dm-head"><span class="t">SUGGESTED DM</span><span class="vchip">${esc(l.voice)}</span></div>
+      <div class="dm-head"><span class="t">SUGGESTED DM</span><span class="v">${esc(l.voice)}</span></div>
       <div class="dm-body">${esc(l.dm)}</div>
     </div>
     <div class="btns">
-      <button class="btn primary copy">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="3" stroke="#fff" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="#fff" stroke-width="2"/></svg>
+      <button class="btn copy">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="3" stroke="#fff" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="#fff" stroke-width="2"/></svg>
         Copy draft</button>
-      <a class="btn" href="${l.post_url}" target="_blank" rel="noopener">Open profile ↗</a>
-      <button class="btn good mark">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a class="btn open" href="${l.post_url}" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14 5h5v5M19 5l-8 8M9 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="#6C4CF1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Open profile</a>
+      <button class="btn ok mark">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Contacted</button>
-      <button class="btn danger del" aria-label="Delete post">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13a1 1 0 0 0 1 .9h8a1 1 0 0 0 1-.9L18 7M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <button class="btn del">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13a1 1 0 0 0 1 .9h8a1 1 0 0 0 1-.9L18 7M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Delete</button>
     </div>`;
+  const more = card.querySelector(".more");
+  if (more) more.addEventListener("click", () => {
+    const p = card.querySelector(".post");
+    const open = p.classList.toggle("clamped");
+    more.textContent = open ? "Read full post" : "Show less";
+  });
   card.querySelector(".copy").addEventListener("click", () => copyDraft(l.dm));
   card.querySelector(".mark").addEventListener("click", () => settle(l.id, "contacted", card));
   card.querySelector(".del").addEventListener("click",  () => settle(l.id, "deleted", card));
@@ -624,10 +664,10 @@ function emptyBlock(msg){
   const d = document.createElement("div");
   d.className = "empty reveal";
   d.innerHTML = `<svg viewBox="0 0 64 64" fill="none">
-    <path d="M14 34h36c-2 8-8 12.5-15 14H27c-7-1.5-11-6-13-14Z" fill="#CBBCFF"/>
-    <path d="M26 34v-7c0-1.4 1-2.4 2.4-2.4H38c4 0 7.2 2 9.4 5.4L49 34" stroke="#8D88AC" stroke-width="2"/>
-    <path d="M8 52c4-2.8 8-2.8 12 0s8 2.8 12 0 8-2.8 12 0 8 2.8 12 0" stroke="#16B7A0" stroke-width="2.6" stroke-linecap="round"/>
-  </svg><br>${msg}`;
+    <path d="M14 34h36c-2 8-8 12.5-15 14H27c-7-1.5-11-6-13-14Z" fill="rgba(255,255,255,.85)"/>
+    <path d="M26 34v-7c0-1.4 1-2.4 2.4-2.4H38c4 0 7.2 2 9.4 5.4L49 34" stroke="rgba(255,255,255,.8)" stroke-width="2"/>
+    <path d="M8 52c4-2.8 8-2.8 12 0s8 2.8 12 0 8-2.8 12 0 8 2.8 12 0" stroke="#5FE3C6" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>${msg}`;
   return d;
 }
 
@@ -723,15 +763,14 @@ document.getElementById("alertX").addEventListener("click", () =>
 // bell — ask for notification permission (helps Android/desktop; harmless elsewhere)
 (function initBell(){
   if (!("Notification" in window)) return;
-  const row = document.getElementById("bellRow"), btn = document.getElementById("bellBtn"),
-        txt = document.getElementById("bellTxt");
-  if (Notification.permission === "granted") return; // quiet when already on
-  row.style.display = "block";
+  if (Notification.permission === "granted") return;
+  const btn = document.getElementById("bellBtn");
+  btn.style.display = "flex";
   btn.addEventListener("click", async () => {
     try {
       const p = await Notification.requestPermission();
-      if (p === "granted"){ btn.classList.add("on"); txt.textContent = "Instant alerts are on"; }
-      else { txt.textContent = "Alerts blocked — enable in Settings"; }
+      if (p === "granted"){ btn.style.display = "none"; toast("Instant Tier 1 alerts are on"); }
+      else { toast("Alerts blocked — enable in Settings"); }
     } catch(e){}
   });
 })();
@@ -772,28 +811,15 @@ function legacyCopy(text){
   } catch(e){ return false; }
 }
 
-// -------- category legend --------
-(function legend(){
-  const el = document.getElementById("catLegend");
-  Object.keys(CAT_COLORS).filter(k => k !== "Transport").forEach(k => {
-    const s = document.createElement("span");
-    s.innerHTML = `<i class="cdot" style="background:${CAT_COLORS[k]}"></i>${esc(k)}`;
-    el.appendChild(s);
-  });
-})();
-
-// -------- scroll effects --------
+// -------- scroll progress --------
 (function scrollFx(){
   const bar = document.getElementById("progress");
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const blobs = document.querySelectorAll(".blob");
   let ticking = false;
   addEventListener("scroll", () => {
     if (ticking) return; ticking = true;
     requestAnimationFrame(() => {
       const max = document.documentElement.scrollHeight - innerHeight;
       bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
-      if (!reduce) blobs.forEach((b,i) => { b.style.transform = "translateY(" + (scrollY * (0.05 + i*0.03)) + "px)"; });
       ticking = false;
     });
   }, {passive:true});
@@ -808,7 +834,7 @@ document.getElementById("tileT2").addEventListener("click", () =>
 async function boot(){
   watchReveals();
   // Bundled leads render instantly (and offline); pullShared overrides with
-  // the latest daily leads from the shared store when reachable.
+  // the latest leads from the shared store when reachable.
   try {
     const res = await fetch("leads.json?t=" + Date.now(), {cache:"no-store"});
     applyLeadsDoc(await res.json());

@@ -1,4 +1,4 @@
-const CACHE = "bld-v3";
+const CACHE = "bld-v4";
 const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
