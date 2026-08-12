@@ -490,23 +490,41 @@ function fetchT(url, opts, ms){
   return fetch(url, Object.assign({}, opts, {signal: ctl.signal})).finally(() => clearTimeout(timer));
 }
 
-let syncTimer;
+// Marks that failed to reach the store are queued and re-sent on later polls,
+// so a flaky moment never silently loses a Contacted/Delete for the team.
+let pending = {};
+try { pending = JSON.parse(localStorage.getItem("bld-pending") || "{}"); } catch(e){}
+function savePending(){ try { localStorage.setItem("bld-pending", JSON.stringify(pending)); } catch(e){} }
+
+let syncTimer, syncFails = 0, retryTimer;
+function syncFailed(){
+  syncFails++;
+  // The store (Google Apps Script) hiccups occasionally — retry soon and only
+  // call it offline after three straight misses.
+  setSync(syncFails >= 3 ? "offline — showing last leads" : "retrying sync…", false);
+  clearTimeout(retryTimer);
+  if (syncFails < 3) retryTimer = setTimeout(pullShared, 8000);
+}
 async function pullShared(){
   if (!SYNC_ENABLED) { setSync("on this device", false); return; }
   try {
     // Apps Script can take 10s+ on a cold start — give the store a generous window.
     const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"}, 20000);
-    if (res.ok) {
-      const remote = normalizeDoc(await res.json());
-      if (remote.leads_doc) applyLeadsDoc(remote.leads_doc);
-      applyLeadsRef(remote.leads_ref);
-      let changed = mergeMap(contacted, remote.contacted || {});
-      changed = mergeMap(deleted, remote.deleted || {}) || changed;
-      if (changed) { saveLocal(); render(); }
+    if (res.ok || res.status === 404) {
+      if (res.ok) {
+        const remote = normalizeDoc(await res.json());
+        if (remote.leads_doc) applyLeadsDoc(remote.leads_doc);
+        applyLeadsRef(remote.leads_ref);
+        let changed = mergeMap(contacted, remote.contacted || {});
+        changed = mergeMap(deleted, remote.deleted || {}) || changed;
+        if (changed) { saveLocal(); render(); }
+      }
+      syncFails = 0;
       setSync("up to date", true);
-    } else if (res.status === 404) { setSync("up to date", true); }
-    else { setSync("sync issue — on this device", false); }
-  } catch(e){ setSync("offline — on this device", false); }
+      flushPending();
+    }
+    else { syncFailed(); }
+  } catch(e){ syncFailed(); }
 }
 async function pushShared(action, id){
   if (!SYNC_ENABLED || !id) return;
@@ -517,8 +535,21 @@ async function pushShared(action, id){
     const c = map[id] || {};
     await fetchT(SYNC_URL, {method:"POST",
       body: JSON.stringify({action:action, id:id, v:!!c.v, t:c.t || Date.now()})}, 20000);
+    delete pending[action + ":" + id]; savePending();
     setSync("up to date", true);
-  } catch(e){ setSync("offline — will sync later", false); }
+  } catch(e){
+    pending[action + ":" + id] = 1; savePending();
+    setSync("saved here — will sync shortly", false);
+  }
+}
+let flushing = false;
+async function flushPending(){
+  if (flushing) return;
+  const keys = Object.keys(pending);
+  if (!keys.length) return;
+  flushing = true;
+  try { for (const k of keys){ const i = k.indexOf(":"); await pushShared(k.slice(0, i), k.slice(i + 1)); } }
+  finally { flushing = false; }
 }
 function setSync(msg, ok){
   const el = document.getElementById("syncStatus"); if (el) el.textContent = msg;
