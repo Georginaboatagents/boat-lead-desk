@@ -204,9 +204,11 @@ function applyLeadsDoc(doc){
   document.getElementById("dateLabel").textContent = doc.date_label || "";
   document.getElementById("footDate").textContent = doc.date_label || "";
   document.getElementById("queueLabel").textContent = doc.queue_label || "";
+  const vn = document.getElementById("voiceNote");
   if (doc.voice_note) {
-    const vn = document.getElementById("voiceNote");
     vn.innerHTML = doc.voice_note; vn.style.display = "block";
+  } else {
+    vn.innerHTML = ""; vn.style.display = "none";
   }
   render();
 }
