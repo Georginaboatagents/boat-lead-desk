@@ -494,7 +494,8 @@ let syncTimer;
 async function pullShared(){
   if (!SYNC_ENABLED) { setSync("on this device", false); return; }
   try {
-    const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"});
+    // Apps Script can take 10s+ on a cold start — give the store a generous window.
+    const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"}, 20000);
     if (res.ok) {
       const remote = normalizeDoc(await res.json());
       if (remote.leads_doc) applyLeadsDoc(remote.leads_doc);
@@ -515,7 +516,7 @@ async function pushShared(action, id){
     const map = action === "deleted" ? deleted : contacted;
     const c = map[id] || {};
     await fetchT(SYNC_URL, {method:"POST",
-      body: JSON.stringify({action:action, id:id, v:!!c.v, t:c.t || Date.now()})});
+      body: JSON.stringify({action:action, id:id, v:!!c.v, t:c.t || Date.now()})}, 20000);
     setSync("up to date", true);
   } catch(e){ setSync("offline — will sync later", false); }
 }
