@@ -1,4 +1,4 @@
-const CACHE = "bld-v5";
+const CACHE = "bld-v6";
 const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -28,11 +28,15 @@ self.addEventListener("notificationclick", e => {
   }));
 });
 // Network-first so fresh leads always show; cache fallback keeps it usable offline.
+// cache:"no-cache" makes the browser REVALIDATE with the server instead of
+// trusting GitHub Pages' 10-minute cache header — so app updates appear on the
+// very next open (the server answers "not modified" almost for free otherwise).
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return; // let store/Facebook requests pass through untouched
+  if (e.request.method !== "GET") return;
   e.respondWith(
-    fetch(e.request).then(res => {
+    fetch(url.href, {cache: "no-cache", credentials: "same-origin"}).then(res => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy));
       return res;
