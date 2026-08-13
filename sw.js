@@ -1,4 +1,4 @@
-const CACHE = "bld-v4";
+const CACHE = "bld-v5";
 const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -8,6 +8,16 @@ self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(keys =>
     Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
   ).then(() => self.clients.claim()));
+});
+// Real push from the hourly task — buzzes the phone even when the app is closed.
+self.addEventListener("push", e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) {}
+  e.waitUntil(self.registration.showNotification(d.title || "Boat Lead Desk", {
+    body: d.body || "New activity on the board",
+    icon: "icon-192.png", badge: "icon-192.png",
+    tag: d.tag || "bld-push", renotify: true
+  }));
 });
 // Tapping a Tier 1 notification opens (or focuses) the dashboard.
 self.addEventListener("notificationclick", e => {

@@ -385,6 +385,8 @@ svg{display:block;}
 // ================== CONFIG ==================
 const SYNC_URL = "https://script.google.com/macros/s/AKfycbzm0-aDuq9gCxE_cYfaZFy066vU15nZSrvNG0LDlxyrMVT8Mw7tcJGVezKSwBhjfUN3/exec"; // shared store (Google Apps Script on Georgina's account)
 const SYNC_ENABLED = SYNC_URL.indexOf("http") === 0;
+// Public half of the push keypair (the private half lives only in the hourly task).
+const VAPID_PUBLIC = "BJQGvulSdMUGhiyug1z827ALZlxGmDY3_aOdkmFfPVBP4s_mMhsM0zcnPa63V2fmvMB3UgRw-elu4fmc63cv01Y";
 // ============================================
 
 let LEADS = [];
@@ -760,16 +762,48 @@ function fireTierOneAlert(leads){
 document.getElementById("alertX").addEventListener("click", () =>
   document.getElementById("alert").classList.remove("show"));
 
-// bell — ask for notification permission (helps Android/desktop; harmless elsewhere)
+// -------- real push (phone buzzes even when the app is closed) --------
+function urlB64ToBytes(s){
+  const raw = atob((s + "=".repeat((4 - s.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/"));
+  return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+async function subscribePush(){
+  try {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) return false;
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true, applicationServerKey: urlB64ToBytes(VAPID_PUBLIC)});
+    // Register this phone with the shared store so the hourly task can reach it.
+    const res = await fetchT(SYNC_URL, {method:"POST",
+      body: JSON.stringify({action:"subscribe", sub: sub.toJSON(), t: Date.now()})}, 20000);
+    const j = await res.json();
+    if (!j || !j.ok) return false; // store not upgraded yet — retry on a later visit
+    try { localStorage.setItem("bld-pushed", "1"); } catch(e){}
+    return true;
+  } catch(e){ return false; }
+}
+
+// bell — ask for notification permission, then register for real push
 (function initBell(){
   if (!("Notification" in window)) return;
-  if (Notification.permission === "granted") return;
+  if (Notification.permission === "granted") {
+    // Permission was granted earlier (or on a previous version) — make sure
+    // this phone is registered for real push, quietly.
+    if (!localStorage.getItem("bld-pushed")) subscribePush();
+    return;
+  }
   const btn = document.getElementById("bellBtn");
   btn.style.display = "flex";
   btn.addEventListener("click", async () => {
     try {
       const p = await Notification.requestPermission();
-      if (p === "granted"){ btn.style.display = "none"; toast("Instant Tier 1 alerts are on"); }
+      if (p === "granted"){
+        btn.style.display = "none";
+        const pushed = await subscribePush();
+        toast(pushed ? "Alerts on — this phone will buzz for Tier 1 leads"
+                     : "In-app Tier 1 alerts are on");
+      }
       else { toast("Alerts blocked — enable in Settings"); }
     } catch(e){}
   });
