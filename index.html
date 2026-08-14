@@ -196,16 +196,6 @@ details.handled summary .hn{margin-left:auto; background:rgba(255,255,255,.22); 
   background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:10px;
   cursor:pointer; padding:6px 12px;}
 
-/* ---- toast ---- */
-#toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom));
-  transform:translateX(-50%) translateY(90px); display:flex; align-items:center; gap:12px;
-  background:rgba(34,26,69,.94); color:#F0EDFF; padding:11px 18px; border-radius:26px;
-  font-size:14px; font-weight:600; transition:transform .28s ease; z-index:80;
-  box-shadow:0 10px 30px rgba(34,26,69,.35); backdrop-filter:blur(8px); max-width:88vw;}
-#toast.show{transform:translateX(-50%) translateY(0);}
-#toast button{font:inherit; font-size:13px; font-weight:800; color:#C9B8FF; background:none;
-  border:none; cursor:pointer; padding:2px 2px;}
-
 .foot{text-align:center; margin-top:56px; color:rgba(255,255,255,.45); font-size:11px;}
 svg{display:block;}
 </style>
@@ -356,7 +346,6 @@ svg{display:block;}
   <p class="foot">Boat Lead Desk · <span id="footDate"></span></p>
 </div>
 
-<div id="toast"><span id="toastMsg">Draft copied</span><button id="toastUndo" style="display:none">Undo</button></div>
 
 <script>
 // ================== CONFIG ==================
@@ -367,7 +356,7 @@ const VAPID_PUBLIC = "BJQGvulSdMUGhiyug1z827ALZlxGmDY3_aOdkmFfPVBP4s_mMhsM0zcnPa
 // BUMP THIS on every index.html deploy — wake-ups compare it against the server
 // and self-reload when it changes (iOS thaws frozen snapshots instead of
 // relaunching, so this is the only reliable auto-update path).
-const APP_VERSION = "3.4";
+const APP_VERSION = "3.5";
 // ============================================
 
 let LEADS = [];
@@ -577,8 +566,7 @@ async function checkForUpdate(){
         const r = await navigator.serviceWorker.getRegistration();
         if (r) r.update().catch(()=>{});
       }
-      toast("Updating to the latest version…");
-      setTimeout(() => location.reload(), 700);
+      location.reload();
     }
   } catch(e){ /* offline — try again next wake-up */ }
 }
@@ -645,7 +633,6 @@ function leadCard(l){
   // hit Message, and paste.
   card.querySelector(".godm").addEventListener("click", () => {
     if (!legacyCopy(l.dm)) copyDraft(l.dm); // sync copy first; async fallback
-    toast("Draft copied — tap the poster's name, then Message, then paste");
   });
   card.querySelector(".mark").addEventListener("click", () => settle(l.id, "contacted", card));
   card.querySelector(".del").addEventListener("click",  () => settle(l.id, "deleted", card));
@@ -660,10 +647,7 @@ function settle(id, action, cardEl){
   if (cardEl && !matchMedia("(prefers-reduced-motion: reduce)").matches){
     cardEl.classList.add("leaving"); setTimeout(doRender, 300);
   } else doRender();
-  toast(action === "deleted" ? "Post deleted" : "Marked contacted", () => {
-    map[id] = { v: false, t: Date.now() };
-    saveLocal(); pushShared(action, id); render();
-  });
+  // The card sliding away is the feedback; Undo lives in "Recently handled".
 }
 
 function emptyBlock(msg){
@@ -739,10 +723,7 @@ function chime(){
   } catch(e){}
 }
 function fireTierOneAlert(leads){
-  const first = leads[0];
-  // Subtle in-app cue only — the big announcement is the real push notification.
-  toast(leads.length === 1 ? "New Tier 1 lead — " + first.name
-                           : leads.length + " new Tier 1 leads");
+  // In-app cue is chime + badge; the real announcement is the push notification.
   chime();
   if (navigator.vibrate) navigator.vibrate([130, 70, 130]);
   if ("Notification" in window && Notification.permission === "granted" && navigator.serviceWorker) {
@@ -791,44 +772,16 @@ async function subscribePush(){
       const p = await Notification.requestPermission();
       if (p === "granted"){
         btn.style.display = "none";
-        const pushed = await subscribePush();
-        toast(pushed ? "Alerts on — this phone will buzz for Tier 1 leads"
-                     : "In-app Tier 1 alerts are on");
+        subscribePush();
       }
-      else { toast("Alerts blocked — enable in Settings"); }
     } catch(e){}
   });
 })();
 
-// -------- toast (with undo) --------
-let toastTimer, undoFn = null;
-function hideToast(){
-  clearTimeout(toastTimer);
-  undoFn = null;
-  document.getElementById("toast").classList.remove("show");
-}
-function toast(msg, onUndo){
-  const t = document.getElementById("toast");
-  document.getElementById("toastMsg").textContent = msg;
-  const u = document.getElementById("toastUndo");
-  undoFn = onUndo || null;
-  u.style.display = onUndo ? "inline" : "none";
-  t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("show"), onUndo ? 6000 : 1800);
-}
-document.getElementById("toastUndo").addEventListener("click", () => {
-  if (undoFn) undoFn();
-  undoFn = null;
-  document.getElementById("toast").classList.remove("show");
-});
-
 function copyDraft(text){
-  const ok = () => toast("Draft copied — ready to paste");
-  const fail = () => toast("Couldn't copy — long-press the text instead");
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(ok, () => legacyCopy(text) ? ok() : fail());
-  } else { legacyCopy(text) ? ok() : fail(); }
+    navigator.clipboard.writeText(text).catch(() => legacyCopy(text));
+  } else { legacyCopy(text); }
 }
 function legacyCopy(text){
   try {
@@ -868,16 +821,13 @@ async function boot(){
   try {
     const res = await fetch("leads.json?t=" + Date.now(), {cache:"no-store"});
     applyLeadsDoc(await res.json());
-  } catch(e){ toast("Couldn't load leads"); }
+  } catch(e){ /* offline first load — the store poll will fill in */ }
   render();
   pullShared();
   clearInterval(syncTimer);
   syncTimer = setInterval(pullShared, 60000);
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
-      // Coming back from Facebook etc: iOS freezes timers while we're away,
-      // which can leave a toast stranded on screen — clear it and refresh.
-      hideToast();
       pullShared();
       checkForUpdate();
     }
