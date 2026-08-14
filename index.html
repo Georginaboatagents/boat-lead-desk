@@ -778,6 +778,11 @@ async function subscribePush(){
 
 // -------- toast (with undo) --------
 let toastTimer, undoFn = null;
+function hideToast(){
+  clearTimeout(toastTimer);
+  undoFn = null;
+  document.getElementById("toast").classList.remove("show");
+}
 function toast(msg, onUndo){
   const t = document.getElementById("toast");
   document.getElementById("toastMsg").textContent = msg;
@@ -844,7 +849,14 @@ async function boot(){
   pullShared();
   clearInterval(syncTimer);
   syncTimer = setInterval(pullShared, 60000);
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) pullShared(); });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      // Coming back from Facebook etc: iOS freezes timers while we're away,
+      // which can leave a toast stranded on screen — clear it and refresh.
+      hideToast();
+      pullShared();
+    }
+  });
 }
 boot();
 
