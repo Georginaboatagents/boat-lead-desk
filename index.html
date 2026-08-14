@@ -364,6 +364,10 @@ const SYNC_URL = "https://script.google.com/macros/s/AKfycbzm0-aDuq9gCxE_cYfaZFy
 const SYNC_ENABLED = SYNC_URL.indexOf("http") === 0;
 // Public half of the push keypair (the private half lives only in the hourly task).
 const VAPID_PUBLIC = "BJQGvulSdMUGhiyug1z827ALZlxGmDY3_aOdkmFfPVBP4s_mMhsM0zcnPa63V2fmvMB3UgRw-elu4fmc63cv01Y";
+// BUMP THIS on every index.html deploy — wake-ups compare it against the server
+// and self-reload when it changes (iOS thaws frozen snapshots instead of
+// relaunching, so this is the only reliable auto-update path).
+const APP_VERSION = "3.4";
 // ============================================
 
 let LEADS = [];
@@ -559,6 +563,26 @@ async function flushPending(){
   try { for (const k of keys){ const i = k.indexOf(":"); await pushShared(k.slice(0, i), k.slice(i + 1)); } }
   finally { flushing = false; }
 }
+// -------- self-updating: compare our version against the server's --------
+let lastVCheck = 0;
+async function checkForUpdate(){
+  if (Date.now() - lastVCheck < 60000) return; // at most once a minute
+  lastVCheck = Date.now();
+  try {
+    const res = await fetchT("index.html?vchk=" + Date.now(), {cache:"no-store"}, 15000);
+    if (!res.ok) return;
+    const m = (await res.text()).match(/APP_VERSION = "([^"]+)"/);
+    if (m && m[1] !== APP_VERSION) {
+      if (navigator.serviceWorker) {
+        const r = await navigator.serviceWorker.getRegistration();
+        if (r) r.update().catch(()=>{});
+      }
+      toast("Updating to the latest version…");
+      setTimeout(() => location.reload(), 700);
+    }
+  } catch(e){ /* offline — try again next wake-up */ }
+}
+
 function setSync(msg, ok){
   const el = document.getElementById("syncStatus"); if (el) el.textContent = msg;
   const w = document.getElementById("syncWrap"); if (w) w.classList.toggle("off", !ok);
@@ -855,8 +879,10 @@ async function boot(){
       // which can leave a toast stranded on screen — clear it and refresh.
       hideToast();
       pullShared();
+      checkForUpdate();
     }
   });
+  checkForUpdate();
 }
 boot();
 
