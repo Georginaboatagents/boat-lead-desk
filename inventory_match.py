@@ -14,7 +14,7 @@ import json, re, urllib.request
 
 INVENTORY_URL = "https://georginaboatagents.github.io/<repo>/inventory.json"
 
-# Flip to False if Grade C (size-only, no make named) turns out noisy.
+# Flip to False if Grade D (size-only, no make named) turns out noisy.
 ALERT_ON_SIZE_ONLY = True
 
 LENGTH_WINDOW_FT = 5
@@ -149,23 +149,28 @@ def match_lead(lead, inventory):
         loa = keys.get("length_ft")
         near = bool(loa) and any(lo <= loa <= hi for lo, hi in bands)
 
+        # MAKE IS THE PRIORITY (Georgina, Aug 20): any lead naming a make we
+        # carry matches, and every make-based grade outranks size-only.
         if model:
             grade, why = "A", f"named {boat['make']} {boat['model']}"
         elif make and near:
             grade, why = "B", f"named {boat['make']} at ~{loa}ft"
-        elif near and not make:
+        elif make:
+            grade, why = "C", f"named {boat['make']}"
+        elif near:
             if not ALERT_ON_SIZE_ONLY:
                 continue
-            grade, why = "C", f"size match ~{loa}ft"
+            grade, why = "D", f"size match ~{loa}ft"
         else:
             continue
 
         # budget only ranks, never excludes
         gap = abs(boat["price_usd"] - budget) if (budget and boat.get("price_usd")) else 10**9
-        region_rank = 0 if boat["region"] in ("New York", "Florida") else 1
+        # dual-showroom hulls ("NY + FL showrooms") are the most local of all
+        region_rank = 1 if boat["region"] == "Other / Central agency" else 0
         hits.append({
             "boat": boat, "grade": grade, "why": why,
-            "_sort": ("ABC".index(grade), region_rank, gap),
+            "_sort": ("ABCD".index(grade), region_rank, gap),
         })
 
     hits.sort(key=lambda h: h["_sort"])
