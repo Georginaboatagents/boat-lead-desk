@@ -1,0 +1,1418 @@
+{
+  "source": "YachtWorld broker page \u2014 Yacht Hampton (broker 305932)",
+  "source_url": "https://www.yachtworld.com/boats-for-sale/broker-yacht-hampton-boca-raton-fl-305932/",
+  "pulled": "2026-08-20",
+  "reported_total": 53,
+  "captured_total": 45,
+  "match_policy": "tight",
+  "regions": {
+    "Other / Central agency": 6,
+    "Shown NY + FL (one hull)": 6,
+    "Florida": 22,
+    "New York": 11
+  },
+  "listings": [
+    {
+      "id": "YH-001",
+      "year": 2005,
+      "make": "McKinna",
+      "model": "57 Pilothouse",
+      "length_ft": 57,
+      "price_usd": 299000,
+      "price_display": "$299,000",
+      "city": "Mount Pleasant",
+      "state": "SC",
+      "region": "Other / Central agency",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "mckinna",
+        "make_aliases": [],
+        "model": "57 pilothouse",
+        "model_tokens": [
+          "57",
+          "pilothouse"
+        ],
+        "length_ft": 57,
+        "length_window": [
+          52,
+          62
+        ]
+      }
+    },
+    {
+      "id": "YH-002",
+      "year": 2024,
+      "make": "Galeon",
+      "model": "425 HTS",
+      "length_ft": 42,
+      "price_usd": 799000,
+      "price_display": "$799,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "NY + FL showrooms",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "galeon",
+        "make_aliases": [],
+        "model": "425 hts",
+        "model_tokens": [
+          "425",
+          "hts"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      },
+      "locations": [
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        },
+        {
+          "city": "Long Island City",
+          "state": "NY"
+        }
+      ],
+      "listing_urls": [],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-003",
+      "year": 2016,
+      "make": "Azimut",
+      "model": "Fly 72",
+      "length_ft": 72,
+      "price_usd": 1450000,
+      "price_display": "$1,450,000",
+      "city": "Miami",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "azimut",
+        "make_aliases": [],
+        "model": "fly 72",
+        "model_tokens": [
+          "fly",
+          "72"
+        ],
+        "length_ft": 72,
+        "length_window": [
+          67,
+          77
+        ]
+      }
+    },
+    {
+      "id": "YH-004",
+      "year": 2000,
+      "make": "Silverton",
+      "model": "453 Motor Yacht",
+      "length_ft": 45,
+      "price_usd": 229900,
+      "price_display": "$229,900",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "silverton",
+        "make_aliases": [],
+        "model": "453 motor yacht",
+        "model_tokens": [
+          "453",
+          "motor",
+          "yacht"
+        ],
+        "length_ft": 45,
+        "length_window": [
+          40,
+          50
+        ]
+      }
+    },
+    {
+      "id": "YH-005",
+      "year": 2021,
+      "make": "Aquila",
+      "model": "36 Sport",
+      "length_ft": 36,
+      "price_usd": 484900,
+      "price_display": "$484,900",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "NY + FL showrooms",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "aquila",
+        "make_aliases": [
+          "aquila catamaran"
+        ],
+        "model": "36 sport",
+        "model_tokens": [
+          "36",
+          "sport"
+        ],
+        "length_ft": 36,
+        "length_window": [
+          31,
+          41
+        ]
+      },
+      "locations": [
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        },
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        }
+      ],
+      "listing_urls": [],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-006",
+      "year": 2021,
+      "make": "Regal",
+      "model": "38 XO",
+      "length_ft": 38,
+      "price_usd": 459500,
+      "price_display": "$459,500",
+      "city": "Coral Gables",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "regal",
+        "make_aliases": [],
+        "model": "38 xo",
+        "model_tokens": [
+          "38",
+          "xo"
+        ],
+        "length_ft": 38,
+        "length_window": [
+          33,
+          43
+        ]
+      }
+    },
+    {
+      "id": "YH-007",
+      "year": 2024,
+      "make": "Sportsman",
+      "model": "Open 352 Center Console",
+      "length_ft": 35,
+      "price_usd": 475000,
+      "price_display": "$475,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sportsman",
+        "make_aliases": [
+          "sportsman boats"
+        ],
+        "model": "open 352 center console",
+        "model_tokens": [
+          "open",
+          "352",
+          "center",
+          "console"
+        ],
+        "length_ft": 35,
+        "length_window": [
+          30,
+          40
+        ]
+      }
+    },
+    {
+      "id": "YH-009",
+      "year": 2015,
+      "make": "CNM",
+      "model": "Continental",
+      "length_ft": null,
+      "price_usd": 257000,
+      "price_display": "$257,000",
+      "city": "Miami",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "cnm",
+        "make_aliases": [
+          "cnm continental",
+          "continental"
+        ],
+        "model": "continental",
+        "model_tokens": [
+          "continental"
+        ],
+        "length_ft": null,
+        "length_window": null
+      }
+    },
+    {
+      "id": "YH-010",
+      "year": 2017,
+      "make": "Sea Ray",
+      "model": "Sundancer 400",
+      "length_ft": 40,
+      "price_usd": 459400,
+      "price_display": "$459,400",
+      "city": "Key Biscayne",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "sundancer 400",
+        "model_tokens": [
+          "sundancer",
+          "400"
+        ],
+        "length_ft": 40,
+        "length_window": [
+          35,
+          45
+        ]
+      }
+    },
+    {
+      "id": "YH-011",
+      "year": 2006,
+      "make": "Sea Ray",
+      "model": "48 Sundancer",
+      "length_ft": 48,
+      "price_usd": 299000,
+      "price_display": "$299,000",
+      "city": "Fort Lauderdale",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "48 sundancer",
+        "model_tokens": [
+          "48",
+          "sundancer"
+        ],
+        "length_ft": 48,
+        "length_window": [
+          43,
+          53
+        ]
+      }
+    },
+    {
+      "id": "YH-013",
+      "year": 2022,
+      "make": "Wellcraft",
+      "model": "242 Fisherman",
+      "length_ft": 24,
+      "price_usd": 82500,
+      "price_display": "$82,500",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "wellcraft",
+        "make_aliases": [
+          "scarab"
+        ],
+        "model": "242 fisherman",
+        "model_tokens": [
+          "242",
+          "fisherman"
+        ],
+        "length_ft": 24,
+        "length_window": [
+          19,
+          29
+        ]
+      }
+    },
+    {
+      "id": "YH-014",
+      "year": 2019,
+      "make": "Bali",
+      "model": "4.3",
+      "length_ft": 43,
+      "price_usd": 495000,
+      "price_display": "$495,000",
+      "city": "Jersey City",
+      "state": "NJ",
+      "region": "Other / Central agency",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "bali",
+        "make_aliases": [
+          "bali catamarans"
+        ],
+        "model": "4.3",
+        "model_tokens": [
+          "4.3"
+        ],
+        "length_ft": 43,
+        "length_window": [
+          38,
+          48
+        ]
+      }
+    },
+    {
+      "id": "YH-015",
+      "year": 2022,
+      "make": "Solaris Power",
+      "model": "44",
+      "length_ft": 44,
+      "price_usd": 799000,
+      "price_display": "$799,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "solaris power",
+        "make_aliases": [
+          "solaris"
+        ],
+        "model": "44",
+        "model_tokens": [
+          "44"
+        ],
+        "length_ft": 44,
+        "length_window": [
+          39,
+          49
+        ]
+      }
+    },
+    {
+      "id": "YH-016",
+      "year": 2025,
+      "make": "De Antonio Yachts",
+      "model": "D36",
+      "length_ft": 36,
+      "price_usd": 529900,
+      "price_display": "$529,900",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "NY + FL showrooms",
+      "listing_url": "",
+      "new_build": true,
+      "match_keys": {
+        "make": "de antonio yachts",
+        "make_aliases": [
+          "de antonio",
+          "deantonio",
+          "d'antonio"
+        ],
+        "model": "d36",
+        "model_tokens": [
+          "d36"
+        ],
+        "length_ft": 36,
+        "length_window": [
+          31,
+          41
+        ]
+      },
+      "locations": [
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        },
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        }
+      ],
+      "listing_urls": [],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-017",
+      "year": 2025,
+      "make": "Cobrey",
+      "model": "52 FLY",
+      "length_ft": 52,
+      "price_usd": 1895000,
+      "price_display": "$1,895,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": true,
+      "match_keys": {
+        "make": "cobrey",
+        "make_aliases": [],
+        "model": "52 fly",
+        "model_tokens": [
+          "52",
+          "fly"
+        ],
+        "length_ft": 52,
+        "length_window": [
+          47,
+          57
+        ]
+      }
+    },
+    {
+      "id": "YH-018",
+      "year": 2016,
+      "make": "Cruisers Yachts",
+      "model": "45 Cantius",
+      "length_ft": 45,
+      "price_usd": 585900,
+      "price_display": "$585,900",
+      "city": "Aventura",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "cruisers yachts",
+        "make_aliases": [
+          "cruisers"
+        ],
+        "model": "45 cantius",
+        "model_tokens": [
+          "45",
+          "cantius"
+        ],
+        "length_ft": 45,
+        "length_window": [
+          40,
+          50
+        ]
+      }
+    },
+    {
+      "id": "YH-019",
+      "year": 1999,
+      "make": "Maxum",
+      "model": "4600 SCB",
+      "length_ft": 46,
+      "price_usd": 169000,
+      "price_display": "$169,000",
+      "city": "San Diego",
+      "state": "CA",
+      "region": "Other / Central agency",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "maxum",
+        "make_aliases": [],
+        "model": "4600 scb",
+        "model_tokens": [
+          "4600",
+          "scb"
+        ],
+        "length_ft": 46,
+        "length_window": [
+          41,
+          51
+        ]
+      }
+    },
+    {
+      "id": "YH-021",
+      "year": 2021,
+      "make": "Wellcraft",
+      "model": "302 Scarab",
+      "length_ft": 30,
+      "price_usd": 187000,
+      "price_display": "$187,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "wellcraft",
+        "make_aliases": [
+          "scarab"
+        ],
+        "model": "302 scarab",
+        "model_tokens": [
+          "302",
+          "scarab"
+        ],
+        "length_ft": 30,
+        "length_window": [
+          25,
+          35
+        ]
+      }
+    },
+    {
+      "id": "YH-023",
+      "year": 2008,
+      "make": "Sea Ray",
+      "model": "47 Sedan Bridge",
+      "length_ft": 47,
+      "price_usd": 395000,
+      "price_display": "$395,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "47 sedan bridge",
+        "model_tokens": [
+          "47",
+          "sedan",
+          "bridge"
+        ],
+        "length_ft": 47,
+        "length_window": [
+          42,
+          52
+        ]
+      }
+    },
+    {
+      "id": "YH-024",
+      "year": 2024,
+      "make": "Sportsman",
+      "model": "Open 352 Center Console",
+      "length_ft": 35,
+      "price_usd": 459000,
+      "price_display": "$459,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sportsman",
+        "make_aliases": [
+          "sportsman boats"
+        ],
+        "model": "open 352 center console",
+        "model_tokens": [
+          "open",
+          "352",
+          "center",
+          "console"
+        ],
+        "length_ft": 35,
+        "length_window": [
+          30,
+          40
+        ]
+      }
+    },
+    {
+      "id": "YH-025",
+      "year": 2025,
+      "make": "Solaris Power",
+      "model": "44",
+      "length_ft": 44,
+      "price_usd": 1090000,
+      "price_display": "$1,090,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "solaris power",
+        "make_aliases": [
+          "solaris"
+        ],
+        "model": "44",
+        "model_tokens": [
+          "44"
+        ],
+        "length_ft": 44,
+        "length_window": [
+          39,
+          49
+        ]
+      }
+    },
+    {
+      "id": "YH-026",
+      "year": 2023,
+      "make": "Bennington",
+      "model": "QX Line",
+      "length_ft": null,
+      "price_usd": 224000,
+      "price_display": "$224,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "bennington",
+        "make_aliases": [],
+        "model": "qx line",
+        "model_tokens": [
+          "qx",
+          "line"
+        ],
+        "length_ft": null,
+        "length_window": null
+      }
+    },
+    {
+      "id": "YH-027",
+      "year": 2026,
+      "make": "Bellini",
+      "model": "Astor 36",
+      "length_ft": 36,
+      "price_usd": 899000,
+      "price_display": "$899,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "NY + FL showrooms",
+      "listing_url": "",
+      "new_build": true,
+      "match_keys": {
+        "make": "bellini",
+        "make_aliases": [],
+        "model": "astor 36",
+        "model_tokens": [
+          "astor",
+          "36"
+        ],
+        "length_ft": 36,
+        "length_window": [
+          31,
+          41
+        ]
+      },
+      "locations": [
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        },
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        }
+      ],
+      "listing_urls": [
+        "https://www.yachtworld.com/yacht/2026-bellini-astor-36-9885631/"
+      ],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-028",
+      "year": 2025,
+      "make": "Saxdor",
+      "model": "320 GTC",
+      "length_ft": 32,
+      "price_usd": 389999,
+      "price_display": "$389,999",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "saxdor",
+        "make_aliases": [],
+        "model": "320 gtc",
+        "model_tokens": [
+          "320",
+          "gtc"
+        ],
+        "length_ft": 32,
+        "length_window": [
+          27,
+          37
+        ]
+      },
+      "locations": [
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        },
+        {
+          "city": "Hingham",
+          "state": "MA"
+        }
+      ],
+      "listing_urls": [],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-029",
+      "year": 2014,
+      "make": "Sunseeker",
+      "model": "Manhattan 73",
+      "length_ft": 73,
+      "price_usd": 1195000,
+      "price_display": "$1,195,000",
+      "city": "New York",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sunseeker",
+        "make_aliases": [],
+        "model": "manhattan 73",
+        "model_tokens": [
+          "manhattan",
+          "73"
+        ],
+        "length_ft": 73,
+        "length_window": [
+          68,
+          78
+        ]
+      }
+    },
+    {
+      "id": "YH-030",
+      "year": 2023,
+      "make": "Sea Ray",
+      "model": "SLX 400 Outboard",
+      "length_ft": 40,
+      "price_usd": 649000,
+      "price_display": "$649,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "slx 400 outboard",
+        "model_tokens": [
+          "slx",
+          "400",
+          "outboard"
+        ],
+        "length_ft": 40,
+        "length_window": [
+          35,
+          45
+        ]
+      }
+    },
+    {
+      "id": "YH-031",
+      "year": 2018,
+      "make": "Conch",
+      "model": "30",
+      "length_ft": 30,
+      "price_usd": 240000,
+      "price_display": "$240,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "conch",
+        "make_aliases": [],
+        "model": "30",
+        "model_tokens": [
+          "30"
+        ],
+        "length_ft": 30,
+        "length_window": [
+          25,
+          35
+        ]
+      }
+    },
+    {
+      "id": "YH-032",
+      "year": 1987,
+      "make": "CHB",
+      "model": "42",
+      "length_ft": 42,
+      "price_usd": 119000,
+      "price_display": "$119,000",
+      "city": "Victoria",
+      "state": "BC",
+      "region": "Other / Central agency",
+      "listing_url": "https://www.yachtworld.com/yacht/1987-chb-42-10187576/",
+      "new_build": false,
+      "match_keys": {
+        "make": "chb",
+        "make_aliases": [],
+        "model": "42",
+        "model_tokens": [
+          "42"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      }
+    },
+    {
+      "id": "YH-033",
+      "year": 2007,
+      "make": "Fairline",
+      "model": "Targa 52 GT",
+      "length_ft": 52,
+      "price_usd": 349000,
+      "price_display": "$349,000",
+      "city": "Cape Coral",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2007-fairline-targa-52-gt-9682728/",
+      "new_build": false,
+      "match_keys": {
+        "make": "fairline",
+        "make_aliases": [],
+        "model": "targa 52 gt",
+        "model_tokens": [
+          "targa",
+          "52",
+          "gt"
+        ],
+        "length_ft": 52,
+        "length_window": [
+          47,
+          57
+        ]
+      }
+    },
+    {
+      "id": "YH-034",
+      "year": 2005,
+      "make": "Chaparral",
+      "model": "256 SSi",
+      "length_ft": 25,
+      "price_usd": 43000,
+      "price_display": "$43,000",
+      "city": "Rockwall",
+      "state": "TX",
+      "region": "Other / Central agency",
+      "listing_url": "https://www.yachtworld.com/yacht/2005-chaparral-256-ssi-10143184/",
+      "new_build": false,
+      "match_keys": {
+        "make": "chaparral",
+        "make_aliases": [],
+        "model": "256 ssi",
+        "model_tokens": [
+          "256",
+          "ssi"
+        ],
+        "length_ft": 25,
+        "length_window": [
+          20,
+          30
+        ]
+      }
+    },
+    {
+      "id": "YH-035",
+      "year": 2026,
+      "make": "Cobra Yachts",
+      "model": "Seamaster 45",
+      "length_ft": 45,
+      "price_usd": 1170000,
+      "price_display": "$1,170,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-cobra-yachts-seamaster-45-10088666/",
+      "new_build": true,
+      "match_keys": {
+        "make": "cobra yachts",
+        "make_aliases": [
+          "cobra"
+        ],
+        "model": "seamaster 45",
+        "model_tokens": [
+          "seamaster",
+          "45"
+        ],
+        "length_ft": 45,
+        "length_window": [
+          40,
+          50
+        ]
+      }
+    },
+    {
+      "id": "YH-036",
+      "year": 2027,
+      "make": "Santasevera",
+      "model": "42",
+      "length_ft": 42,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "NY + FL showrooms",
+      "listing_url": "https://www.yachtworld.com/yacht/2027-santasevera-42-10207985/",
+      "new_build": true,
+      "match_keys": {
+        "make": "santasevera",
+        "make_aliases": [
+          "santa severa"
+        ],
+        "model": "42",
+        "model_tokens": [
+          "42"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      },
+      "locations": [
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        },
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        }
+      ],
+      "listing_urls": [
+        "https://www.yachtworld.com/yacht/2027-santasevera-42-10207985/",
+        "https://www.yachtworld.com/yacht/2027-santasevera-42-10209483/"
+      ],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-037",
+      "year": 2026,
+      "make": "Santasevera",
+      "model": "42",
+      "length_ft": 42,
+      "price_usd": 1290000,
+      "price_display": "$1,290,000",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-santasevera-42-10167819/",
+      "new_build": true,
+      "match_keys": {
+        "make": "santasevera",
+        "make_aliases": [
+          "santa severa"
+        ],
+        "model": "42",
+        "model_tokens": [
+          "42"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      }
+    },
+    {
+      "id": "YH-039",
+      "year": 2021,
+      "make": "Regal",
+      "model": "35 Sport Coupe",
+      "length_ft": 35,
+      "price_usd": 299000,
+      "price_display": "$299,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2021-regal-35-sport-coupe-10165442/",
+      "new_build": false,
+      "match_keys": {
+        "make": "regal",
+        "make_aliases": [],
+        "model": "35 sport coupe",
+        "model_tokens": [
+          "35",
+          "sport",
+          "coupe"
+        ],
+        "length_ft": 35,
+        "length_window": [
+          30,
+          40
+        ]
+      }
+    },
+    {
+      "id": "YH-040",
+      "year": 2023,
+      "make": "Sea Ray",
+      "model": "SLX 400",
+      "length_ft": 40,
+      "price_usd": 649000,
+      "price_display": "$649,000",
+      "city": "Manalapan",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2023-sea-ray-slx-400-10096808/",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "slx 400",
+        "model_tokens": [
+          "slx",
+          "400"
+        ],
+        "length_ft": 40,
+        "length_window": [
+          35,
+          45
+        ]
+      }
+    },
+    {
+      "id": "YH-041",
+      "year": 2018,
+      "make": "Edgewater",
+      "model": "370CC",
+      "length_ft": 37,
+      "price_usd": 410000,
+      "price_display": "$410,000",
+      "city": "New York",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2018-edgewater-370cc-10289616/",
+      "new_build": false,
+      "match_keys": {
+        "make": "edgewater",
+        "make_aliases": [],
+        "model": "370cc",
+        "model_tokens": [
+          "370cc"
+        ],
+        "length_ft": 37,
+        "length_window": [
+          32,
+          42
+        ]
+      }
+    },
+    {
+      "id": "YH-042",
+      "year": 2026,
+      "make": "Dracan",
+      "model": "42 Catamaran",
+      "length_ft": 42,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-dracan-dracan-42-10025285/",
+      "new_build": true,
+      "match_keys": {
+        "make": "dracan",
+        "make_aliases": [],
+        "model": "42 catamaran",
+        "model_tokens": [
+          "42",
+          "catamaran"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      }
+    },
+    {
+      "id": "YH-043",
+      "year": 2027,
+      "make": "Santasevera",
+      "model": "52",
+      "length_ft": 52,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "NY + FL showrooms",
+      "listing_url": "https://www.yachtworld.com/yacht/2027-santasevera-52-10209477/",
+      "new_build": true,
+      "match_keys": {
+        "make": "santasevera",
+        "make_aliases": [
+          "santa severa"
+        ],
+        "model": "52",
+        "model_tokens": [
+          "52"
+        ],
+        "length_ft": 52,
+        "length_window": [
+          47,
+          57
+        ]
+      },
+      "locations": [
+        {
+          "city": "Sag Harbor",
+          "state": "NY"
+        },
+        {
+          "city": "Boca Raton",
+          "state": "FL"
+        }
+      ],
+      "listing_urls": [
+        "https://www.yachtworld.com/yacht/2027-santasevera-52-10209477/",
+        "https://www.yachtworld.com/yacht/2027-santasevera-52-10207935/"
+      ],
+      "one_hull_two_showrooms": true
+    },
+    {
+      "id": "YH-044",
+      "year": 1997,
+      "make": "Sea Ray",
+      "model": "400 Express Cruiser",
+      "length_ft": 40,
+      "price_usd": 79400,
+      "price_display": "$79,400",
+      "city": "Aventura",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/1997-sea-ray-400-express-cruiser-9941988/",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "400 express cruiser",
+        "model_tokens": [
+          "400",
+          "express",
+          "cruiser"
+        ],
+        "length_ft": 40,
+        "length_window": [
+          35,
+          45
+        ]
+      }
+    },
+    {
+      "id": "YH-047",
+      "year": 2026,
+      "make": "De Antonio Yachts",
+      "model": "D60",
+      "length_ft": 60,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "New York",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-de-antonio-yachts-d60-10025947/",
+      "new_build": true,
+      "match_keys": {
+        "make": "de antonio yachts",
+        "make_aliases": [
+          "de antonio",
+          "deantonio",
+          "d'antonio"
+        ],
+        "model": "d60",
+        "model_tokens": [
+          "d60"
+        ],
+        "length_ft": 60,
+        "length_window": [
+          55,
+          65
+        ]
+      }
+    },
+    {
+      "id": "YH-048",
+      "year": 2026,
+      "make": "De Antonio Yachts",
+      "model": "D50",
+      "length_ft": 50,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "New York",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-de-antonio-yachts-d50-10025896/",
+      "new_build": true,
+      "match_keys": {
+        "make": "de antonio yachts",
+        "make_aliases": [
+          "de antonio",
+          "deantonio",
+          "d'antonio"
+        ],
+        "model": "d50",
+        "model_tokens": [
+          "d50"
+        ],
+        "length_ft": 50,
+        "length_window": [
+          45,
+          55
+        ]
+      }
+    },
+    {
+      "id": "YH-049",
+      "year": 2026,
+      "make": "Dracan",
+      "model": "D42",
+      "length_ft": 42,
+      "price_usd": null,
+      "price_display": "Request price",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "https://www.yachtworld.com/yacht/2026-dracan-d42-10025246/",
+      "new_build": true,
+      "match_keys": {
+        "make": "dracan",
+        "make_aliases": [],
+        "model": "d42",
+        "model_tokens": [
+          "d42"
+        ],
+        "length_ft": 42,
+        "length_window": [
+          37,
+          47
+        ]
+      }
+    },
+    {
+      "id": "YH-050",
+      "year": 2007,
+      "make": "Sea Ray",
+      "model": "52 Sedan Bridge",
+      "length_ft": 52,
+      "price_usd": 498000,
+      "price_display": "$498,000",
+      "city": "Livingston",
+      "state": "Guatemala",
+      "region": "Other / Central agency",
+      "listing_url": "https://www.yachtworld.com/yacht/2007-sea-ray-52-sedan-bridge-9640210/",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "52 sedan bridge",
+        "model_tokens": [
+          "52",
+          "sedan",
+          "bridge"
+        ],
+        "length_ft": 52,
+        "length_window": [
+          47,
+          57
+        ]
+      }
+    },
+    {
+      "id": "YH-051",
+      "year": 2025,
+      "make": "Cape Fear",
+      "model": "Harpoon",
+      "length_ft": null,
+      "price_usd": 98500,
+      "price_display": "$98,500",
+      "city": "Boca Raton",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2025-cape-fear-harpoon-9748561/",
+      "new_build": true,
+      "match_keys": {
+        "make": "cape fear",
+        "make_aliases": [],
+        "model": "harpoon",
+        "model_tokens": [
+          "harpoon"
+        ],
+        "length_ft": null,
+        "length_window": null
+      }
+    },
+    {
+      "id": "YH-052",
+      "year": 2021,
+      "make": "Scout",
+      "model": "305 LXF",
+      "length_ft": 30,
+      "price_usd": 268500,
+      "price_display": "$268,500",
+      "city": "Pompano Beach",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "https://www.yachtworld.com/yacht/2021-scout-305-lxf-10266725/",
+      "new_build": false,
+      "match_keys": {
+        "make": "scout",
+        "make_aliases": [],
+        "model": "305 lxf",
+        "model_tokens": [
+          "305",
+          "lxf"
+        ],
+        "length_ft": 30,
+        "length_window": [
+          25,
+          35
+        ]
+      }
+    }
+  ],
+  "dedup_note": "Morgan confirmed Aug 20: same-model/same-price listings at two locations are ONE hull shown at two showrooms. 7 pairs merged. PROBABLE additional pairs to confirm: 2026 Dracan 42 (YH-042 Boca / YH-049 Sag Harbor) and 2023 Sea Ray SLX 400 (YH-030 Sag Harbor / YH-040 Manalapan) \u2014 left unmerged pending Morgan."
+}
