@@ -14,6 +14,8 @@
 <meta name="theme-color" content="#03111d">
 <meta name="description" content="Yacht Hampton International — Boat Lead Desk">
 <style>
+html,body{height:100%; overflow:hidden; overscroll-behavior:none;}
+
 /* ============ YACHT HAMPTON — SWIPE DECK (v5) ============
    Faithful clone of the approved mockup composition:
    one lead at a time · full-bleed yacht photo behind the glass ·
@@ -50,7 +52,7 @@ svg{display:block;}
 /* ---- stage: dark backdrop, phone centered (desktop gets a rail) ---- */
 .stage{min-height:100vh; min-height:100dvh; display:flex; align-items:center; justify-content:center; gap:30px; padding:0;}
 .phone{position:relative; width:100%; height:100vh; height:100dvh; overflow:hidden;
-  background:linear-gradient(180deg,#061826,#03121e 72%);
+  background:linear-gradient(180deg,rgba(6,24,38,.88),rgba(3,18,30,.95)), url("assets/band-navy.jpg") center/cover no-repeat #03121d;
   display:flex; flex-direction:column;}
 @media (min-width:900px){
   .stage{padding:36px;}
@@ -90,7 +92,7 @@ svg{display:block;}
   background:var(--green); box-shadow:0 0 0 3px rgba(137,223,102,.12);}
 
 /* ---- hero: yacht photo full-bleed behind the glass ---- */
-.hero{position:relative; flex:0 0 auto; height:46%; min-height:300px; max-height:440px;
+.hero{position:relative; flex:0 0 auto; height:28%; min-height:208px; max-height:246px;
   background-size:cover; background-position:center 38%; background-color:#04121d;}
 .hero-shade{position:absolute; inset:0;
   background:linear-gradient(180deg,rgba(4,16,26,.14) 22%,rgba(4,17,28,.28) 56%,#061725 100%),
@@ -98,30 +100,37 @@ svg{display:block;}
 .topbar{position:absolute; z-index:2; top:0; left:0; right:0;
   padding:calc(20px + env(safe-area-inset-top)) 24px 0;
   display:flex; align-items:flex-start; justify-content:space-between;}
-.counter{position:absolute; z-index:2; left:24px; bottom:20px; display:grid; gap:9px;
+.counter{position:absolute; z-index:2; left:22px; bottom:46px; display:grid; gap:6px;
   color:#d6dde3; font-size:10px; font-weight:600;}
 .counter b{font-weight:600; letter-spacing:.08em;}
-.counter-bars{display:grid; gap:7px; justify-items:start;}
-.counter-bars span{display:block; width:3px; height:38px; border-radius:9px;
+.counter-bars{display:grid; gap:6px; justify-items:start;}
+.counter-bars span{display:block; width:3px; height:14px; border-radius:9px;
   background:rgba(210,224,232,.22); transition:background .3s ease;}
-.counter-bars span.active{background:var(--green); box-shadow:0 0 18px rgba(168,237,120,.45);}
+.counter-bars span.active{height:26px; background:var(--green); box-shadow:0 0 14px rgba(168,237,120,.45);}
 
 /* ---- strip: premium tier control ---- */
 .strip{flex:0 0 auto; padding:0 24px; position:relative; z-index:3;}
-.tier-seg{display:flex; gap:6px; padding:6px; border-radius:20px; margin-top:2px;
-  border:1px solid rgba(255,255,255,.09);
-  background:linear-gradient(180deg,rgba(10,28,42,.72),rgba(6,20,32,.6));
-  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 14px 34px rgba(0,0,0,.3);}
-.tier-seg .chip{flex:1; min-height:64px; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:2px; border:0; border-radius:15px; background:transparent; color:#9fb0ba; transition:transform .15s ease, background .2s ease;}
-.tier-seg .chip .ic{display:grid; place-items:center; opacity:.9;}
-.tier-seg .chip b{font-family:var(--serif); font-weight:500; font-size:17px; line-height:1; color:inherit;}
-.tier-seg .chip small{font-size:8px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; opacity:.7;}
+.tier-seg{display:flex; gap:7px; padding:7px; border-radius:20px; margin-top:-34px; position:relative; z-index:4; overflow:hidden;
+  background:linear-gradient(115deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 42%,rgba(255,255,255,.05));
+  -webkit-backdrop-filter:blur(2.5px) saturate(145%) brightness(1.07);
+  backdrop-filter:blur(2.5px) saturate(145%) brightness(1.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34), inset 0 -1px 0 rgba(255,255,255,.07),
+             inset 1px 0 0 rgba(255,255,255,.10), 0 16px 36px rgba(0,0,0,.38);}
+.tier-seg::after{content:""; position:absolute; inset:-40% -20%; pointer-events:none;
+  background:linear-gradient(115deg,transparent 34%,rgba(255,255,255,.13) 46%,rgba(255,255,255,.02) 52%,transparent 62%);}
+.tier-seg .chip{flex:1; position:relative; z-index:1; min-height:78px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; border:0; border-radius:14px; background:transparent; color:#cdd6dc; padding:10px 4px 12px; transition:transform .15s ease, background .2s ease;}
+.tier-seg .chip .ic{display:grid; place-items:center; width:34px; height:34px; border-radius:11px;}
+#fAll .ic{background:linear-gradient(150deg,#fdf6e6,#e8d3a4); color:#5c4718; box-shadow:0 7px 16px rgba(217,173,105,.35), inset 0 1px 0 rgba(255,255,255,.9);}
+#fT1 .ic{background:linear-gradient(150deg,#f1cb8b,#c9963f); color:#3d2c0c; box-shadow:0 7px 16px rgba(201,150,63,.42), inset 0 1px 0 rgba(255,255,255,.55);}
+#fT2 .ic{background:linear-gradient(150deg,#9fe6f0,#3ba9b8); color:#0d3a41; box-shadow:0 7px 16px rgba(59,169,184,.4), inset 0 1px 0 rgba(255,255,255,.6);}
+.tier-seg .chip b{font-family:var(--serif); font-weight:500; font-size:19px; line-height:1; color:#f5f4ed;}
+.tier-seg .chip small{font-size:7.5px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:#cdd6dc; opacity:.85;}
 .tier-seg .chip:active{transform:scale(.96);}
-.tier-seg .chip.on{background:linear-gradient(180deg,#f7f1e4,#e7dcc4); color:#0d2130;
-  box-shadow:0 8px 22px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.8);}
-.tier-seg .chip.on small{opacity:.6;}
+.tier-seg .chip.on{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.30);}
+.tier-seg .chip.on::before{content:""; position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+  width:26px; height:2px; border-radius:2px; background:linear-gradient(90deg,transparent,#f1cb8b,transparent);}
 .strip-date{margin-top:8px; text-align:center; font-size:10px; letter-spacing:.08em; color:var(--faint);}
 .voice-note{margin-top:10px; font-size:11.5px; line-height:1.5; color:#d8ddd3; cursor:pointer;
   background:rgba(217,173,105,.1); border:1px solid rgba(217,173,105,.24); border-radius:12px; padding:9px 12px;
@@ -129,11 +138,32 @@ svg{display:block;}
 .voice-note.open{display:block; -webkit-line-clamp:unset; overflow:visible;}
 .voice-note b{color:var(--gold-2);}
 
+
+/* ---- liquid glass (clear, refractive) ---- */
+.title-row, .metrics, .post-panel, .dm-preview, .match-box{position:relative; border-radius:16px; overflow:hidden;
+  background:linear-gradient(115deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 42%,rgba(255,255,255,.05));
+  -webkit-backdrop-filter:blur(2.5px) saturate(145%) brightness(1.07);
+  backdrop-filter:blur(2.5px) saturate(145%) brightness(1.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 0 rgba(255,255,255,.06),
+             inset 1px 0 0 rgba(255,255,255,.09), inset -1px 0 0 rgba(255,255,255,.05),
+             0 14px 32px rgba(0,0,0,.34);}
+.title-row::after, .metrics::after, .post-panel::after{content:""; position:absolute; inset:-40% -20%; pointer-events:none;
+  background:linear-gradient(115deg,transparent 34%,rgba(255,255,255,.12) 46%,rgba(255,255,255,.02) 52%,transparent 62%);}
+@keyframes sail{0%{transform:translateX(-16px) rotate(-2deg);}50%{transform:translateX(16px) rotate(2.5deg);}100%{transform:translateX(-16px) rotate(-2deg);}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-2.5px);}}
+.sail-boat{position:absolute; right:28px; bottom:4px; z-index:2; pointer-events:none;}
+.sail-boat > div{animation:sail 9s ease-in-out infinite;}
+.sail-boat svg{animation:bob 3.2s ease-in-out infinite; display:block;}
+@media (prefers-reduced-motion:reduce){ .sail-boat > div, .sail-boat svg{animation:none;} }
+.post-panel{margin-top:8px; padding:11px 15px;}
+.post-panel .excerpt{margin:0;}
+.post-panel .more{margin-top:7px;}
+
 /* ---- content (swaps per lead) ---- */
-.content{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative; z-index:3;
+.content{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative; z-index:3; overscroll-behavior:contain; touch-action:pan-y;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,black 20px); mask-image:linear-gradient(180deg,transparent 0,black 20px);
-  padding:12px 24px 48px;}
-.title-row{display:flex; gap:14px; justify-content:space-between; align-items:flex-start; margin-top:6px;}
+  padding:8px 24px 28px;}
+.title-row{display:flex; gap:14px; justify-content:space-between; align-items:flex-start; margin-top:2px; padding:12px 15px;}
 .content h1{margin:0; font-family:var(--serif); font-weight:500; font-size:clamp(27px,7.4vw,34px);
   line-height:1.08; letter-spacing:-.01em;}
 .content h2{margin:8px 0 0; font-size:14.5px; font-weight:600; color:var(--text);}
@@ -145,27 +175,26 @@ svg{display:block;}
 .price-block span{display:block; margin-top:8px; color:#c3cbd1; font-size:11px;}
 
 /* ---- metrics strip (4 cells, hairline dividers — as the mockup) ---- */
-.metrics{margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr));
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:11px 0;}
+.metrics{margin-top:8px; display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr)); padding:10px 4px;}
 .metric{display:grid; justify-items:center; gap:4px; text-align:center; padding:0 4px;}
 .metric + .metric{border-left:1px solid var(--line);}
-.metric .mi{height:18px; color:#f2c778; display:flex; align-items:center;}
+.metric .mi{height:18px; color:#f5f4ed; display:flex; align-items:center;}
 .metric b{font-size:14px; font-weight:500; line-height:1.25; word-break:break-word;}
 .metric small{font-size:8.5px; color:var(--muted); letter-spacing:.02em;}
 
 /* ---- excerpt / tags ---- */
 .excerpt{font-size:13px; line-height:1.6; color:#c6cbd0; font-style:italic; margin:16px 0 0; white-space:pre-line;}
-.excerpt.clamped{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; white-space:normal;}
+.excerpt.clamped{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
 .more{display:block; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
   color:var(--gold-2); margin-top:6px;}
-.tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:13px;}
+.tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:7px;}
 .tags span{font-size:9px; font-weight:600; padding:7px 10px; border-radius:7px;
   background:rgba(75,104,124,.18); border:1px solid rgba(160,188,205,.1); color:#bdcad3;}
 .tags span:first-child{color:#a8e9a0; background:rgba(60,120,91,.16); border-color:rgba(168,237,120,.14);}
 .tags span.gold{color:var(--gold-2); background:rgba(217,173,105,.12); border-color:rgba(217,173,105,.3);}
 
 /* ---- Zach draft preview ---- */
-.dm-preview{margin-top:14px; width:100%; text-align:left; border-radius:14px; padding:11px 13px;
+.dm-preview{margin-top:10px; width:100%; text-align:left; border-radius:14px; padding:11px 13px;
   background:var(--green-dim); border:1px solid rgba(168,237,120,.2); transition:transform .15s ease;}
 .dm-preview:active{transform:scale(.985);}
 .dm-preview .t{display:flex; align-items:center; gap:6px; font-size:8.5px; font-weight:800;
@@ -175,9 +204,9 @@ svg{display:block;}
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
 
 /* ---- inventory match ---- */
-.match-box{margin-top:12px; border-radius:14px; overflow:hidden;
+.match-box{margin-top:8px; border-radius:14px; overflow:hidden;
   background:rgba(217,173,105,.08); border:1px solid rgba(217,173,105,.26);}
-.match-box > button{width:100%; display:flex; align-items:center; gap:8px; padding:11px 13px;
+.match-box > button{width:100%; display:flex; align-items:center; gap:8px; padding:9px 13px;
   font-size:9.5px; font-weight:800; letter-spacing:.14em; color:var(--gold-2); text-transform:uppercase;}
 .match-box > button em{font-style:normal; margin-left:auto; color:var(--faint); letter-spacing:.02em;
   font-size:10px; text-transform:none; font-weight:600;}
@@ -192,20 +221,23 @@ svg{display:block;}
 .inv-why{margin-top:6px; font-size:11px; color:#b9a988; font-style:italic;}
 
 /* ---- actions: X · send · circle ---- */
-.actions{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; justify-items:center; margin-top:18px;}
+.actions{display:flex; align-items:center; justify-content:center; gap:30px; margin-top:12px;}
 .action{display:grid; justify-items:center; gap:7px; color:#c7cbd0; font-size:10.5px;}
 .action .circ{width:50px; height:50px; border-radius:50%; display:grid; place-items:center;
   border:1px solid rgba(219,232,239,.15); background:rgba(16,37,51,.7); transition:transform .15s ease;}
 .action:active .circ{transform:scale(.92);}
-.action.del{color:#e2b4ae;}
+.action.del{color:#e2a49e;}
+.action.del .circ{border-color:rgba(226,164,158,.4); background:rgba(226,164,158,.07); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.14);}
 .action.ok{color:var(--green);}
 .action.ok .circ{border-color:rgba(168,237,120,.28); background:rgba(84,139,76,.14);}
-.send{width:72px; height:72px; border-radius:50%; display:grid; place-items:center; color:var(--green);
-  border:1px solid rgba(186,245,154,.4);
-  background:radial-gradient(circle at 40% 35%,rgba(149,236,116,.22),rgba(67,119,87,.17) 60%,rgba(8,28,35,.55));
-  box-shadow:0 0 28px rgba(144,237,107,.22); transition:transform .15s ease;}
+.send{width:70px; height:70px; border-radius:50%; display:grid; place-items:center; color:#3d2c0c;
+  border:0; background:linear-gradient(160deg,#f6d596,#cf9c4b);
+  box-shadow:0 14px 30px rgba(207,156,75,.4), inset 0 1.5px 0 rgba(255,255,255,.75); transition:transform .15s ease;}
 .send:active{transform:scale(.94);}
-.swipe-hint{text-align:center; color:var(--faint); font-size:10px; margin-top:14px; letter-spacing:.04em;}
+.send-col{display:grid; justify-items:center; gap:7px; font-size:10.5px; letter-spacing:.06em; color:var(--brand-warm);}
+.metric.mlink{background:none; border:0; font:inherit; cursor:pointer;}
+.metric.mlink:active{opacity:.75;}
+.swipe-hint{text-align:center; color:var(--faint); font-size:10px; margin-top:8px; letter-spacing:.04em;}
 
 /* ---- empty deck ---- */
 .empty-deck{height:100%; display:grid; align-content:center; justify-items:center; gap:12px; text-align:center; color:var(--muted);}
@@ -214,7 +246,7 @@ svg{display:block;}
 .empty-deck small{font-size:12.5px;}
 
 /* ---- card swap animations ---- */
-.card-stage{display:flex; flex-direction:column; flex:1; min-height:0;}
+.card-stage{display:flex; flex-direction:column; flex:1; min-height:0; touch-action:pan-y;}
 @media (prefers-reduced-motion:reduce){ .card-stage{transition:none !important;} }
 .card-stage.out-l{opacity:0; transform:translateX(-26px); transition:opacity .18s ease, transform .18s ease;}
 .card-stage.out-r{opacity:0; transform:translateX(26px); transition:opacity .18s ease, transform .18s ease;}
@@ -243,7 +275,7 @@ svg{display:block;}
   font-size:11.5px; font-weight:600; color:var(--muted); border:1px solid var(--line);
   background:rgba(16,37,51,.5); transition:transform .15s ease;}
 .chip:active{transform:scale(.96);}
-.chip.on{color:#0e2431; background:var(--green); border-color:var(--green);}
+.chips .chip.on{color:#0e2431; background:var(--green); border-color:var(--green);}
 .chip b{font-size:10.5px; opacity:.75;}
 .lead-row{width:100%; display:flex; align-items:center; gap:11px; text-align:left; padding:11px 4px;
   border-top:1px solid var(--line);}
@@ -330,6 +362,11 @@ details.handled summary .hn{margin-left:auto; font-size:10.5px; font-weight:800;
             <i aria-hidden="true"></i>
           </button>
         </header>
+        <div class="sail-boat" aria-hidden="true"><div><svg width="46" height="24" viewBox="0 0 46 24" fill="none">
+          <path d="M16 9V6.6c0-.8.6-1.4 1.4-1.4h5.4c1.6 0 3.1.8 4.1 2l1 1.4" stroke="rgba(246,242,232,.9)" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M7 11h27c-1 3.4-3.6 5.5-7.3 6H13.5c-3.4-.6-5.5-2.8-6.5-6Z" stroke="rgba(246,242,232,.9)" stroke-width="1.1" stroke-linejoin="round" fill="rgba(255,255,255,.06)"/>
+          <path d="M4 21.4c2.8-1.3 5.6-1.3 8.4 0 2.8 1.3 5.6 1.3 8.4 0 2.8-1.3 5.6-1.3 8.4 0 2.8 1.3 5.6 1.3 8.4 0" stroke="rgba(246,242,232,.4)" stroke-width="1" stroke-linecap="round"/>
+        </svg></div></div>
         <div class="counter" aria-label="Position in deck">
           <b id="cntNow">01</b>
           <div class="counter-bars" id="cntBars"></div>
@@ -377,6 +414,16 @@ details.handled summary .hn{margin-left:auto; font-size:10.5px; font-weight:800;
 
 
     <!-- draft sheet -->
+    <div class="sheet" id="matchSheet" aria-hidden="true">
+      <div class="backdrop" data-close></div>
+      <div class="panel" role="dialog" aria-label="Matched inventory">
+        <div class="sheet-head"><b style="font-family:var(--serif); font-weight:500; color:var(--gold-2)">We have this boat</b><button class="x" data-close aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+        <div id="matchList"></div>
+        <p class="fineprint">Matched from Yacht Hampton inventory. Mention it in the DM if it fits the conversation.</p>
+      </div>
+    </div>
+
+
     <div class="sheet" id="draftSheet" aria-hidden="true">
       <div class="backdrop" data-close></div>
       <div class="panel" role="dialog" aria-label="Zach draft">
@@ -411,7 +458,7 @@ const VAPID_PUBLIC = "BJQGvulSdMUGhiyug1z827ALZlxGmDY3_aOdkmFfPVBP4s_mMhsM0zcnPa
 // BUMP THIS on every index.html deploy — wake-ups compare it against the server
 // and self-reload when it changes (iOS thaws frozen snapshots instead of
 // relaunching, so this is the only reliable auto-update path).
-const APP_VERSION = "6.0";
+const APP_VERSION = "6.1";
 // ============================================
 
 // Water/boat artwork for lead cards (cycled by lead id; a lead may carry its
@@ -678,31 +725,19 @@ function leadContent(l){
       </div>
     </div>
     <div class="metrics">
-      <div class="metric"><span class="mi"><svg ${MI}><path d="M12 4v13m0 0-3.5-3.5M12 17l3.5-3.5M5 20h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>${leadTier(l) === "tier1" ? "Tier 1" : "Tier 2"}</b><small>${leadTier(l) === "tier1" ? "priority" : "watch"}</small></div>
-      <div class="metric"><span class="mi"><svg ${MI}><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><b>${esc(l.when || "—")}</b><small>posted</small></div>
+      <div class="metric"><span class="mi"><svg ${MI}><path d="M12 6.4a1.9 1.9 0 1 0 0-3.8 1.9 1.9 0 0 0 0 3.8Zm0 0V21m0 0c-4.3-.6-7.2-2.9-7.9-6.8l2.4.9M12 21c4.3-.6 7.2-2.9 7.9-6.8l-2.4.9M8.6 9.2h6.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>${leadTier(l) === "tier1" ? "Tier 1" : "Tier 2"}</b></div>
+      <div class="metric"><span class="mi"><svg ${MI}><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="m15.1 8.9-1.7 4.5-4.5 1.7 1.7-4.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span><b>${esc(l.when || "\u2014")}</b><small>posted</small></div>
+      ${mm ? `<button type="button" class="metric mlink" id="mMatch" aria-label="View matched inventory"><span class="mi"><svg ${MI}><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Inv. match</b><small>tap to view</small></button>` : ""}
     </div>
-    <p class="excerpt${longPost ? " clamped" : ""}">${esc(l.post)}</p>
-    ${longPost ? `<button class="more post-more">Read full post</button>` : ""}
-    <div class="tags">
-      <span class="gold">Zach\u2019s voice</span>
-      ${mm ? `<span>Inventory match</span>` : ""}
-    </div>
-    ${mm ? `
-    <div class="match-box" id="matchBox">
-      <button type="button" id="matchToggle">We have this boat<em>tap to view</em></button>
-      <div class="match-body">
-        ${mm.boats.slice(0,3).map(b => `<div class="inv-row"><span class="b">${esc(b.label)}</span>${b.price ? `<span class="p">${esc(b.price)}</span>` : ""}<span class="w">${esc(b.loc || "")}</span></div>`).join("")}
-        ${mm.why ? `<div class="inv-why">${esc(mm.why)}</div>` : ""}
-      </div>
-    </div>` : ""}
+    <div class="post-panel"><p class="excerpt${longPost ? " clamped" : ""}">${esc(l.post)}</p>
+    ${longPost ? `<button class="more post-more">Read full post</button>` : ""}</div>
     <button class="dm-preview" id="dmPreview" aria-label="Open the suggested draft">
       <span class="t">Zach draft <em>tap to review</em></span>
       <p>${esc(l.dm)}</p>
     </button>
     <div class="actions">
-      <button class="action del" id="actDel"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Skip</button>
-      <button class="send" id="actSend" aria-label="Open the draft to send"><svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M21 4 3 11l7 3 2 6 3.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m10 14 11-10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button class="action ok" id="actOk"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      <button class="action del" id="actDel"><span class="circ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13a1 1 0 0 0 1 .9h8a1 1 0 0 0 1-.9L18 7M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Delete</button>
+      <div class="send-col"><button class="send" id="actSend" aria-label="Open the draft to send"><svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M21 4 3 11l7 3 2 6 3.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m10 14 11-10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><span>Copy &amp; DM</span></div>
     </div>
     <div class="swipe-hint">Swipe for the next lead</div>`;
 }
@@ -726,8 +761,7 @@ function nlContent(n){
     </div>
     <div class="actions">
       <button class="action del" id="nlDismiss"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Dismiss</button>
-      <button class="send" id="nlView" aria-label="View listing" style="color:var(--cyan);border-color:rgba(103,211,223,.4);background:radial-gradient(circle at 40% 35%,rgba(103,211,223,.22),rgba(38,98,112,.17) 60%,rgba(8,28,35,.55));box-shadow:0 0 28px rgba(103,211,223,.2)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M14 5h5v5m0-5-8 8M19 13.5V18a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18V7a1.5 1.5 0 0 1 1.5-1.5H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <span></span>
+      <div class="send-col" style="color:var(--cyan)"><button class="send" id="nlView" aria-label="View listing" style="color:var(--cyan);border:1px solid rgba(103,211,223,.45);background:radial-gradient(circle at 40% 35%,rgba(103,211,223,.2),rgba(38,98,112,.16) 60%,rgba(8,28,35,.6));box-shadow:0 10px 24px rgba(9,40,48,.5), inset 0 1px 0 rgba(255,255,255,.22)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M14 5h5v5m0-5-8 8M19 13.5V18a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18V7a1.5 1.5 0 0 1 1.5-1.5H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span>View listing</span></div>
     </div>
     <div class="swipe-hint">Swipe for the next lead</div>`;
 }
@@ -774,12 +808,11 @@ function renderDeck(){
       const open = p.classList.toggle("clamped");
       postMore.textContent = open ? "Read full post" : "Show less";
     });
-    const mBox = content.querySelector("#matchBox");
-    if (mBox) mBox.querySelector("#matchToggle").addEventListener("click", () => mBox.classList.toggle("open"));
+    const mM = content.querySelector("#mMatch");
+    if (mM) mM.addEventListener("click", () => openMatchSheet(l));
     content.querySelector("#dmPreview").addEventListener("click", () => openDraft(l));
     content.querySelector("#actSend").addEventListener("click", () => openDraft(l));
     content.querySelector("#actDel").addEventListener("click", () => settle(l.id, "deleted"));
-    content.querySelector("#actOk").addEventListener("click", () => settle(l.id, "contacted"));
   }
 
   // counter: 01 / bars / 05
@@ -788,12 +821,11 @@ function renderDeck(){
   document.getElementById("cntAll").textContent = String(total).padStart(2, "0");
   const bars = document.getElementById("cntBars");
   bars.innerHTML = "";
-  const nBars = Math.min(total, 8);
+  const nBars = Math.min(total, 3);
   const active = total <= 1 ? 0 : (total <= nBars ? deckIndex : Math.round(deckIndex / (total - 1) * (nBars - 1)));
   for (let i = 0; i < nBars; i++){
     const s = document.createElement("span");
     if (i === active) s.className = "active";
-    if (total > nBars) s.style.height = "20px";
     bars.appendChild(s);
   }
   updateCounts();
@@ -827,7 +859,7 @@ function settle(id, action){
     stage.classList.add("settled");
     setTimeout(() => { stage.classList.remove("settled"); done(); }, 240);
   } else done();
-  toast(action === "deleted" ? "Lead skipped" : "Marked contacted");
+  toast(action === "deleted" ? "Lead deleted" : "Marked contacted");
   // Undo lives in More → Recently handled.
 }
 
@@ -865,7 +897,7 @@ function updateCounts(){
   const n2 = live.length - n1;
   const set = (id,v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set("heroNum", live.length + nl); // matches the deck counter (leads + listings)
-  set("nT1", n1); set("nT2", n2); set("fAllN", live.length);
+  set("nT1", n1); set("nT2", n2); set("fAllN", live.length + nl); // On deck = everything in the deck
   document.title = (n1 ? "(" + n1 + ") " : "") + "Boat Lead Desk";
   if ("setAppBadge" in navigator) {
     if (n1) navigator.setAppBadge(n1).catch(()=>{}); else navigator.clearAppBadge && navigator.clearAppBadge().catch(()=>{});
@@ -873,6 +905,15 @@ function updateCounts(){
 }
 
 // ---- draft sheet: review (and edit) Zach's draft, then copy + open the post ----
+function openMatchSheet(l){
+  const mm = l.match || {};
+  const rows = (mm.boats || []).slice(0, 4).map(x =>
+    `<div class="inv-row"><span class="b">${esc(x.label)}</span>${x.price ? `<span class="p">${esc(x.price)}</span>` : ""}<span class="w">${esc(x.loc || "")}</span></div>`).join("");
+  document.getElementById("matchList").innerHTML =
+    rows + (mm.why ? `<div class="inv-why">${esc(mm.why)}</div>` : "");
+  openSheet("matchSheet");
+}
+
 function openDraft(l){
   draftTarget = l;
   document.getElementById("draftFor").textContent = l.name + (l.group ? " · " + l.group : "");
@@ -917,7 +958,7 @@ function openLeadsSheet(){
     const isLead = it.type === "lead";
     b.innerHTML = `<span style="min-width:0">
         <span class="nm" style="display:block">${esc(isLead ? it.l.name : it.n.label)}</span>
-        <span class="ct" style="display:block">${esc(isLead ? (it.l.cat || "") : "New listing")}</span>
+        <span class="ct" style="display:block">${esc(isLead ? (it.l.group || "") : "New listing")}</span>
       </span>
       <span class="tier ${isLead && leadTier(it.l) === "tier1" ? "t1" : "t2"}">${isLead ? (leadTier(it.l) === "tier1" ? "TIER 1" : "TIER 2") : "LISTING"}</span>`;
     b.addEventListener("click", () => { deckIndex = i; renderDeck(); closeSheets(); });
@@ -947,18 +988,23 @@ document.querySelectorAll(".chip[data-filter]").forEach(c =>
 // ---- swipe: left = next, right = back (mouse + touch) ----
 (function swipe(){
   const stage = document.getElementById("cardStage");
-  let sx = null, sy = null;
+  let sx = null, sy = null, t0 = 0, pid = null;
   stage.addEventListener("pointerdown", e => {
     if (e.target.closest("button, a, textarea, input, select, .sheet")) { sx = null; return; }
-    sx = e.clientX; sy = e.clientY;
-  });
-  stage.addEventListener("pointerup", e => {
-    if (sx == null) return;
-    const dx = e.clientX - sx, dy = e.clientY - sy;
+    sx = e.clientX; sy = e.clientY; t0 = performance.now(); pid = e.pointerId;
+  }, {passive:true});
+  function finish(e){
+    if (sx == null || e.pointerId !== pid) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy, dt = performance.now() - t0;
     sx = sy = null;
-    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    const flick = dt < 300 && Math.abs(dx) >= 32;   // quick flick counts
+    const drag  = Math.abs(dx) >= 48;               // or a deliberate drag
+    if (!(flick || drag)) return;
+    if (Math.abs(dx) <= Math.abs(dy)) return;       // mostly vertical = scrolling, not a swipe
     go(dx < 0 ? 1 : -1);
-  });
+  }
+  stage.addEventListener("pointerup", finish, {passive:true});
+  stage.addEventListener("pointercancel", () => { sx = sy = null; }, {passive:true});
 })();
 
 // keyboard arrows (desktop)
@@ -1000,7 +1046,7 @@ function fireTierOneAlert(leads){
   if (navigator.vibrate) navigator.vibrate([130, 70, 130]);
   if ("Notification" in window && Notification.permission === "granted" && navigator.serviceWorker) {
     navigator.serviceWorker.ready.then(reg => reg.showNotification("New Tier 1 lead", {
-      body: leads.map(l => l.name + " — " + l.cat).join("\n"),
+      body: leads.map(l => l.name + (l.group ? " — " + l.group : "")).join("\n"),
       icon: "icon-192.png", badge: "icon-192.png", tag: "bld-t1"
     })).catch(()=>{});
   }
