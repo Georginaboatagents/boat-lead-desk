@@ -11,384 +11,419 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Boat Leads">
-<meta name="theme-color" content="#9478F3">
+<meta name="theme-color" content="#03111d">
+<meta name="description" content="Yacht Hampton International — Boat Lead Desk">
 <style>
-/* ============ VERSION 3 DESIGN SYSTEM ============
-   Soft mid-purple canvas (cloned from approved inspiration) ·
-   white floating cards · purple/teal tier cards w/ 3D icon chips ·
-   icon-first, minimal text, generous negative space.
-   Spacing: 4 8 12 16 20 24 32 44 60 · display type ui-rounded     */
+/* ============ YACHT HAMPTON — SWIPE DECK (v5) ============
+   Faithful clone of the approved mockup composition:
+   one lead at a time · full-bleed yacht photo behind the glass ·
+   01/bars/05 counter · serif title + price chip · 4-cell metrics
+   strip · tag pills · X / green send / circle actions · bottom nav.
+   The live PWA's functions are wired underneath.                  */
 :root{
-  --card:#FFFFFF; --ink:#221A45; --ink2:#6B6590; --ink3:#9B96B8;
-  --violet:#6C4CF1; --violet-deep:#5433DB; --violet-soft:#F1EDFE;
-  --p1:#B292FA; --p2:#8258EC;          /* tier 1 */
-  --g1:#5FE3C6; --g2:#2BBFA4;          /* tier 2 */
-  --t1a:#FF7A47; --t1b:#FFA245;        /* alert coral */
-  --danger:#D6486B; --danger-soft:#FDF0F3;
-  --r:26px;
+  --navy-950:#03111d; --navy-900:#061725; --navy-850:#0a1d2c;
+  --glass:rgba(13,34,49,.72);
+  --line:rgba(196,221,236,.16); --line-strong:rgba(196,221,236,.28);
+  --text:#f5f4ed; --muted:#a8b2bb; --faint:#7e8992;
+  --gold:#d9ad69; --gold-2:#f1cb8b; --brand-warm:#f6d596;
+  --cyan:#67d3df; --cyan-soft:#c3f1f3;
+  --green:#a8ed78; --green-dim:rgba(168,237,120,.14);
+  --danger:#e2a49e;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-/* decorations poke past the screen edge — clip them so the page can't pan sideways */
-html, body{overflow-x:hidden; max-width:100vw;}
-html{scroll-behavior:smooth;}
-@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+html,body{margin:0; min-height:100%;}
 body{
-  margin:0; color:#fff;
-  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-family:var(--sans); color:var(--text); color-scheme:dark;
   background:
-    radial-gradient(80% 30% at 90% 0%, rgba(255,255,255,.2), transparent 60%),
-    radial-gradient(60% 25% at 5% 45%, rgba(255,255,255,.1), transparent 70%),
-    linear-gradient(170deg, #9478F3 0%, #815FEA 48%, #7351E2 100%);
-  background-attachment:fixed;
-  min-height:100vh;
-  padding:calc(20px + env(safe-area-inset-top)) 22px calc(80px + env(safe-area-inset-bottom));
+    radial-gradient(circle at 72% 4%, rgba(48,113,129,.18), transparent 27%),
+    radial-gradient(circle at 12% 30%, rgba(157,110,48,.12), transparent 24%),
+    linear-gradient(135deg,#020a11,#04121f 60%,#020b12);
 }
-.wrap{max-width:560px; margin:0 auto; position:relative; z-index:1;}
+button,textarea{font:inherit; color:inherit;}
+button{border:0; background:none; cursor:pointer; padding:0;}
+svg{display:block;}
+::selection{background:rgba(217,173,105,.35);}
+:focus-visible{outline:2px solid rgba(241,203,139,.75); outline-offset:2px;}
 
-/* ---- decorations ---- */
-.deco{position:absolute; color:rgba(255,255,255,.4); font-weight:300; pointer-events:none; z-index:0;}
-.orb{position:absolute; border-radius:50%; filter:blur(30px); pointer-events:none; z-index:0;}
-.mini{position:absolute; border-radius:12px; display:flex; align-items:center; justify-content:center;
-  box-shadow:0 10px 24px rgba(60,30,150,.3); pointer-events:none; z-index:0;}
-.mini.m1{width:36px;height:36px; background:linear-gradient(150deg,#FFB68A,#FF8A65); transform:rotate(-8deg);}
-.mini.m2{width:32px;height:32px; background:linear-gradient(150deg,#6FE6CC,#33C4AC); transform:rotate(10deg);}
-.mini.m3{width:30px;height:30px; background:linear-gradient(150deg,#FFD98A,#FFB84D); transform:rotate(-12deg);}
+/* ---- stage: dark backdrop, phone centered (desktop gets a rail) ---- */
+.stage{min-height:100vh; min-height:100dvh; display:flex; align-items:center; justify-content:center; gap:30px; padding:0;}
+.phone{position:relative; width:100%; height:100vh; height:100dvh; overflow:hidden;
+  background:linear-gradient(180deg,#061826,#03121e 72%);
+  display:flex; flex-direction:column;}
+@media (min-width:900px){
+  .stage{padding:36px;}
+  .phone{width:430px; height:min(900px,94vh); flex:0 0 auto; border-radius:40px;
+    border:1px solid rgba(194,218,231,.24); box-shadow:0 40px 100px rgba(0,0,0,.5);}
+}
 
-/* ---- scroll progress ---- */
-#progress{position:fixed; top:0; left:0; height:3px; width:0%;
-  background:linear-gradient(90deg,#5FE3C6,#FFB35c); z-index:60; border-radius:0 3px 3px 0;}
+/* ---- desktop rail ---- */
+.rail{display:none;}
+@media (min-width:900px){
+  .rail{display:flex; flex-direction:column; width:240px; align-self:stretch; max-height:900px;
+    padding:30px 26px; border:1px solid rgba(194,218,231,.18); border-radius:30px;
+    background:linear-gradient(180deg,rgba(12,31,46,.86),rgba(5,19,30,.76));
+    box-shadow:0 26px 70px rgba(0,0,0,.28);}
+  .rail-spacer{flex:1;}
+  .rail-copy span{font-family:var(--serif); font-size:24px; color:var(--text);}
+  .rail-copy b{display:block; font-family:var(--serif); font-weight:400; font-size:72px; line-height:1.05;
+    color:var(--gold-2);}
+  .rail-copy small{color:var(--muted); font-size:12.5px;}
+  .rail-controls{display:flex; gap:9px; margin-top:26px;}
+  .rail-controls button{width:46px; height:46px; border-radius:14px; display:grid; place-items:center;
+    border:1px solid var(--line); background:rgba(5,20,31,.45); color:var(--text); transition:transform .15s ease;}
+  .rail-controls button:active{transform:scale(.93);}
+}
 
-/* ---- header ---- */
-header{display:flex; align-items:center; gap:11px; position:relative; z-index:1;}
-.logo{width:40px; height:40px; border-radius:13px; background:rgba(255,255,255,.2); flex:0 0 auto;
-  border:1px solid rgba(255,255,255,.32); display:flex; align-items:center; justify-content:center;
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);}
-h1{font-family:ui-rounded,-apple-system,BlinkMacSystemFont,sans-serif; font-size:20px; font-weight:800;
-  letter-spacing:-.02em; margin:0;}
-.hdr-sub{font-size:11.5px; color:rgba(255,255,255,.68); margin-top:1px; display:flex; align-items:center; gap:5px;}
-.hdr-sub .dot{width:6px;height:6px;border-radius:50%;background:#4FF0CC;display:inline-block; flex:0 0 auto;}
-.hdr-sub.off .dot{background:rgba(255,255,255,.45);}
-.bell{margin-left:auto; width:40px; height:40px; border-radius:13px; background:rgba(255,255,255,.2);
-  border:1px solid rgba(255,255,255,.32); display:flex; align-items:center; justify-content:center;
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); cursor:pointer; color:#fff; flex:0 0 auto;}
-.bell:active{transform:scale(.94);}
+/* ---- brand ---- */
+.brand{display:flex; align-items:center; gap:10px;}
+.brand-text strong{display:block; font-family:var(--serif); font-weight:500; font-size:11.5px;
+  letter-spacing:.17em; color:#F6F2E8; white-space:nowrap;}
+.brand-text small{display:block; margin-top:3px; font-size:6.5px; letter-spacing:.34em; color:#e7e5df;
+  text-transform:uppercase; opacity:.85;}
+.icon-btn{width:44px; height:44px; border-radius:14px; flex:0 0 auto; display:grid; place-items:center;
+  position:relative; color:#eef2ee; border:1px solid rgba(255,255,255,.13); background:rgba(5,20,31,.48);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:transform .15s ease;}
+.icon-btn:active{transform:scale(.93);}
+.icon-btn i{position:absolute; right:9px; top:8px; width:7px; height:7px; border-radius:50%;
+  background:var(--green); box-shadow:0 0 0 3px rgba(137,223,102,.12);}
 
-/* ---- hero ---- */
-.hero{display:flex; align-items:center; margin:40px 0 6px; position:relative;}
-.hero-num{font-family:ui-rounded,-apple-system,sans-serif; font-size:clamp(64px,20vw,88px); font-weight:800;
-  line-height:.9; letter-spacing:-.05em; text-shadow:0 10px 36px rgba(50,20,140,.3);}
-.hero-lbl{font-size:15px; color:rgba(255,255,255,.85); font-weight:600; margin-top:10px;}
-.hero-date{font-size:11.5px; color:rgba(255,255,255,.55); margin-top:5px;}
-.hero-art{margin-left:auto; width:min(180px,46vw); height:150px; position:relative; flex:0 0 auto;}
-.hero-art svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
-.boat-float{animation:bob 5s ease-in-out infinite; transform-origin:50% 60%;}
-.wave-drift{animation:drift 7s ease-in-out infinite;}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(-1.6deg)}}
-@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(-7px)}}
-@media (prefers-reduced-motion:reduce){ .boat-float,.wave-drift{animation:none;} }
+/* ---- hero: yacht photo full-bleed behind the glass ---- */
+.hero{position:relative; flex:0 0 auto; height:46%; min-height:300px; max-height:440px;
+  background-size:cover; background-position:center 38%; background-color:#04121d;}
+.hero-shade{position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(4,16,26,.14) 22%,rgba(4,17,28,.28) 56%,#061725 100%),
+             linear-gradient(90deg,rgba(4,13,21,.3),transparent 45%);}
+.topbar{position:absolute; z-index:2; top:0; left:0; right:0;
+  padding:calc(20px + env(safe-area-inset-top)) 24px 0;
+  display:flex; align-items:flex-start; justify-content:space-between;}
+.counter{position:absolute; z-index:2; left:24px; bottom:20px; display:grid; gap:9px;
+  color:#d6dde3; font-size:10px; font-weight:600;}
+.counter b{font-weight:600; letter-spacing:.08em;}
+.counter-bars{display:grid; gap:7px; justify-items:start;}
+.counter-bars span{display:block; width:3px; height:38px; border-radius:9px;
+  background:rgba(210,224,232,.22); transition:background .3s ease;}
+.counter-bars span.active{background:var(--green); box-shadow:0 0 18px rgba(168,237,120,.45);}
 
-/* ---- tier cards ---- */
-.tiles{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:40px;}
-.tile{border-radius:var(--r); padding:22px 16px 20px; color:#fff; position:relative; overflow:hidden;
-  text-align:center; border:none; font:inherit; cursor:pointer; transition:transform .18s ease;}
-.tile:active{transform:scale(.97);}
-.tile.t1{background:linear-gradient(160deg,var(--p1),var(--p2)); box-shadow:0 20px 44px rgba(85,45,200,.42);}
-.tile.t2{background:linear-gradient(160deg,var(--g1),var(--g2)); box-shadow:0 20px 44px rgba(18,150,125,.38);}
-.tile .ic{width:96px; height:96px; border-radius:30px; display:flex; align-items:center;
-  justify-content:center; margin:0 auto 16px; position:relative;
-  box-shadow:0 18px 34px rgba(40,15,110,.34), inset 0 3px 5px rgba(255,255,255,.75);}
-.tile.t1 .ic{background:linear-gradient(160deg,#FFD9A4 0%,#FFB466 55%,#FF9847 100%);}
-.tile.t2 .ic{background:linear-gradient(160deg,#F3EDFF 0%,#DFD2FF 55%,#C7B2FF 100%);}
-.tile .n{font-family:ui-rounded,-apple-system,sans-serif; font-size:46px; font-weight:800; line-height:1;
-  letter-spacing:-.04em;}
-.tile .l{font-size:10.5px; font-weight:800; letter-spacing:.16em; opacity:.9; margin-top:7px;}
-.tile .shine{position:absolute; top:-30px; right:-30px; width:110px; height:110px; border-radius:50%;
-  background:rgba(255,255,255,.16); filter:blur(2px);}
+/* ---- strip: premium tier control ---- */
+.strip{flex:0 0 auto; padding:0 24px; position:relative; z-index:3;}
+.tier-seg{display:flex; gap:6px; padding:6px; border-radius:20px; margin-top:2px;
+  border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg,rgba(10,28,42,.72),rgba(6,20,32,.6));
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 14px 34px rgba(0,0,0,.3);}
+.tier-seg .chip{flex:1; min-height:64px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; border:0; border-radius:15px; background:transparent; color:#9fb0ba; transition:transform .15s ease, background .2s ease;}
+.tier-seg .chip .ic{display:grid; place-items:center; opacity:.9;}
+.tier-seg .chip b{font-family:var(--serif); font-weight:500; font-size:17px; line-height:1; color:inherit;}
+.tier-seg .chip small{font-size:8px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; opacity:.7;}
+.tier-seg .chip:active{transform:scale(.96);}
+.tier-seg .chip.on{background:linear-gradient(180deg,#f7f1e4,#e7dcc4); color:#0d2130;
+  box-shadow:0 8px 22px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.8);}
+.tier-seg .chip.on small{opacity:.6;}
+.strip-date{margin-top:8px; text-align:center; font-size:10px; letter-spacing:.08em; color:var(--faint);}
+.voice-note{margin-top:10px; font-size:11.5px; line-height:1.5; color:#d8ddd3; cursor:pointer;
+  background:rgba(217,173,105,.1); border:1px solid rgba(217,173,105,.24); border-radius:12px; padding:9px 12px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.voice-note.open{display:block; -webkit-line-clamp:unset; overflow:visible;}
+.voice-note b{color:var(--gold-2);}
 
-/* ---- voice note ---- */
-.voice-note{margin-top:24px; border-radius:18px; padding:13px 16px;
-  background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
-  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  color:rgba(255,255,255,.92); font-size:13px; line-height:1.5;}
-.voice-note b{color:#fff;}
+/* ---- content (swaps per lead) ---- */
+.content{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative; z-index:3;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,black 20px); mask-image:linear-gradient(180deg,transparent 0,black 20px);
+  padding:12px 24px 48px;}
+.title-row{display:flex; gap:14px; justify-content:space-between; align-items:flex-start; margin-top:6px;}
+.content h1{margin:0; font-family:var(--serif); font-weight:500; font-size:clamp(27px,7.4vw,34px);
+  line-height:1.08; letter-spacing:-.01em;}
+.content h2{margin:8px 0 0; font-size:14.5px; font-weight:600; color:var(--text);}
+.source{margin:4px 0 0; color:var(--muted); font-size:12.5px;}
+.price-block{text-align:right; flex:0 0 auto; max-width:46%;}
+.price-block strong{display:inline-block; color:var(--cyan-soft); font-size:11.5px; font-weight:600;
+  line-height:1.4; white-space:normal; background:rgba(45,112,126,.18); border:1px solid rgba(93,175,188,.2);
+  padding:7px 10px; border-radius:12px;}
+.price-block span{display:block; margin-top:8px; color:#c3cbd1; font-size:11px;}
 
-/* ---- section heads ---- */
-.sec{display:flex; align-items:center; gap:11px; margin:48px 2px 6px;}
-.sec .ic{width:34px; height:34px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
-.sec.t1 .ic{background:linear-gradient(160deg,var(--p1),var(--p2)); box-shadow:0 8px 18px rgba(85,45,200,.45);}
-.sec.t2 .ic{background:linear-gradient(160deg,var(--g1),var(--g2)); box-shadow:0 8px 18px rgba(18,150,125,.4);}
-.sec h2{font-family:ui-rounded,-apple-system,sans-serif; font-size:21px; font-weight:800; margin:0; letter-spacing:-.02em;}
-.sec .n{margin-left:auto; font-family:ui-rounded,-apple-system,sans-serif; font-size:21px; font-weight:800;
-  color:rgba(255,255,255,.6);}
+/* ---- metrics strip (4 cells, hairline dividers — as the mockup) ---- */
+.metrics{margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(0,1fr));
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:11px 0;}
+.metric{display:grid; justify-items:center; gap:4px; text-align:center; padding:0 4px;}
+.metric + .metric{border-left:1px solid var(--line);}
+.metric .mi{height:18px; color:#f2c778; display:flex; align-items:center;}
+.metric b{font-size:14px; font-weight:500; line-height:1.25; word-break:break-word;}
+.metric small{font-size:8.5px; color:var(--muted); letter-spacing:.02em;}
 
-/* ---- lead cards ---- */
-.card{background:var(--card); color:var(--ink); border-radius:var(--r); padding:22px 20px 18px;
-  margin-top:18px; box-shadow:0 22px 50px rgba(58,28,150,.3); position:relative;
-  transition:transform .3s ease, opacity .3s ease;}
-.card.leaving{opacity:0; transform:translateX(40px) scale(.96);}
-.reveal{opacity:0; transform:translateY(18px);}
-.reveal.in{opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease;}
-@media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none;} .card{transition:none;} }
-.row1{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
-.catic{width:38px; height:38px; border-radius:13px; display:flex; align-items:center; justify-content:center;
-  flex:0 0 auto; color:#fff;}
-.val{font-size:12px; font-weight:800; color:var(--violet); background:var(--violet-soft);
-  border-radius:9px; padding:5px 11px;}
-.when{margin-left:auto; font-size:12px; color:var(--ink3); font-weight:600; flex:0 0 auto;}
-.who{margin:16px 0 2px; font-size:19px; font-weight:800; letter-spacing:-.02em;}
-.grp{font-size:12.5px; color:var(--ink3); font-weight:600;}
-.post{margin:14px 0 0; font-size:13.5px; font-style:italic; color:#5A5480; line-height:1.5; white-space:pre-line;}
-.post.clamped{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
-  white-space:normal;}
-.more{font:inherit; font-size:12px; font-weight:800; color:var(--violet); margin-top:5px;
-  background:none; border:none; padding:4px 0; cursor:pointer; display:block;}
-.dm{margin-top:16px; background:#F8F6FF; border-radius:16px; padding:13px 15px;}
-.dm-head{display:flex; align-items:center; margin-bottom:7px;}
-.dm-head .t{font-size:9.5px; font-weight:800; letter-spacing:.14em; color:var(--ink3);}
-.dm-head .v{margin-left:auto; font-size:10.5px; font-weight:800; color:#12A08A; background:#E2F7F2;
-  border-radius:12px; padding:2px 9px;}
-.dm-body{font-size:13.5px; color:#3A3363; white-space:pre-line; line-height:1.5;}
+/* ---- excerpt / tags ---- */
+.excerpt{font-size:13px; line-height:1.6; color:#c6cbd0; font-style:italic; margin:16px 0 0; white-space:pre-line;}
+.excerpt.clamped{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; white-space:normal;}
+.more{display:block; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--gold-2); margin-top:6px;}
+.tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:13px;}
+.tags span{font-size:9px; font-weight:600; padding:7px 10px; border-radius:7px;
+  background:rgba(75,104,124,.18); border:1px solid rgba(160,188,205,.1); color:#bdcad3;}
+.tags span:first-child{color:#a8e9a0; background:rgba(60,120,91,.16); border-color:rgba(168,237,120,.14);}
+.tags span.gold{color:var(--gold-2); background:rgba(217,173,105,.12); border-color:rgba(217,173,105,.3);}
+
+/* ---- Zach draft preview ---- */
+.dm-preview{margin-top:14px; width:100%; text-align:left; border-radius:14px; padding:11px 13px;
+  background:var(--green-dim); border:1px solid rgba(168,237,120,.2); transition:transform .15s ease;}
+.dm-preview:active{transform:scale(.985);}
+.dm-preview .t{display:flex; align-items:center; gap:6px; font-size:8.5px; font-weight:800;
+  letter-spacing:.16em; color:var(--green); text-transform:uppercase;}
+.dm-preview .t em{font-style:normal; margin-left:auto; color:var(--faint); letter-spacing:.04em;}
+.dm-preview p{margin:6px 0 0; font-size:12.5px; line-height:1.55; color:#d9e4d2; font-style:italic;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
 
 /* ---- inventory match ---- */
-.card.match{box-shadow:0 22px 50px rgba(58,28,150,.3), 0 0 0 1.5px rgba(255,77,94,.5);}
-.card.match::before{content:""; position:absolute; left:0; top:16px; bottom:16px; width:5px;
-  border-radius:0 5px 5px 0; background:linear-gradient(180deg,#FF6B6B,#E8384F);}
-.match-tag{display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:800;
-  letter-spacing:.12em; color:#fff; background:linear-gradient(120deg,#FF5A5F,#E8384F);
-  border-radius:9px; padding:5px 11px; box-shadow:0 6px 14px rgba(232,56,79,.35);}
-.inv{margin-top:14px; background:#FFF5F5; border:1px solid #FFE0E3; border-radius:16px; padding:12px 15px;}
-.inv-head{font-size:9.5px; font-weight:800; letter-spacing:.14em; color:#C22B3F; margin-bottom:8px;}
-.inv-row{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; padding:5px 0; font-size:13px;}
-.inv-row + .inv-row{border-top:1px dashed #FFE0E3;}
-.inv-row .b{font-weight:800; color:#2E2650;}
-.inv-row .p{font-weight:800; color:#C22B3F;}
-.inv-row .w{margin-left:auto; font-size:11px; color:#8A8AA3; font-weight:600;}
-.inv-why{margin-top:8px; font-size:11px; color:#A05860; font-style:italic;}
+.match-box{margin-top:12px; border-radius:14px; overflow:hidden;
+  background:rgba(217,173,105,.08); border:1px solid rgba(217,173,105,.26);}
+.match-box > button{width:100%; display:flex; align-items:center; gap:8px; padding:11px 13px;
+  font-size:9.5px; font-weight:800; letter-spacing:.14em; color:var(--gold-2); text-transform:uppercase;}
+.match-box > button em{font-style:normal; margin-left:auto; color:var(--faint); letter-spacing:.02em;
+  font-size:10px; text-transform:none; font-weight:600;}
+.match-body{display:none; padding:2px 13px 12px;}
+.match-box.open .match-body{display:block;}
+.match-box.open > button{padding-bottom:6px;}
+.inv-row{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; padding:6px 0; font-size:12.5px;}
+.inv-row + .inv-row{border-top:1px dashed rgba(217,173,105,.18);}
+.inv-row .b{font-family:var(--serif); font-size:13.5px; color:var(--text);}
+.inv-row .p{font-weight:700; color:var(--gold-2);}
+.inv-row .w{margin-left:auto; font-size:10.5px; color:var(--faint);}
+.inv-why{margin-top:6px; font-size:11px; color:#b9a988; font-style:italic;}
 
-/* ---- new listing ---- */
-.card.newboat{box-shadow:0 22px 50px rgba(58,28,150,.3), 0 0 0 1.5px rgba(18,160,138,.45);}
-.card.newboat::before{content:""; position:absolute; left:0; top:16px; bottom:16px; width:5px;
-  border-radius:0 5px 5px 0; background:linear-gradient(180deg,#35D0B0,#12A08A);}
-.nl-tag{display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:800;
-  letter-spacing:.12em; color:#fff; background:linear-gradient(120deg,#2BC4A6,#12A08A);
-  border-radius:9px; padding:5px 11px; box-shadow:0 6px 14px rgba(18,160,138,.3);}
-.nl-boat{margin:14px 0 2px; font-size:19px; font-weight:800; letter-spacing:-.02em;}
-.nl-meta{font-size:13px; color:var(--ink3); font-weight:700;}
-.nl-meta .p{color:#0E8A76; font-weight:800;}
-.btn.view{background:linear-gradient(120deg,#2BC4A6,#12A08A); color:#fff;
-  box-shadow:0 10px 22px rgba(18,160,138,.3);}
+/* ---- actions: X · send · circle ---- */
+.actions{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; justify-items:center; margin-top:18px;}
+.action{display:grid; justify-items:center; gap:7px; color:#c7cbd0; font-size:10.5px;}
+.action .circ{width:50px; height:50px; border-radius:50%; display:grid; place-items:center;
+  border:1px solid rgba(219,232,239,.15); background:rgba(16,37,51,.7); transition:transform .15s ease;}
+.action:active .circ{transform:scale(.92);}
+.action.del{color:#e2b4ae;}
+.action.ok{color:var(--green);}
+.action.ok .circ{border-color:rgba(168,237,120,.28); background:rgba(84,139,76,.14);}
+.send{width:72px; height:72px; border-radius:50%; display:grid; place-items:center; color:var(--green);
+  border:1px solid rgba(186,245,154,.4);
+  background:radial-gradient(circle at 40% 35%,rgba(149,236,116,.22),rgba(67,119,87,.17) 60%,rgba(8,28,35,.55));
+  box-shadow:0 0 28px rgba(144,237,107,.22); transition:transform .15s ease;}
+.send:active{transform:scale(.94);}
+.swipe-hint{text-align:center; color:var(--faint); font-size:10px; margin-top:14px; letter-spacing:.04em;}
 
-/* ---- buttons ---- */
-.btns{display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; align-items:center;}
-.btn{display:inline-flex; align-items:center; gap:7px; border-radius:14px; padding:11px 16px;
-  font:inherit; font-size:13px; font-weight:800; border:none; cursor:pointer; transition:transform .15s ease;
-  text-decoration:none;}
-.btn:active{transform:scale(.95);}
-.btn:focus-visible{outline:3px solid rgba(108,76,241,.4); outline-offset:2px;}
-.btn.copy{background:linear-gradient(120deg,#8258EC,#6C4CF1); color:#fff; position:relative; overflow:hidden;
-  box-shadow:0 10px 22px rgba(108,76,241,.35);}
-.btn.copy::after{content:""; position:absolute; top:0; left:-80%; width:50%; height:100%;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
-  transform:skewX(-20deg); animation:shine 4.5s ease-in-out infinite;}
-@keyframes shine{0%,72%{left:-80%}88%,100%{left:130%}}
-@media (prefers-reduced-motion:reduce){ .btn.copy::after{animation:none; display:none;} }
-.btn.open{background:#FBFAFF; color:var(--ink); border:1.5px solid #ECE8FA;}
-.btn.ok{background:#E2F7F2; color:#0E9782;}
-.btn.del{background:var(--danger-soft); color:var(--danger); margin-left:auto;}
+/* ---- empty deck ---- */
+.empty-deck{height:100%; display:grid; align-content:center; justify-items:center; gap:12px; text-align:center; color:var(--muted);}
+.empty-deck svg{color:var(--faint); opacity:.9;}
+.empty-deck b{font-family:var(--serif); font-weight:500; font-size:24px; color:var(--text);}
+.empty-deck small{font-size:12.5px;}
 
-/* ---- empty & skeleton ---- */
-.empty{border-radius:20px; border:1.5px dashed rgba(255,255,255,.4); margin-top:18px; padding:28px 18px;
-  text-align:center; color:rgba(255,255,255,.8); font-size:13.5px; background:rgba(255,255,255,.08);}
-.empty svg{width:52px; height:52px; margin:0 auto 8px; display:block; opacity:.85;}
-.skel{border-radius:var(--r); height:200px; margin-top:18px;
-  background:linear-gradient(100deg,rgba(255,255,255,.16) 40%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.16) 60%);
-  background-size:200% 100%; animation:shimmer 1.4s linear infinite;}
-@keyframes shimmer{to{background-position:-200% 0;}}
-@media (prefers-reduced-motion:reduce){ .skel{animation:none;} }
+/* ---- card swap animations ---- */
+.card-stage{display:flex; flex-direction:column; flex:1; min-height:0;}
+@media (prefers-reduced-motion:reduce){ .card-stage{transition:none !important;} }
+.card-stage.out-l{opacity:0; transform:translateX(-26px); transition:opacity .18s ease, transform .18s ease;}
+.card-stage.out-r{opacity:0; transform:translateX(26px); transition:opacity .18s ease, transform .18s ease;}
+.card-stage.in-l{opacity:0; transform:translateX(-18px);}
+.card-stage.in-r{opacity:0; transform:translateX(18px);}
+.card-stage.in-l,.card-stage.in-r{transition:opacity .26s ease, transform .26s ease;}
+.card-stage.settled{opacity:0; transform:translateY(10px) scale(.99); transition:opacity .24s ease, transform .24s ease;}
 
-/* ---- handled ---- */
-details.handled{margin-top:34px; border-radius:20px; background:rgba(255,255,255,.14);
-  border:1px solid rgba(255,255,255,.28); overflow:hidden;
-  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);}
-details.handled summary{padding:14px 18px; font-weight:800; font-size:14px; color:rgba(255,255,255,.9);
-  cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px;}
+/* ---- bottom nav ---- */
+
+/* ---- sheets (leads / more / draft) ---- */
+.sheet{position:absolute; inset:0; z-index:30; display:none;}
+.sheet.open{display:block;}
+.sheet .backdrop{position:absolute; inset:0; background:rgba(2,8,14,.62);
+  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);}
+.sheet .panel{position:absolute; left:10px; right:10px; bottom:max(10px,env(safe-area-inset-bottom));
+  max-height:76%; overflow-y:auto; border-radius:24px; padding:18px 18px 16px;
+  background:rgba(8,25,38,.97); border:1px solid var(--line-strong); box-shadow:0 -10px 50px rgba(0,0,0,.5);}
+.sheet-head{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+.sheet-head b{font-family:var(--serif); font-weight:500; font-size:18px;}
+.sheet-head small{color:var(--faint); font-size:11px;}
+.sheet-head .x{margin-left:auto; width:34px; height:34px; border-radius:11px; display:grid; place-items:center;
+  border:1px solid var(--line); color:var(--muted);}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px;}
+.chip{display:inline-flex; align-items:center; gap:7px; padding:9px 13px; border-radius:999px;
+  font-size:11.5px; font-weight:600; color:var(--muted); border:1px solid var(--line);
+  background:rgba(16,37,51,.5); transition:transform .15s ease;}
+.chip:active{transform:scale(.96);}
+.chip.on{color:#0e2431; background:var(--green); border-color:var(--green);}
+.chip b{font-size:10.5px; opacity:.75;}
+.lead-row{width:100%; display:flex; align-items:center; gap:11px; text-align:left; padding:11px 4px;
+  border-top:1px solid var(--line);}
+.lead-row .nm{font-size:13.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.lead-row .ct{font-size:10.5px; color:var(--faint); margin-top:2px;}
+.lead-row .tier{margin-left:auto; flex:0 0 auto; font-size:9px; font-weight:800; letter-spacing:.08em;
+  padding:4px 9px; border-radius:999px;}
+.lead-row .tier.t1{color:var(--gold-2); background:rgba(217,173,105,.12);}
+.lead-row .tier.t2{color:var(--cyan); background:rgba(103,211,223,.1);}
+.draft-label{font-size:10px; font-weight:800; letter-spacing:.16em; color:var(--green); text-transform:uppercase;}
+.draft-for{font-family:var(--serif); font-size:16px; margin-top:4px;}
+.sheet textarea{width:100%; min-height:130px; resize:vertical; margin-top:12px; padding:12px; line-height:1.55;
+  font-size:12.5px; border-radius:12px; border:1px solid var(--line); background:#071825; color:#eef4f3; outline:none;}
+.draft-actions{display:flex; gap:9px; margin-top:12px;}
+.btn-green{flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;
+  border-radius:12px; font-size:12.5px; font-weight:700; color:#c9f7a8;
+  background:rgba(84,139,76,.17); border:1px solid rgba(168,237,120,.3); transition:transform .15s ease;}
+.btn-green:active{transform:scale(.97);}
+.btn-ghost{padding:12px 16px; border-radius:12px; font-size:12.5px; font-weight:600; color:var(--muted);
+  border:1px solid var(--line);}
+.sheet .fineprint{margin-top:10px; font-size:10.5px; color:var(--faint); line-height:1.5;}
+details.handled{margin-top:14px; border-radius:14px; border:1px solid var(--line); overflow:hidden;
+  background:rgba(16,37,51,.4);}
+details.handled summary{padding:12px 14px; font-size:13px; font-weight:600; color:#dfe5df; cursor:pointer;
+  list-style:none; display:flex; align-items:center; gap:8px;}
 details.handled summary::-webkit-details-marker{display:none;}
-details.handled summary .hn{margin-left:auto; background:rgba(255,255,255,.22); color:#fff;
-  border-radius:14px; padding:2px 10px; font-size:12px;}
-.hrow{display:flex; align-items:center; gap:10px; padding:11px 18px;
-  border-top:1px solid rgba(255,255,255,.16); font-size:13.5px; color:rgba(255,255,255,.92);}
-.hrow .nm{font-weight:700;}
-.hrow .st{font-size:10.5px; font-weight:800; letter-spacing:.06em; border-radius:6px; padding:2px 8px;}
-.hrow .st.c{color:#0E9782; background:#E2F7F2;}
-.hrow .st.d{color:var(--danger); background:var(--danger-soft);}
-.hrow .undo{margin-left:auto; font:inherit; font-size:12.5px; font-weight:800; color:#fff;
-  background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:10px;
-  cursor:pointer; padding:6px 12px;}
+details.handled summary .hn{margin-left:auto; font-size:10.5px; font-weight:800; color:var(--gold-2);
+  background:rgba(217,173,105,.12); border-radius:999px; padding:2px 9px;}
+.hrow{display:flex; align-items:center; gap:9px; padding:11px 14px; border-top:1px solid var(--line); font-size:12.5px;}
+.hrow .nm{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.hrow .st{flex:0 0 auto; font-size:8.5px; font-weight:800; letter-spacing:.08em; border-radius:6px; padding:3px 7px;}
+.hrow .st.c{color:var(--green); background:var(--green-dim);}
+.hrow .st.d{color:var(--danger); background:rgba(226,164,158,.1);}
+.hrow .undo{margin-left:auto; flex:0 0 auto; font-size:11px; font-weight:700; color:var(--text);
+  border:1px solid var(--line-strong); border-radius:9px; padding:5px 10px;}
 
-.foot{text-align:center; margin-top:56px; color:rgba(255,255,255,.45); font-size:11px;}
-svg{display:block;}
+/* ---- toast ---- */
+.toast{position:absolute; z-index:40; left:50%; bottom:34px; transform:translateX(-50%) translateY(8px);
+  background:#e8f5df; color:#14321f; border-radius:999px; padding:10px 16px; font-size:12px; font-weight:600;
+  box-shadow:0 8px 30px rgba(0,0,0,.3); opacity:0; pointer-events:none; transition:opacity .22s ease, transform .22s ease;
+  max-width:82%; text-align:center;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-<div id="progress" aria-hidden="true"></div>
+<div class="stage">
 
-<div class="wrap">
-  <span class="deco" style="top:118px; left:6px; font-size:20px;">+</span>
-  <span class="deco" style="top:64px; right:120px; font-size:14px;">+</span>
-  <span class="deco" style="top:268px; right:6px; font-size:17px;">+</span>
-  <div class="orb" style="top:90px; right:-30px; width:120px; height:120px; background:rgba(255,255,255,.16);"></div>
-  <div class="mini m1" style="top:118px; right:150px;" aria-hidden="true">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="2.4"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="2"/><path d="M12 4v4m0 8v4M4 12h4m8 0h4" stroke="#fff" stroke-width="2"/></svg>
-  </div>
-  <div class="mini m2" style="top:236px; left:-4px;" aria-hidden="true">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm0 4v11m-7-6c0 4 3 6.5 7 6.5s7-2.5 7-6.5M5 13l-2 1.5M19 13l2 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-  </div>
-  <div class="mini m3" style="top:70px; left:120px;" aria-hidden="true">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.8 5.6H20l-4.7 3.4 1.8 5.6L12 14.2l-5.1 3.4 1.8-5.6L4 8.6h6.2L12 3Z" fill="#fff"/></svg>
-  </div>
-
-  <header>
-    <div class="logo" aria-hidden="true">
-      <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
-        <path d="M18 20v-5c0-1.1.9-2 2-2h6c3 0 5.4 1.6 7 4l2 3H18Z" fill="#fff" opacity=".92"/>
-        <path d="M9 23h30c-.8 4.5-4.2 7.5-8.5 8.5H17C13 30.5 10.5 27.5 9 23Z" fill="#fff"/>
-        <path d="M6 36c3.5-2.4 7-2.4 10.5 0s7 2.4 10.5 0 7-2.4 10.5 0" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>
+  <!-- desktop rail -->
+  <aside class="rail" aria-hidden="true">
+    <div class="brand">
+      <svg width="46" height="27" viewBox="0 0 46 27" fill="none" aria-hidden="true">
+        <path d="M25.5 5.8V3.2" stroke="#F6F2E8" stroke-width="1.1" stroke-linecap="round" opacity=".85"/>
+        <path d="M17 10.6V7.8c0-.9.7-1.6 1.6-1.6h6.9c2 0 3.9.9 5.1 2.5l1.5 1.9" stroke="#F6F2E8" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M4 13.4h38c-1.2 4.6-4.8 7.5-9.7 8.1H12.6c-4.5-.8-7.2-3.7-8.6-8.1Z" stroke="#F6F2E8" stroke-width="1.3" stroke-linejoin="round" fill="rgba(255,255,255,.05)"/>
+        <path d="M9 25.2c3.2-1.5 6.4-1.5 9.6 0 3.2 1.5 6.4 1.5 9.6 0" stroke="#F6F2E8" stroke-width="1.1" stroke-linecap="round" opacity=".38"/>
       </svg>
+      <div class="brand-text"><strong>Yacht Hampton</strong><small>International</small></div>
     </div>
-    <div>
-      <h1>Boat Lead Desk</h1>
-      <div class="hdr-sub" id="syncWrap"><span class="dot"></span><span id="queueLabel">—</span>&nbsp;·&nbsp;<span id="syncStatus">syncing…</span></div>
+    <div class="rail-spacer"></div>
+    <div class="rail-copy"><span>Boat Lead Desk</span><b id="heroNum">–</b><small>open leads on deck</small></div>
+    <div class="rail-controls">
+      <button id="prevBtn" aria-label="Previous lead"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m14 6-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button id="nextBtn" aria-label="Next lead"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m10 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
-    <button class="bell" id="bellBtn" style="display:none" aria-label="Turn on instant Tier 1 alerts">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6v3.6l-1.6 3.2c-.3.7.1 1.2.9 1.2h13.4c.8 0 1.2-.5.9-1.2L18 12.6V9a6 6 0 0 0-6-6Zm-2 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </header>
+  </aside>
 
-  <div class="hero reveal">
-    <div>
-      <div class="hero-num" id="heroNum">–</div>
-      <div class="hero-lbl">open leads on deck</div>
-      <div class="hero-date" id="dateLabel"></div>
-    </div>
-    <div class="hero-art" aria-hidden="true">
-      <svg viewBox="0 0 180 150" fill="none">
-        <defs>
-          <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DDD3FF"/></linearGradient>
-          <linearGradient id="hull2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F0FF"/><stop offset="1" stop-color="#C9BAFF"/></linearGradient>
-          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="rgba(255,255,255,.45)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/></radialGradient>
-          <radialGradient id="sun2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD489"/><stop offset="1" stop-color="#FFAE5C"/></radialGradient>
-          <linearGradient id="wv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FF0D6"/><stop offset="1" stop-color="#2BD4B4"/></linearGradient>
-        </defs>
-        <ellipse cx="95" cy="80" rx="85" ry="60" fill="url(#glow)"/>
-        <circle cx="146" cy="26" r="15" fill="url(#sun2)"/>
-        <circle cx="146" cy="26" r="21" stroke="rgba(255,212,137,.45)" stroke-width="2"/>
-        <g class="boat-float">
-          <path d="M62 62v-8c0-2 1.5-3.5 3.5-3.5H84c5 0 9 2.2 12 6l3 5.5H62Z" fill="url(#hull2)"/>
-          <rect x="67" y="55" width="7" height="5" rx="2" fill="#7351E2" opacity=".55"/>
-          <rect x="78" y="55" width="7" height="5" rx="2" fill="#7351E2" opacity=".55"/>
-          <path d="M48 74v-7c0-2 1.6-3.8 3.8-3.8H104c7 0 13 3 17.5 8.5l2 2.3H48Z" fill="url(#hull)"/>
-          <rect x="56" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
-          <rect x="68" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
-          <rect x="80" y="66" width="8" height="5.5" rx="2" fill="#7351E2" opacity=".45"/>
-          <path d="M34 78h120c-3 13.5-12.5 21.5-25 24H55C42 99.5 38 92 34 78Z" fill="url(#hull)"/>
-          <path d="M34 78h120l-2 6.5H36.5Z" fill="#B7A5FF" opacity=".6"/>
-        </g>
-        <g class="wave-drift">
-          <path d="M12 114c10-6.5 20-6.5 30 0s20 6.5 30 0 20-6.5 30 0 20 6.5 30 0 20-6.5 30 0" stroke="url(#wv)" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M2 130c10-6.5 20-6.5 30 0s20 6.5 30 0 20-6.5 30 0 20 6.5 30 0 20-6.5 30 0" stroke="#2BD4B4" stroke-width="4" stroke-linecap="round" opacity=".45"/>
-        </g>
-        <circle cx="30" cy="40" r="2.5" fill="rgba(255,255,255,.8)"/>
-        <circle cx="164" cy="66" r="2" fill="rgba(255,255,255,.7)"/>
-        <circle cx="52" cy="22" r="1.8" fill="rgba(255,255,255,.6)"/>
+  <!-- the phone -->
+  <main class="phone">
+    <div class="card-stage" id="cardStage">
+      <div class="hero" id="heroEl">
+        <div class="hero-shade" aria-hidden="true"></div>
+        <header class="topbar">
+          <div class="brand" aria-label="Yacht Hampton International">
+            <svg width="46" height="27" viewBox="0 0 46 27" fill="none" aria-hidden="true">
+        <path d="M25.5 5.8V3.2" stroke="#F6F2E8" stroke-width="1.1" stroke-linecap="round" opacity=".85"/>
+        <path d="M17 10.6V7.8c0-.9.7-1.6 1.6-1.6h6.9c2 0 3.9.9 5.1 2.5l1.5 1.9" stroke="#F6F2E8" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M4 13.4h38c-1.2 4.6-4.8 7.5-9.7 8.1H12.6c-4.5-.8-7.2-3.7-8.6-8.1Z" stroke="#F6F2E8" stroke-width="1.3" stroke-linejoin="round" fill="rgba(255,255,255,.05)"/>
+        <path d="M9 25.2c3.2-1.5 6.4-1.5 9.6 0 3.2 1.5 6.4 1.5 9.6 0" stroke="#F6F2E8" stroke-width="1.1" stroke-linecap="round" opacity=".38"/>
       </svg>
+            <div class="brand-text"><strong>Yacht Hampton</strong><small>International</small></div>
+          </div>
+          <button class="icon-btn" id="bellBtn" style="display:none" aria-label="Turn on instant Tier 1 alerts">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6v3.6l-1.6 3.2c-.3.7.1 1.2.9 1.2h13.4c.8 0 1.2-.5.9-1.2L18 12.6V9a6 6 0 0 0-6-6Zm-2 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <i aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="counter" aria-label="Position in deck">
+          <b id="cntNow">01</b>
+          <div class="counter-bars" id="cntBars"></div>
+          <b id="cntAll">01</b>
+        </div>
+      </div>
+
+      <div class="strip">
+        <div class="tier-seg" role="group" aria-label="Tier filter">
+          <button class="chip on" id="fAll" data-filter="all">
+            <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 8.2c2.7-1.6 5.3-1.6 8 0s5.3 1.6 8 0M4 13.2c2.7-1.6 5.3-1.6 8 0s5.3 1.6 8 0M4 18.2c2.7-1.6 5.3-1.6 8 0s5.3 1.6 8 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <b id="fAllN">0</b><small>On deck</small>
+          </button>
+          <button class="chip" id="fT1" data-filter="tier1">
+            <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 6.4a1.9 1.9 0 1 0 0-3.8 1.9 1.9 0 0 0 0 3.8Zm0 0V21m0 0c-4.3-.6-7.2-2.9-7.9-6.8l2.4.9M12 21c4.3-.6 7.2-2.9 7.9-6.8l-2.4.9M8.6 9.2h6.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <b id="nT1">0</b><small>Tier 1</small>
+          </button>
+          <button class="chip" id="fT2" data-filter="tier2">
+            <span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="m15.1 8.9-1.7 4.5-4.5 1.7 1.7-4.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+            <b id="nT2">0</b><small>Tier 2</small>
+          </button>
+        </div>
+        <div class="strip-date" id="dateLabel"></div>
+        <span id="queueLabel" style="display:none"></span><span id="syncStatus" style="display:none"></span>
+        <div class="voice-note" id="voiceNote" style="display:none"></div>
+      </div>
+
+      <div class="content" id="content"></div>
     </div>
-  </div>
 
-  <div class="tiles reveal">
-    <button class="tile t1" id="tileT1" aria-label="Jump to Tier 1">
-      <div class="shine"></div>
-      <div class="ic">
-        <svg width="76" height="76" viewBox="0 0 48 48" fill="none">
-          <defs>
-            <linearGradient id="b3a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E4DBFF"/></linearGradient>
-            <linearGradient id="b3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8F6BF2"/><stop offset="1" stop-color="#5C33D6"/></linearGradient>
-          </defs>
-          <ellipse cx="24" cy="40.5" rx="16" ry="3.4" fill="#A64E12" opacity=".4"/>
-          <path d="M16.5 21v-5c0-1.3 1-2.3 2.3-2.3h7.6c3.3 0 6 1.6 7.9 4.2l2.2 3.1H16.5Z" fill="url(#b3a)" stroke="#B9A2F5" stroke-width="1.2"/>
-          <rect x="19.5" y="16" width="5" height="3.8" rx="1.5" fill="url(#b3b)"/>
-          <rect x="27" y="16" width="5" height="3.8" rx="1.5" fill="url(#b3b)"/>
-          <path d="M7.5 23.5h34c-1.4 7-6.1 11.3-12.7 12.7H17c-6.4-1.5-7.9-6-9.5-12.7Z" fill="url(#b3a)" stroke="#B9A2F5" stroke-width="1.2"/>
-          <path d="M7.5 23.5h34l-1.1 3.6H8.6Z" fill="url(#b3b)" opacity=".65"/>
-          <path d="M11 30.5c5.5 1 20.5 1 26-.2" stroke="#CDBBF7" stroke-width="1.4" stroke-linecap="round" opacity=".9"/>
-          <circle cx="13.5" cy="26" r="1.2" fill="#fff" opacity=".9"/>
-          <path d="M14 12.5c2-2.6 4.8-4 8-4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+
+    <!-- leads list sheet -->
+    <div class="sheet" id="leadsSheet" aria-hidden="true">
+      <div class="backdrop" data-close></div>
+      <div class="panel" role="dialog" aria-label="All leads">
+        <div class="sheet-head"><b>All leads</b><small id="leadsSheetCount"></small><button class="x" data-close aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+        <div id="leadsList"></div>
+        <details class="handled" id="handledWrap" style="display:none">
+          <summary><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="rgba(241,203,139,.9)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Recently handled <span class="hn" id="handledN">0</span></summary>
+          <div id="handledList"></div>
+        </details>
+        <p class="fineprint">Boat Lead Desk · Yacht Hampton International · <span id="footDate"></span></p>
       </div>
-      <div class="n" id="nT1">–</div>
-      <div class="l">TIER 1</div>
-    </button>
-    <button class="tile t2" id="tileT2" aria-label="Jump to Tier 2">
-      <div class="shine"></div>
-      <div class="ic">
-        <svg width="70" height="70" viewBox="0 0 48 48" fill="none">
-          <defs>
-            <linearGradient id="r3a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9A72"/><stop offset="1" stop-color="#F0663C"/></linearGradient>
-            <linearGradient id="r3b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E8E0FA"/></linearGradient>
-          </defs>
-          <ellipse cx="24" cy="41" rx="15" ry="3.4" fill="#5B3BB0" opacity=".3"/>
-          <circle cx="24" cy="25.5" r="16" fill="#C4592F" opacity=".45"/>
-          <circle cx="24" cy="24" r="16" fill="url(#r3b)"/>
-          <path d="M24 8a16 16 0 0 1 11.3 4.7L28.6 19a7 7 0 0 0-9.2 0l-6.7-6.3A16 16 0 0 1 24 8Z" fill="url(#r3a)"/>
-          <path d="M24 40a16 16 0 0 1-11.3-4.7l6.7-6.3a7 7 0 0 0 9.2 0l6.7 6.3A16 16 0 0 1 24 40Z" fill="url(#r3a)"/>
-          <circle cx="24" cy="24" r="16" stroke="#D9CDF5" stroke-width="1.6"/>
-          <circle cx="24" cy="24" r="7" fill="#DFD2FF"/>
-          <circle cx="24" cy="24" r="7" stroke="#B9A4F2" stroke-width="1.4"/>
-          <path d="M11 15c3-4.4 7.8-7 13-7 5.4 0 10 2.5 13 6.6" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    </div>
+
+
+    <!-- draft sheet -->
+    <div class="sheet" id="draftSheet" aria-hidden="true">
+      <div class="backdrop" data-close></div>
+      <div class="panel" role="dialog" aria-label="Zach draft">
+        <div class="sheet-head"><span class="draft-label">Zach draft</span><button class="x" data-close aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+        <div class="draft-for" id="draftFor"></div>
+        <textarea id="draftText" aria-label="Draft message"></textarea>
+        <div class="draft-actions">
+          <button class="btn-green" id="draftSend">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 4 3 11l7 3 2 6 3.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="m10 14 11-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Copy draft &amp; open post</button>
+          <button class="btn-ghost" data-close>Close</button>
+        </div>
+        <p class="fineprint">The draft lands on your clipboard, then the exact Facebook post opens — tap the poster’s name, hit Message, and paste. Edit the text above first if you like.</p>
       </div>
-      <div class="n" id="nT2">–</div>
-      <div class="l">TIER 2</div>
-    </button>
-  </div>
+    </div>
 
-  <div class="voice-note reveal" id="voiceNote" style="display:none"></div>
-
-  <div id="newListings"></div>
-
-  <div class="sec t1" id="secT1">
-    <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 6 8.5 9 10 12c-2-.5-3-2-3.5-3.5C4.5 11 4 14 6 17c1.6 2.4 4 3.5 6 3.5s4.4-1.1 6-3.5c2.2-3.3 1-7.5-2-10-.2 1.8-1 3-2.2 3.7C14.5 8 14 4.5 12 2Z" fill="#fff"/></svg></div>
-    <h2>Tier 1</h2>
-    <div class="n" id="cT1">–</div>
-  </div>
-  <div id="leadsT1"><div class="skel"></div></div>
-
-  <div class="sec t2" id="secT2">
-    <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <h2>Tier 2</h2>
-    <div class="n" id="cT2">–</div>
-  </div>
-  <div id="leadsT2"><div class="skel"></div></div>
-
-  <details class="handled" id="handledWrap" style="display:none">
-    <summary><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="rgba(255,255,255,.9)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Recently handled <span class="hn" id="handledN">0</span></summary>
-    <div id="handledList"></div>
-  </details>
-
-  <p class="foot">Boat Lead Desk · <span id="footDate"></span></p>
+    <div class="toast" id="toast" role="status"></div>
+  </main>
 </div>
 
 
 <script>
 // ================== CONFIG ==================
-const SYNC_URL = "https://script.google.com/macros/s/AKfycbzm0-aDuq9gCxE_cYfaZFy066vU15nZSrvNG0LDlxyrMVT8Mw7tcJGVezKSwBhjfUN3/exec"; // shared store (Google Apps Script on Georgina's account)
+// PRODUCTION SYNC URL — paste the real Google Apps Script store URL between the
+// quotes when this folder is deployed (it is intentionally blank here so local
+// design work never touches the live store). With it blank, the app runs on
+// this device only and shows the bundled sample leads.
+const SYNC_URL = "https://script.google.com/macros/s/AKfycbzm0-aDuq9gCxE_cYfaZFy066vU15nZSrvNG0LDlxyrMVT8Mw7tcJGVezKSwBhjfUN3/exec";
 const SYNC_ENABLED = SYNC_URL.indexOf("http") === 0;
 // Public half of the push keypair (the private half lives only in the hourly task).
 const VAPID_PUBLIC = "BJQGvulSdMUGhiyug1z827ALZlxGmDY3_aOdkmFfPVBP4s_mMhsM0zcnPa63V2fmvMB3UgRw-elu4fmc63cv01Y";
 // BUMP THIS on every index.html deploy — wake-ups compare it against the server
 // and self-reload when it changes (iOS thaws frozen snapshots instead of
 // relaunching, so this is the only reliable auto-update path).
-const APP_VERSION = "3.6";
+const APP_VERSION = "6.0";
 // ============================================
+
+// Water/boat artwork for lead cards (cycled by lead id; a lead may carry its
+// own "image" URL from the store, which always wins).
+const BANDS = ["assets/band-teal.jpg", "assets/band-navy.jpg", "assets/hero-main.jpg"];
+function hashId(s){ let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
+// "≈ $300–430k · Saxdor 320" -> "≈ $300–430k" (for the compact metrics cell)
+function shortVal(v){ const s = String(v || ""); const i = s.indexOf("·"); return i > 0 ? s.slice(0, i).trim() : s; }
+function bandFor(id, image){
+  if (image) return String(image).replace(/["'()]/g, "");
+  return BANDS[hashId(String(id)) % BANDS.length];
+}
 
 let LEADS = [];
 // contacted / deleted: { leadId: {v: bool, t: epoch_ms} } — last write wins per lead
@@ -409,7 +444,7 @@ function isDone(id){ return !!(contacted[id] && contacted[id].v); }
 function isDeleted(id){ return !!(deleted[id] && deleted[id].v); }
 function isHandled(id){ return isDone(id) || isDeleted(id); }
 
-// ---- category icons: gradient squircle + white glyph (icon-first design) ----
+// ---- category icons: gradient squircle + white glyph ----
 const IC = {
   search:  '<circle cx="10" cy="10" r="6" stroke="#fff" stroke-width="2.2"/><path d="M14.5 14.5 20 20" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>',
   compass: '<circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="2"/><path d="m15 9-1.8 4.2L9 15l1.8-4.2L15 9Z" fill="#fff"/>',
@@ -444,8 +479,9 @@ const CAT_META = {
 };
 function catMeta(l){
   const key = (l.cat || "").replace(/\s*[—-]\s*/, " — ");
-  return CAT_META[key] || CAT_META[l.cat] || {g:["#A99BF7","#7B5FE8"], i:"boat"};
+  return CAT_META[key] || CAT_META[l.cat] || {g:["#C9A25E","#9A7434"], i:"boat"};
 }
+function shortCat(l){ return (l.cat || "Lead").split(/[—-]/)[0].trim() || "Lead"; }
 
 // Legacy tiers map into the two-tier system so old store docs still render.
 function leadTier(l){
@@ -504,8 +540,7 @@ function applyLeadsDoc(doc){
   document.getElementById("footDate").textContent = doc.date_label || "";
   document.getElementById("queueLabel").textContent = doc.queue_label || "";
   const vn = document.getElementById("voiceNote");
-  if (doc.voice_note) { vn.innerHTML = doc.voice_note; vn.style.display = "block"; }
-  else { vn.innerHTML = ""; vn.style.display = "none"; }
+  vn.innerHTML = ""; vn.style.display = "none"; // daily note intentionally hidden in this design
 
   // -------- instant Tier 1 alert --------
   const fresh = LEADS.filter(l => leadTier(l) === "tier1" && !seen[l.id] && !isHandled(l.id));
@@ -535,8 +570,6 @@ function savePending(){ try { localStorage.setItem("bld-pending", JSON.stringify
 let syncTimer, syncFails = 0, retryTimer;
 function syncFailed(){
   syncFails++;
-  // The store (Google Apps Script) hiccups occasionally — retry soon and only
-  // call it offline after three straight misses.
   setSync(syncFails >= 3 ? "offline — showing last leads" : "retrying sync…", false);
   clearTimeout(retryTimer);
   if (syncFails < 3) retryTimer = setTimeout(pullShared, 8000);
@@ -544,7 +577,6 @@ function syncFailed(){
 async function pullShared(){
   if (!SYNC_ENABLED) { setSync("on this device", false); return; }
   try {
-    // Apps Script can take 10s+ on a cold start — give the store a generous window.
     const res = await fetchT(SYNC_URL + "?t=" + Date.now(), {cache:"no-store"}, 20000);
     if (res.ok || res.status === 404) {
       if (res.ok) {
@@ -565,8 +597,6 @@ async function pullShared(){
 async function pushShared(action, id){
   if (!SYNC_ENABLED || !id) return;
   try {
-    // The store merges one lead at a time server-side, so we can never
-    // clobber a teammate's mark or touch the leads themselves.
     const map = action === "deleted" ? deleted : contacted;
     const c = map[id] || {};
     await fetchT(SYNC_URL, {method:"POST",
@@ -613,141 +643,197 @@ function setSync(msg, ok){
 
 function esc(s){ const d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
 
-// -------- rendering --------
-const io = ("IntersectionObserver" in window) ? new IntersectionObserver(es => {
-  es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
-}, {threshold:.08}) : null;
-function watchReveals(root){
-  (root || document).querySelectorAll(".reveal:not(.in)").forEach(el => {
-    if (io) io.observe(el); else el.classList.add("in");
-  });
-}
-
-const SVGP = 'width="19" height="19" viewBox="0 0 24 24" fill="none"';
-function leadCard(l){
-  const m = catMeta(l);
-  const card = document.createElement("div");
-  const mm = (l.match && l.match.boats && l.match.boats.length) ? l.match : null;
-  card.className = "card reveal" + (mm ? " match" : "");
-  card.id = "lead-" + l.id;
-  const longPost = (l.post || "").length > 160;
-  card.innerHTML = `
-    <div class="row1">
-      <div class="catic" style="background:linear-gradient(150deg,${m.g[0]},${m.g[1]}); box-shadow:0 8px 18px ${m.g[1]}55" title="${esc(l.cat)}" aria-label="${esc(l.cat)}">
-        <svg ${SVGP}>${IC[m.i]}</svg>
-      </div>
-      ${mm ? `<span class="match-tag">INVENTORY MATCH</span>` : ""}
-      ${l.est_value ? `<span class="val">${esc(l.est_value)}</span>` : ""}
-      <span class="when">${esc(l.when)}</span>
-    </div>
-    <div class="who">${esc(l.name)}</div>
-    <div class="grp">${esc(l.group)}</div>
-    <p class="post${longPost ? " clamped" : ""}">${esc(l.post)}</p>
-    ${longPost ? `<button class="more">Read full post</button>` : ""}
-    ${mm ? `<div class="inv">
-      <div class="inv-head">WE HAVE THIS BOAT</div>
-      ${mm.boats.slice(0,3).map(b => `<div class="inv-row"><span class="b">${esc(b.label)}</span>${b.price ? `<span class="p">${esc(b.price)}</span>` : ""}<span class="w">${esc(b.loc || "")}</span></div>`).join("")}
-      ${mm.why ? `<div class="inv-why">${esc(mm.why)}</div>` : ""}
-    </div>` : ""}
-    <div class="dm">
-      <div class="dm-head"><span class="t">SUGGESTED DM</span><span class="v">${esc(l.voice)}</span></div>
-      <div class="dm-body">${esc(l.dm)}</div>
-    </div>
-    <div class="btns">
-      <a class="btn copy godm" href="${l.post_url}" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 4 3 11l7 3 2 6 3.5-4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="m10 14 11-10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
-        Copy &amp; DM</a>
-      <button class="btn ok mark">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Contacted</button>
-      <button class="btn del">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13a1 1 0 0 0 1 .9h8a1 1 0 0 0 1-.9L18 7M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Delete</button>
-    </div>`;
-  const more = card.querySelector(".more");
-  if (more) more.addEventListener("click", () => {
-    const p = card.querySelector(".post");
-    const open = p.classList.toggle("clamped");
-    more.textContent = open ? "Read full post" : "Show less";
-  });
-  // One tap: the draft lands on the clipboard SYNCHRONOUSLY (survives leaving
-  // the app), then the link opens the exact post — tap the poster's name there,
-  // hit Message, and paste.
-  card.querySelector(".godm").addEventListener("click", () => {
-    if (!legacyCopy(l.dm)) copyDraft(l.dm); // sync copy first; async fallback
-  });
-  card.querySelector(".mark").addEventListener("click", () => settle(l.id, "contacted", card));
-  card.querySelector(".del").addEventListener("click",  () => settle(l.id, "deleted", card));
-  return card;
-}
-
+// ================== DECK (one lead at a time, like the mockup) ==================
 let NEW_LISTINGS = [];
-function nlCard(n){
-  const card = document.createElement("div");
-  card.className = "card newboat reveal";
-  card.id = "nl-" + n.id;
-  card.innerHTML = `
-    <div class="row1">
-      <span class="nl-tag">NEW LISTING</span>
-      <span class="when">${esc(n.when || "")}</span>
-    </div>
-    <div class="nl-boat">${esc(n.label)}</div>
-    <div class="nl-meta">${n.price ? `<span class="p">${esc(n.price)}</span> · ` : ""}${esc(n.loc || "")}</div>
-    <div class="btns">
-      ${n.url ? `<a class="btn view" href="${n.url}" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 17c2.5-1.8 5-1.8 7.5 0s5 1.8 7.5 0M4 12h16l-2 4H6l-2-4Zm4 0V8h6l2.5 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        View listing</a>` : ""}
-      <button class="btn del dismiss">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-        Dismiss</button>
-    </div>`;
-  card.querySelector(".dismiss").addEventListener("click", () => settle("nl-" + n.id, "deleted", card));
-  return card;
-}
-function renderNewListings(){
-  const box = document.getElementById("newListings"); if (!box) return;
-  box.innerHTML = "";
-  NEW_LISTINGS.filter(n => !isDeleted("nl-" + n.id)).forEach(n => box.appendChild(nlCard(n)));
+let deckIndex = 0;
+let tierFilter = "all";
+let draftTarget = null; // the lead whose draft is open in the sheet
+
+function computeDeck(){
+  const items = [];
+  NEW_LISTINGS.filter(n => !isDeleted("nl-" + n.id)).forEach(n => items.push({type:"nl", n}));
+  const live = LEADS.filter(l => !isHandled(l.id) && (tierFilter === "all" || leadTier(l) === tierFilter));
+  const rank = l => (l.match && l.match.boats && l.match.boats.length)
+    ? ({A:0, B:1, C:2}[l.match.grade] ?? 2) : 3;      // matched first, best grade first
+  live.sort((a,b) => rank(a) - rank(b));
+  live.forEach(l => items.push({type:"lead", l}));
+  return items;
 }
 
-function settle(id, action, cardEl){
+const SVGP = 'width="18" height="18" viewBox="0 0 24 24" fill="none"';
+const MI  = 'width="16" height="16" viewBox="0 0 24 24" fill="none"';
+function leadContent(l){
+  const m = catMeta(l);
+  const mm = (l.match && l.match.boats && l.match.boats.length) ? l.match : null;
+  const longPost = (l.post || "").length > 140;
+  return `
+    <div class="title-row">
+      <div>
+        <h1>${esc(l.name)}</h1>
+        <p class="source">${esc(l.group || "")}</p>
+      </div>
+      <div class="price-block">
+        ${l.est_value ? `<strong>${esc(l.est_value)}</strong>` : ""}
+        <span>${esc(l.when || "")}</span>
+      </div>
+    </div>
+    <div class="metrics">
+      <div class="metric"><span class="mi"><svg ${MI}><path d="M12 4v13m0 0-3.5-3.5M12 17l3.5-3.5M5 20h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>${leadTier(l) === "tier1" ? "Tier 1" : "Tier 2"}</b><small>${leadTier(l) === "tier1" ? "priority" : "watch"}</small></div>
+      <div class="metric"><span class="mi"><svg ${MI}><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><b>${esc(l.when || "—")}</b><small>posted</small></div>
+    </div>
+    <p class="excerpt${longPost ? " clamped" : ""}">${esc(l.post)}</p>
+    ${longPost ? `<button class="more post-more">Read full post</button>` : ""}
+    <div class="tags">
+      <span class="gold">Zach\u2019s voice</span>
+      ${mm ? `<span>Inventory match</span>` : ""}
+    </div>
+    ${mm ? `
+    <div class="match-box" id="matchBox">
+      <button type="button" id="matchToggle">We have this boat<em>tap to view</em></button>
+      <div class="match-body">
+        ${mm.boats.slice(0,3).map(b => `<div class="inv-row"><span class="b">${esc(b.label)}</span>${b.price ? `<span class="p">${esc(b.price)}</span>` : ""}<span class="w">${esc(b.loc || "")}</span></div>`).join("")}
+        ${mm.why ? `<div class="inv-why">${esc(mm.why)}</div>` : ""}
+      </div>
+    </div>` : ""}
+    <button class="dm-preview" id="dmPreview" aria-label="Open the suggested draft">
+      <span class="t">Zach draft <em>tap to review</em></span>
+      <p>${esc(l.dm)}</p>
+    </button>
+    <div class="actions">
+      <button class="action del" id="actDel"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Skip</button>
+      <button class="send" id="actSend" aria-label="Open the draft to send"><svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M21 4 3 11l7 3 2 6 3.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m10 14 11-10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="action ok" id="actOk"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 9.5 18 20 6.5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+    </div>
+    <div class="swipe-hint">Swipe for the next lead</div>`;
+}
+
+function nlContent(n){
+  return `
+    <div class="title-row">
+      <div>
+        <h1>${esc(n.label)}</h1>
+        <h2>New listing</h2>
+        <p class="source">${esc(n.loc || "")}</p>
+      </div>
+      <div class="price-block">
+        ${n.price ? `<strong>${esc(n.price)}</strong>` : ""}
+        <span>${esc(n.when || "")}</span>
+      </div>
+    </div>
+    <div class="tags" style="margin-top:16px">
+      <span style="color:#0d2b31;background:linear-gradient(120deg,#8fe3ec,#5cc4d0);border-color:rgba(143,227,236,.6)">New listing</span>
+      <span class="gold">Fresh on the market</span>
+    </div>
+    <div class="actions">
+      <button class="action del" id="nlDismiss"><span class="circ"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Dismiss</button>
+      <button class="send" id="nlView" aria-label="View listing" style="color:var(--cyan);border-color:rgba(103,211,223,.4);background:radial-gradient(circle at 40% 35%,rgba(103,211,223,.22),rgba(38,98,112,.17) 60%,rgba(8,28,35,.55));box-shadow:0 0 28px rgba(103,211,223,.2)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M14 5h5v5m0-5-8 8M19 13.5V18a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18V7a1.5 1.5 0 0 1 1.5-1.5H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span></span>
+    </div>
+    <div class="swipe-hint">Swipe for the next lead</div>`;
+}
+
+function emptyContent(){
+  return `
+    <div class="empty-deck">
+      <svg width="64" height="40" viewBox="0 0 64 40" fill="none" aria-hidden="true">
+        <path d="M21 16v-3.6c0-1.2 1-2.2 2.2-2.2h9c2.4 0 4.6 1.2 6 3.1l1.6 2.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M9 19.5h46c-1.7 5.8-6.2 9.3-12.4 10H20.2C14.5 28.7 10.9 25.2 9 19.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M7 35c3.4-2 6.8-2 10.2 0s6.8 2 10.2 0 6.8-2 10.2 0 6.8 2 10.2 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <b>All caught up</b>
+      <small>No open leads on deck — smooth water.</small>
+    </div>`;
+}
+
+function renderDeck(){
+  const deck = computeDeck();
+  if (deckIndex >= deck.length) deckIndex = Math.max(0, deck.length - 1);
+  if (deckIndex < 0) deckIndex = 0;
+  const heroEl = document.getElementById("heroEl");
+  const content = document.getElementById("content");
+  const it = deck[deckIndex];
+
+  if (!it){
+    heroEl.style.backgroundImage = `url("${BANDS[2]}")`;
+    content.innerHTML = emptyContent();
+  } else if (it.type === "nl"){
+    heroEl.style.backgroundImage = `url("${bandFor("nl-" + it.n.id, it.n.image)}")`;
+    content.innerHTML = nlContent(it.n);
+    content.querySelector("#nlDismiss").addEventListener("click", () => settle("nl-" + it.n.id, "deleted"));
+    content.querySelector("#nlView").addEventListener("click", () => {
+      if (it.n.url) window.open(it.n.url, "_blank", "noopener");
+      else toast("No listing link on this one");
+    });
+  } else {
+    const l = it.l;
+    heroEl.style.backgroundImage = `url("${bandFor(l.id, l.image)}")`;
+    content.innerHTML = leadContent(l);
+    const postMore = content.querySelector(".post-more");
+    if (postMore) postMore.addEventListener("click", () => {
+      const p = content.querySelector(".excerpt");
+      const open = p.classList.toggle("clamped");
+      postMore.textContent = open ? "Read full post" : "Show less";
+    });
+    const mBox = content.querySelector("#matchBox");
+    if (mBox) mBox.querySelector("#matchToggle").addEventListener("click", () => mBox.classList.toggle("open"));
+    content.querySelector("#dmPreview").addEventListener("click", () => openDraft(l));
+    content.querySelector("#actSend").addEventListener("click", () => openDraft(l));
+    content.querySelector("#actDel").addEventListener("click", () => settle(l.id, "deleted"));
+    content.querySelector("#actOk").addEventListener("click", () => settle(l.id, "contacted"));
+  }
+
+  // counter: 01 / bars / 05
+  const total = deck.length;
+  document.getElementById("cntNow").textContent = String(total ? deckIndex + 1 : 0).padStart(2, "0");
+  document.getElementById("cntAll").textContent = String(total).padStart(2, "0");
+  const bars = document.getElementById("cntBars");
+  bars.innerHTML = "";
+  const nBars = Math.min(total, 8);
+  const active = total <= 1 ? 0 : (total <= nBars ? deckIndex : Math.round(deckIndex / (total - 1) * (nBars - 1)));
+  for (let i = 0; i < nBars; i++){
+    const s = document.createElement("span");
+    if (i === active) s.className = "active";
+    if (total > nBars) s.style.height = "20px";
+    bars.appendChild(s);
+  }
+  updateCounts();
+  renderHandled();
+}
+
+// deck navigation with the mockup's slide feel
+function go(dir){
+  const deck = computeDeck();
+  if (!deck.length) return;
+  deckIndex = (deckIndex + dir + deck.length) % deck.length;
+  const stage = document.getElementById("cardStage");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches){ renderDeck(); return; }
+  stage.classList.add(dir > 0 ? "out-l" : "out-r");
+  setTimeout(() => {
+    renderDeck();
+    stage.classList.remove("out-l", "out-r");
+    stage.classList.add(dir > 0 ? "in-r" : "in-l");
+    setTimeout(() => stage.classList.remove("in-r", "in-l"), 280);
+  }, 180);
+}
+
+// contacted / deleted — team-wide via the store, then slide to the next lead
+function settle(id, action){
   const map = action === "deleted" ? deleted : contacted;
   map[id] = { v: true, t: Date.now() };
   saveLocal(); pushShared(action, id);
-  const doRender = () => { render(); };
-  if (cardEl && !matchMedia("(prefers-reduced-motion: reduce)").matches){
-    cardEl.classList.add("leaving"); setTimeout(doRender, 300);
-  } else doRender();
-  // The card sliding away is the feedback; Undo lives in "Recently handled".
-}
-
-function emptyBlock(msg){
-  const d = document.createElement("div");
-  d.className = "empty reveal";
-  d.innerHTML = `<svg viewBox="0 0 64 64" fill="none">
-    <path d="M14 34h36c-2 8-8 12.5-15 14H27c-7-1.5-11-6-13-14Z" fill="rgba(255,255,255,.85)"/>
-    <path d="M26 34v-7c0-1.4 1-2.4 2.4-2.4H38c4 0 7.2 2 9.4 5.4L49 34" stroke="rgba(255,255,255,.8)" stroke-width="2"/>
-    <path d="M8 52c4-2.8 8-2.8 12 0s8 2.8 12 0 8-2.8 12 0 8 2.8 12 0" stroke="#5FE3C6" stroke-width="2.6" stroke-linecap="round"/>
-  </svg>${msg}`;
-  return d;
+  const stage = document.getElementById("cardStage");
+  const done = () => renderDeck();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    stage.classList.add("settled");
+    setTimeout(() => { stage.classList.remove("settled"); done(); }, 240);
+  } else done();
+  toast(action === "deleted" ? "Lead skipped" : "Marked contacted");
+  // Undo lives in More → Recently handled.
 }
 
 function render(){
-  const t1 = document.getElementById("leadsT1"), t2 = document.getElementById("leadsT2");
-  t1.innerHTML = ""; t2.innerHTML = "";
-  renderNewListings();
-  const live = LEADS.filter(l => !isHandled(l.id));
-  const rank = l => (l.match && l.match.boats && l.match.boats.length)
-    ? ({A:0, B:1, C:2}[l.match.grade] ?? 2) : 3;         // matched first, best grade first
-  const t1s = live.filter(l => leadTier(l) === "tier1")
-    .map((l, i) => [rank(l), i, l]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(x => x[2]);
-  t1s.forEach(l => t1.appendChild(leadCard(l)));
-  live.filter(l => leadTier(l) !== "tier1").forEach(l => t2.appendChild(leadCard(l)));
-  if (!t1.children.length) t1.appendChild(emptyBlock("No Tier 1 leads right now — all caught up."));
-  if (!t2.children.length) t2.appendChild(emptyBlock("Nothing in Tier 2 — smooth water."));
-  renderHandled();
-  updateCounts();
-  watchReveals();
+  // keep the current position sensible when the deck changes underneath us
+  renderDeck();
 }
 
 function renderHandled(){
@@ -761,12 +847,12 @@ function renderHandled(){
     const r = document.createElement("div");
     r.className = "hrow";
     r.innerHTML = `<span class="nm">${esc(l.name)}</span>
-      <span class="st ${del ? "d" : "c"}">${del ? "DELETED" : "CONTACTED"}</span>
+      <span class="st ${del ? "d" : "c"}">${del ? "SKIPPED" : "DONE"}</span>
       <button class="undo">Undo</button>`;
     r.querySelector(".undo").addEventListener("click", () => {
       const action = del ? "deleted" : "contacted";
       (del ? deleted : contacted)[l.id] = { v: false, t: Date.now() };
-      saveLocal(); pushShared(action, l.id); render();
+      saveLocal(); pushShared(action, l.id); renderDeck();
     });
     list.appendChild(r);
   });
@@ -774,14 +860,124 @@ function renderHandled(){
 
 function updateCounts(){
   const live = LEADS.filter(l => !isHandled(l.id));
+  const nl = NEW_LISTINGS.filter(n => !isDeleted("nl-" + n.id)).length;
   const n1 = live.filter(l => leadTier(l) === "tier1").length;
   const n2 = live.length - n1;
   const set = (id,v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  set("nT1", n1); set("nT2", n2); set("cT1", n1); set("cT2", n2); set("heroNum", live.length);
+  set("heroNum", live.length + nl); // matches the deck counter (leads + listings)
+  set("nT1", n1); set("nT2", n2); set("fAllN", live.length);
   document.title = (n1 ? "(" + n1 + ") " : "") + "Boat Lead Desk";
   if ("setAppBadge" in navigator) {
     if (n1) navigator.setAppBadge(n1).catch(()=>{}); else navigator.clearAppBadge && navigator.clearAppBadge().catch(()=>{});
   }
+}
+
+// ---- draft sheet: review (and edit) Zach's draft, then copy + open the post ----
+function openDraft(l){
+  draftTarget = l;
+  document.getElementById("draftFor").textContent = l.name + (l.group ? " · " + l.group : "");
+  document.getElementById("draftText").value = l.dm || "";
+  openSheet("draftSheet");
+}
+document.getElementById("draftSend").addEventListener("click", () => {
+  const text = document.getElementById("draftText").value;
+  // the copy must happen synchronously inside the tap (survives leaving the app)
+  if (!legacyCopy(text)) copyDraft(text);
+  closeSheets();
+  toast("Draft copied — opening the post…");
+  if (draftTarget && draftTarget.post_url) window.open(draftTarget.post_url, "_blank", "noopener");
+});
+
+// ---- sheets ----
+function openSheet(id){
+  closeSheets();
+  const s = document.getElementById(id);
+  s.classList.add("open"); s.setAttribute("aria-hidden", "false");
+}
+function closeSheets(){
+  document.querySelectorAll(".sheet.open").forEach(s => { s.classList.remove("open"); s.setAttribute("aria-hidden", "true"); });
+}
+document.querySelectorAll("[data-close]").forEach(el =>
+  el.addEventListener("click", closeSheets));
+
+// Zach's daily note: clamped to two lines, tap to expand/collapse
+document.getElementById("voiceNote").addEventListener("click", function(){ this.classList.toggle("open"); });
+
+function openLeadsSheet(){
+  const deck = computeDeck();
+  const list = document.getElementById("leadsList");
+  document.getElementById("leadsSheetCount").textContent = deck.length ? deck.length + " open" : "";
+  list.innerHTML = "";
+  if (!deck.length){
+    list.innerHTML = `<p class="fineprint">Nothing open right now — smooth water.</p>`;
+  }
+  deck.forEach((it, i) => {
+    const b = document.createElement("button");
+    b.className = "lead-row";
+    const isLead = it.type === "lead";
+    b.innerHTML = `<span style="min-width:0">
+        <span class="nm" style="display:block">${esc(isLead ? it.l.name : it.n.label)}</span>
+        <span class="ct" style="display:block">${esc(isLead ? (it.l.cat || "") : "New listing")}</span>
+      </span>
+      <span class="tier ${isLead && leadTier(it.l) === "tier1" ? "t1" : "t2"}">${isLead ? (leadTier(it.l) === "tier1" ? "TIER 1" : "TIER 2") : "LISTING"}</span>`;
+    b.addEventListener("click", () => { deckIndex = i; renderDeck(); closeSheets(); });
+    list.appendChild(b);
+  });
+  openSheet("leadsSheet");
+}
+document.querySelector(".counter").addEventListener("click", openLeadsSheet);
+document.querySelector(".counter").style.cursor = "pointer";
+
+
+// tier filter chips
+function syncFilterChips(){
+  document.querySelectorAll(".chip[data-filter]").forEach(c =>
+    c.classList.toggle("on", c.dataset.filter === tierFilter));
+}
+document.querySelectorAll(".chip[data-filter]").forEach(c =>
+  c.addEventListener("click", () => {
+    tierFilter = c.dataset.filter;
+    deckIndex = 0;
+    syncFilterChips();
+    renderDeck();
+    closeSheets();
+    toast(tierFilter === "all" ? "Showing all leads" : tierFilter === "tier1" ? "Showing Tier 1" : "Showing Tier 2");
+  }));
+
+// ---- swipe: left = next, right = back (mouse + touch) ----
+(function swipe(){
+  const stage = document.getElementById("cardStage");
+  let sx = null, sy = null;
+  stage.addEventListener("pointerdown", e => {
+    if (e.target.closest("button, a, textarea, input, select, .sheet")) { sx = null; return; }
+    sx = e.clientX; sy = e.clientY;
+  });
+  stage.addEventListener("pointerup", e => {
+    if (sx == null) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    sx = sy = null;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    go(dx < 0 ? 1 : -1);
+  });
+})();
+
+// keyboard arrows (desktop)
+addEventListener("keydown", e => {
+  if (document.querySelector(".sheet.open")) return;
+  if (e.key === "ArrowLeft") go(-1);
+  if (e.key === "ArrowRight") go(1);
+});
+document.getElementById("prevBtn").addEventListener("click", () => go(-1));
+document.getElementById("nextBtn").addEventListener("click", () => go(1));
+
+// ---- toast ----
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
 }
 
 // -------- Tier 1 instant alert --------
@@ -800,7 +996,6 @@ function chime(){
   } catch(e){}
 }
 function fireTierOneAlert(leads){
-  // In-app cue is chime + badge; the real announcement is the push notification.
   chime();
   if (navigator.vibrate) navigator.vibrate([130, 70, 130]);
   if ("Notification" in window && Notification.permission === "granted" && navigator.serviceWorker) {
@@ -823,11 +1018,10 @@ async function subscribePush(){
     let sub = await reg.pushManager.getSubscription();
     if (!sub) sub = await reg.pushManager.subscribe({
       userVisibleOnly: true, applicationServerKey: urlB64ToBytes(VAPID_PUBLIC)});
-    // Register this phone with the shared store so the hourly task can reach it.
     const res = await fetchT(SYNC_URL, {method:"POST",
       body: JSON.stringify({action:"subscribe", sub: sub.toJSON(), t: Date.now()})}, 20000);
     const j = await res.json();
-    if (!j || !j.ok) return false; // store not upgraded yet — retry on a later visit
+    if (!j || !j.ok) return false;
     try { localStorage.setItem("bld-pushed", "1"); } catch(e){}
     return true;
   } catch(e){ return false; }
@@ -835,15 +1029,14 @@ async function subscribePush(){
 
 // bell — ask for notification permission, then register for real push
 (function initBell(){
-  if (!("Notification" in window)) return;
+  // Real push needs the store to receive the subscription — stay quiet while mocked.
+  if (!SYNC_ENABLED || !("Notification" in window)) return;
   if (Notification.permission === "granted") {
-    // Permission was granted earlier (or on a previous version) — make sure
-    // this phone is registered for real push, quietly.
     if (!localStorage.getItem("bld-pushed")) subscribePush();
     return;
   }
   const btn = document.getElementById("bellBtn");
-  btn.style.display = "flex";
+  btn.style.display = "grid";
   btn.addEventListener("click", async () => {
     try {
       const p = await Notification.requestPermission();
@@ -871,35 +1064,108 @@ function legacyCopy(text){
   } catch(e){ return false; }
 }
 
-// -------- scroll progress --------
-(function scrollFx(){
-  const bar = document.getElementById("progress");
-  let ticking = false;
-  addEventListener("scroll", () => {
-    if (ticking) return; ticking = true;
-    requestAnimationFrame(() => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + "%";
-      ticking = false;
-    });
-  }, {passive:true});
-})();
-
-// tier tiles jump to their section
-document.getElementById("tileT1").addEventListener("click", () =>
-  document.getElementById("secT1").scrollIntoView({behavior:"smooth"}));
-document.getElementById("tileT2").addEventListener("click", () =>
-  document.getElementById("secT2").scrollIntoView({behavior:"smooth"}));
+// Bundled sample doc — used only when leads.json can't be fetched (e.g. the
+// folder opened straight from disk, or a first load with no connection).
+// Production always prefers the leads.json published beside index.html.
+const FALLBACK_LEADS = {
+  "date_label": "Wednesday, August 12, 2026",
+  "queue_label": "Zach’s queue",
+  "voice_note": "<b>Sample data:</b> these are FICTIONAL leads for design work. The live board loads the real leads.json from the store.",
+  "updated": "sample",
+  "leads": [
+    {
+      "id": "sample-tom-harding-0821",
+      "tier": "tier1",
+      "tierLabel": "TIER 1",
+      "cat": "Buying — Active",
+      "when": "Aug 21",
+      "name": "Tom Harding (sample)",
+      "group": "Sag Harbor Boaters (sample group)",
+      "post": "We're finally ready to move up from our 28-footer. Looking hard at a Saxdor 320 GTO or similar for weekends with the kids — would love to hear from anyone who's made that jump. Financing mostly sorted, hoping to be on the water before fall. Any advice on what to look for in a lightly used one would be hugely appreciated!",
+      "flag": "Active buyer, trade-up profile — timeline before fall.",
+      "voice": "Zach voice",
+      "dm": "Hey Tom — congrats on the move up, the 320 is a great family weekender. Happy to share what usually matters on lightly used ones (hours, warranty transfer, trailer setup). We also have one in stock nearby if you'd ever like to walk it — no pressure either way.",
+      "post_url": "https://www.facebook.com/groups/SAMPLE/permalink/SAMPLE1/",
+      "est_value": "≈ $300–430k · Saxdor 320",
+      "match": {
+        "grade": "A",
+        "why": "Named a make/model we carry — Saxdor 320 on the floor in Sag Harbor.",
+        "boats": [
+          { "label": "2024 Saxdor 320 GTO", "price": "$389k", "loc": "Sag Harbor" },
+          { "label": "2023 Saxdor 320 GTC", "price": "$355k", "loc": "Boca Raton" }
+        ]
+      }
+    },
+    {
+      "id": "sample-dana-brooks-0821",
+      "tier": "tier1",
+      "tierLabel": "TIER 1",
+      "cat": "New Boat",
+      "when": "Aug 21",
+      "name": "Dana Brooks (sample)",
+      "group": "New Boat Owners Northeast (sample group)",
+      "post": "Just put a deposit on our first NEW boat ever! Now the fun part — what do people wish they'd ordered from the factory that they added later at 3x the price?",
+      "flag": "New-boat buyer — always Tier 1.",
+      "voice": "Zach voice",
+      "dm": "Congrats Dana, that first factory order is a milestone. The add-ons people regret skipping most are usually the electronics package and bow thruster. If you want, I can send over the options list we walk our buyers through.",
+      "post_url": "https://www.facebook.com/groups/SAMPLE/permalink/SAMPLE2/",
+      "est_value": "New build"
+    },
+    {
+      "id": "sample-rick-alvarez-0820",
+      "tier": "tier2",
+      "tierLabel": "TIER 2",
+      "cat": "Service & Repair",
+      "when": "Aug 20",
+      "name": "Rick Alvarez (sample)",
+      "group": "Boat DIY & Repair (sample group)",
+      "post": "Gelcoat crack along the transom on my 42-footer, anyone have a yard they trust east of the canal? Also due for engine service, figured I'd do both at once.",
+      "flag": "Repair on a higher-value boat — kept per two-tier rules.",
+      "voice": "Zach voice",
+      "dm": "Hey Rick — transom cracks on a 42 are worth a proper look before they spread. The yard we use for our brokerage boats is east of the canal and could bundle the engine service. Want me to intro you?",
+      "post_url": "https://www.facebook.com/groups/SAMPLE/permalink/SAMPLE3/",
+      "est_value": "≈ $250k+ hull"
+    },
+    {
+      "id": "sample-mia-chen-0820",
+      "tier": "tier2",
+      "tierLabel": "TIER 2",
+      "cat": "Yacht Toys",
+      "when": "Aug 20",
+      "name": "Mia Chen (sample)",
+      "group": "Hamptons on the Water (sample group)",
+      "post": "Looking at Seabobs vs eFoils for guests this season — which one actually gets used after week two? Charter folks, what survives?",
+      "flag": "Toys inquiry — Tier 2.",
+      "voice": "Zach voice",
+      "dm": "Hi Mia — from what our charter clients report, Seabobs win on guest-friendliness, eFoils on wow factor but with a learning curve. Happy to share the models that hold up best in salt if useful.",
+      "post_url": "https://www.facebook.com/groups/SAMPLE/permalink/SAMPLE4/",
+      "est_value": ""
+    }
+  ],
+  "new_listings": [
+    {
+      "id": "sample-nl-azimut43",
+      "when": "Aug 21",
+      "label": "2017 Azimut Magellano 43 (sample)",
+      "price": "$595k",
+      "loc": "Sag Harbor",
+      "url": "https://www.yachtworld.com/"
+    }
+  ]
+};
 
 async function boot(){
-  watchReveals();
   // Bundled leads render instantly (and offline); pullShared overrides with
-  // the latest leads from the shared store when reachable.
+  // the latest leads from the shared store when reachable. If leads.json
+  // itself can't be fetched (file:// preview), fall back to the embedded copy.
   try {
     const res = await fetch("leads.json?t=" + Date.now(), {cache:"no-store"});
     applyLeadsDoc(await res.json());
-  } catch(e){ /* offline first load — the store poll will fill in */ }
+  } catch(e){ applyLeadsDoc(FALLBACK_LEADS); }
   render();
+  // deep link: index.html#card-3 opens the third card in the deck
+  const hm = location.hash.match(/^#card-(\d+)$/);
+  if (hm) { deckIndex = Math.max(0, parseInt(hm[1], 10) - 1); renderDeck(); }
   pullShared();
   clearInterval(syncTimer);
   syncTimer = setInterval(pullShared, 60000);

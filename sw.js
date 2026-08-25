@@ -1,5 +1,7 @@
-const CACHE = "bld-v6";
-const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const CACHE = "bld-v11";
+const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json",
+  "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png",
+  "./assets/hero-main.jpg", "./assets/band-teal.jpg", "./assets/band-navy.jpg"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
