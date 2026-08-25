@@ -1,4 +1,4 @@
-const CACHE = "bld-v14";
+const CACHE = "bld-v15";
 const SHELL = ["./", "./index.html", "./leads.json", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png",
   "./assets/hero-main.jpg", "./assets/band-teal.jpg", "./assets/band-navy.jpg"];
