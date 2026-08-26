@@ -1,15 +1,15 @@
 {
   "source": "YachtWorld broker page \u2014 Yacht Hampton (broker 305932)",
   "source_url": "https://www.yachtworld.com/boats-for-sale/broker-yacht-hampton-boca-raton-fl-305932/",
-  "pulled": "2026-08-20",
-  "reported_total": 53,
-  "captured_total": 45,
+  "pulled": "2026-08-26",
+  "reported_total": 52,
+  "captured_total": 46,
   "match_policy": "tight",
   "regions": {
     "Other / Central agency": 6,
-    "Shown NY + FL (one hull)": 6,
-    "Florida": 22,
-    "New York": 11
+    "Florida": 23,
+    "Shown NY + FL (one hull)": 5,
+    "New York": 12
   },
   "listings": [
     {
@@ -46,11 +46,11 @@
       "make": "Galeon",
       "model": "425 HTS",
       "length_ft": 42,
-      "price_usd": 799000,
-      "price_display": "$799,000",
+      "price_usd": 739000,
+      "price_display": "$739,000",
       "city": "Boca Raton",
       "state": "FL",
-      "region": "NY + FL showrooms",
+      "region": "Florida",
       "listing_url": "",
       "new_build": false,
       "match_keys": {
@@ -66,19 +66,7 @@
           37,
           47
         ]
-      },
-      "locations": [
-        {
-          "city": "Boca Raton",
-          "state": "FL"
-        },
-        {
-          "city": "Long Island City",
-          "state": "NY"
-        }
-      ],
-      "listing_urls": [],
-      "one_hull_two_showrooms": true
+      }
     },
     {
       "id": "YH-003",
@@ -105,35 +93,6 @@
         "length_window": [
           67,
           77
-        ]
-      }
-    },
-    {
-      "id": "YH-004",
-      "year": 2000,
-      "make": "Silverton",
-      "model": "453 Motor Yacht",
-      "length_ft": 45,
-      "price_usd": 229900,
-      "price_display": "$229,900",
-      "city": "Boca Raton",
-      "state": "FL",
-      "region": "Florida",
-      "listing_url": "",
-      "new_build": false,
-      "match_keys": {
-        "make": "silverton",
-        "make_aliases": [],
-        "model": "453 motor yacht",
-        "model_tokens": [
-          "453",
-          "motor",
-          "yacht"
-        ],
-        "length_ft": 45,
-        "length_window": [
-          40,
-          50
         ]
       }
     },
@@ -245,8 +204,8 @@
       "make": "CNM",
       "model": "Continental",
       "length_ft": null,
-      "price_usd": 257000,
-      "price_display": "$257,000",
+      "price_usd": 255000,
+      "price_display": "$255,000",
       "city": "Miami",
       "state": "FL",
       "region": "Florida",
@@ -493,8 +452,8 @@
       "make": "Cruisers Yachts",
       "model": "45 Cantius",
       "length_ft": 45,
-      "price_usd": 585900,
-      "price_display": "$585,900",
+      "price_usd": 580000,
+      "price_display": "$580,000",
       "city": "Aventura",
       "state": "FL",
       "region": "Florida",
@@ -523,8 +482,8 @@
       "make": "Maxum",
       "model": "4600 SCB",
       "length_ft": 46,
-      "price_usd": 169000,
-      "price_display": "$169,000",
+      "price_usd": 159000,
+      "price_display": "$159,000",
       "city": "San Diego",
       "state": "CA",
       "region": "Other / Central agency",
@@ -551,8 +510,8 @@
       "make": "Wellcraft",
       "model": "302 Scarab",
       "length_ft": 30,
-      "price_usd": 187000,
-      "price_display": "$187,000",
+      "price_usd": 185000,
+      "price_display": "$185,000",
       "city": "Boca Raton",
       "state": "FL",
       "region": "Florida",
@@ -1391,8 +1350,8 @@
       "make": "Scout",
       "model": "305 LXF",
       "length_ft": 30,
-      "price_usd": 268500,
-      "price_display": "$268,500",
+      "price_usd": 262500,
+      "price_display": "$262,500",
       "city": "Pompano Beach",
       "state": "FL",
       "region": "Florida",
@@ -1412,7 +1371,67 @@
           35
         ]
       }
+    },
+    {
+      "id": "YH-053",
+      "year": 2015,
+      "make": "Pershing",
+      "model": "62",
+      "length_ft": 62,
+      "price_usd": 1090000,
+      "price_display": "$1,090,000",
+      "city": "Sag Harbor",
+      "state": "NY",
+      "region": "New York",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "pershing",
+        "make_aliases": [],
+        "model": "62",
+        "model_tokens": [
+          "62"
+        ],
+        "length_ft": 62,
+        "length_window": [
+          57,
+          67
+        ]
+      }
+    },
+    {
+      "id": "YH-054",
+      "year": 2025,
+      "make": "Sea Ray",
+      "model": "Sundancer 320 Coupe Outboard",
+      "length_ft": 32,
+      "price_usd": 469000,
+      "price_display": "$469,000",
+      "city": "Sarasota",
+      "state": "FL",
+      "region": "Florida",
+      "listing_url": "",
+      "new_build": false,
+      "match_keys": {
+        "make": "sea ray",
+        "make_aliases": [
+          "searay",
+          "sea-ray"
+        ],
+        "model": "sundancer 320 coupe outboard",
+        "model_tokens": [
+          "sundancer",
+          "320",
+          "coupe",
+          "outboard"
+        ],
+        "length_ft": 32,
+        "length_window": [
+          27,
+          37
+        ]
+      }
     }
   ],
-  "dedup_note": "Morgan confirmed Aug 20: same-model/same-price listings at two locations are ONE hull shown at two showrooms. 7 pairs merged. PROBABLE additional pairs to confirm: 2026 Dracan 42 (YH-042 Boca / YH-049 Sag Harbor) and 2023 Sea Ray SLX 400 (YH-030 Sag Harbor / YH-040 Manalapan) \u2014 left unmerged pending Morgan."
+  "dedup_note": "Morgan confirmed Aug 20: same-model/same-price listings at two locations are ONE hull at two showrooms. Aug 26 refresh: ADDED 2015 Pershing 62 (Sag Harbor, $1.09M) + 2025 Sea Ray Sundancer 320 Coupe Outboard (Sarasota, $469k); REMOVED 2000 Silverton 453 (likely sold); Galeon 425 HTS now Boca-only at $739k (NY showroom listing dropped, was $799k); price drops on CNM Continental, Maxum 4600, Wellcraft 302, Scout 305, Cruisers 45 Cantius; Bellini Astor 36 Sag Harbor shows Request price (Boca $899k kept). Still to confirm: Dracan 42 (YH-042/YH-049) and Sea Ray SLX 400 (YH-030/YH-040) possible same-hull pairs."
 }
